@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="隨談雜記">
 <meta property="og:description" content="由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成$\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}$這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$ \cos\theta = \frac{p\cdot q}{|p||q|} $，我們需加入mathJax的插件。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-01-24T16:30:52.279Z">
+<meta property="og:updated_time" content="2018-01-24T16:52:10.838Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Hexo顯示數學公式">
 <meta name="twitter:description" content="由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成$\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}$這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$ \cos\theta = \frac{p\cdot q}{|p||q|} $，我們需加入mathJax的插件。">
@@ -368,8 +368,11 @@
       
         <p>由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成<code>$\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}$</code>這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$ \cos\theta = \frac{p\cdot q}{|p||q|} $，我們需加入<code>mathJax</code>的插件。</p>
 <a id="more"></a>
-<p>$ \cos\theta = \frac{p\cdot q}{|p||q|} $<br>$$<br>\cos\theta = \frac{p\cdot q}{|p||q|}<br>$$</p>
-<h2 id="安裝mathJax"><a href="#安裝mathJax" class="headerlink" title="安裝mathJax"></a>安裝<code>mathJax</code></h2><p>安裝<code>mathJax</code>的方式相當簡單，只需在terminal中輸入下面指令：</p>
+<p>$ \cos\theta = \frac{p\cdot q}{|p||q|} $</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>cos</mi><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>p</mi><mo>⋅</mo><mi>q</mi></mrow><mrow><mi mathvariant="normal">∥</mi><mi>p</mi><mi mathvariant="normal">∥</mi><mi mathvariant="normal">∥</mi><mi>q</mi><mi mathvariant="normal">∥</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.12145em;"></span><span class="strut bottom" style="height:2.0574500000000002em;vertical-align:-0.936em;"></span><span class="base displaystyle textstyle uncramped"><span class="mop">cos</span><span class="mord mathit" style="margin-right:0.02778em;">θ</span><span class="mrel">=</span><span class="mord reset-textstyle displaystyle textstyle uncramped"><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.686em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle cramped"><span class="mord textstyle cramped"><span class="mord mathrm">∥</span><span class="mord mathit">p</span><span class="mord mathrm">∥</span><span class="mord mathrm">∥</span><span class="mord mathit" style="margin-right:0.03588em;">q</span><span class="mord mathrm">∥</span></span></span></span><span style="top:-0.2300000000000001em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.677em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span><span class="reset-textstyle textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord mathit">p</span><span class="mbin">⋅</span><span class="mord mathit" style="margin-right:0.03588em;">q</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">​</span></span>​</span></span></span><span class="sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span></span></p>
+<h2 id="安裝mathjax"><a class="markdownIt-Anchor" href="#安裝mathjax"></a> 安裝<code>mathJax</code></h2>
+<p>安裝<code>mathJax</code>的方式相當簡單，只需在terminal中輸入下面指令：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install hexo-math --save</span></span><br></pre></td></tr></table></figure>
 <p>接下來在Hexo中的<code>_config.yml</code>裡新增以下指令：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">math:</span></span><br><span class="line"><span class="attr">  engine:</span> <span class="string">'mathjax'</span> <span class="comment"># or 'katex'</span></span><br><span class="line"><span class="attr">  mathjax:</span></span><br><span class="line">    <span class="comment"># src: custom_mathjax_source</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line">      <span class="comment"># MathJax config</span></span><br></pre></td></tr></table></figure>
@@ -384,7 +387,8 @@
 <p>基本上這樣就大功告成了，之後在寫文章時，只要在front-matter中掛載插件<code>mathjax: true</code>即可：</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 在Hexo顯示數學公式</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">- </span>Hexo</span><br><span class="line">categories:</span><br><span class="line"><span class="bullet">- </span>程式那點事</span><br><span class="line">mathjax: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 <p>然而，只是安裝插件有些數學符號可能無法正確顯示，主要原因是跟Hexo的渲染引擎有關係。拿下標舉例，在Latex用下標是使用下底線<code>_</code>，但Markdown的斜體或粗體也是用下底線<code>_斜體_</code>，當數學式出現很多下標時，Hexo渲染就會把它優先轉成html形式。為了解決這個問題，我們須對Hexo的渲染做一些處理。</p>
-<h2 id="更改Hexo渲染設定"><a href="#更改Hexo渲染設定" class="headerlink" title="更改Hexo渲染設定"></a>更改Hexo渲染設定</h2><p>網路上有許多資料及做法，因原Hexo渲染插件為<code>hexo-renderer-marked</code>，有些方式會將此插件改為其他支援<code>mathJax</code>的插件，但許多做法我使用後沒有效果，不然就是要改變書寫markdown的方式，所以最後還是決定修改渲染引擎的<code>js</code>腳本。不過此方法也有它的缺點，其一是換一次電腦就必須變更一次設定，其二是原來使用底線做斜體的配置會失效，不過對於第二點可以使用*取代，倒也不是太大的問題。</p>
+<h2 id="更改hexo渲染設定"><a class="markdownIt-Anchor" href="#更改hexo渲染設定"></a> 更改Hexo渲染設定</h2>
+<p>網路上有許多資料及做法，因原Hexo渲染插件為<code>hexo-renderer-marked</code>，有些方式會將此插件改為其他支援<code>mathJax</code>的插件，但許多做法我使用後沒有效果，不然就是要改變書寫markdown的方式，所以最後還是決定修改渲染引擎的<code>js</code>腳本。不過此方法也有它的缺點，其一是換一次電腦就必須變更一次設定，其二是原來使用底線做斜體的配置會失效，不過對於第二點可以使用*取代，倒也不是太大的問題。</p>
 <p>更改方式不是太困難，找到<code>node_modules\marked\lib\marked.js</code>，將裡面的第451行：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">escape</span>: <span class="regexp">/^\\([\\`*&#123;&#125;\[\]()# +\-.!_&gt;])/</span>,</span><br></pre></td></tr></table></figure>
 <p>更改為：</p>
@@ -394,7 +398,8 @@
 <p>更改為：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">em:<span class="regexp">/^\*((?:\*\*|[\s\S])+?)\*(?!\*)/</span>,</span><br></pre></td></tr></table></figure>
 <p>這樣就把底線斜體取消了。到此應該就能完整呈現數學公式囉！好好享受吧！</p>
-<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ol>
+<h2 id="參考資料"><a class="markdownIt-Anchor" href="#參考資料"></a> 參考資料</h2>
+<ol>
 <li><a href="http://stevenshi.me/2017/06/26/hexo-insert-formula/" target="_blank" rel="noopener">hexo中插入数学公式</a></li>
 <li><a href="http://masikkk.com/article/hexo-13-MathJax/" target="_blank" rel="noopener">Hexo博客(13)添加MathJax数学公式渲染</a></li>
 <li><a href="http://www.nyansama.cn/2016/10/13/002/" target="_blank" rel="noopener">Hexo 使用 Mathjax</a></li>
@@ -586,7 +591,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝mathJax"><span class="nav-number">1.</span> <span class="nav-text">安裝mathJax</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更改Hexo渲染設定"><span class="nav-number">2.</span> <span class="nav-text">更改Hexo渲染設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#參考資料"><span class="nav-number">3.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝mathjax"><span class="nav-number">1.</span> <span class="nav-text"> 安裝mathJax</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更改hexo渲染設定"><span class="nav-number">2.</span> <span class="nav-text"> 更改Hexo渲染設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#參考資料"><span class="nav-number">3.</span> <span class="nav-text"> 參考資料</span></a></li></ol></div>
             
 
           </div>
@@ -913,36 +918,7 @@
         showTime(Counter);
       }
     });
-  </script>
-
-
-
-  
-
-  
-
-  
-  
-
-  
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-  </script>
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-      for (i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-    });
-  </script>
-  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -961,6 +937,16 @@
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
 
+
+
+  
+
+  
+
+  
+  
+
+  
   
 
   
