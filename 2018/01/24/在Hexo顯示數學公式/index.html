@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成$\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}$這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$\cos\theta = \frac{p\cdot q}{|p||q|}$，我們需加入mathJax的插件。">
+<meta name="description" content="由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成$\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}$這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$ \cos\theta = \frac{p\cdot q}{|p||q|} $，我們需加入mathJax的插件。">
 <meta name="keywords" content="Hexo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在Hexo顯示數學公式">
 <meta property="og:url" content="http://yoursite.com/2018/01/24/在Hexo顯示數學公式/index.html">
 <meta property="og:site_name" content="隨談雜記">
-<meta property="og:description" content="由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成$\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}$這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$\cos\theta = \frac{p\cdot q}{|p||q|}$，我們需加入mathJax的插件。">
+<meta property="og:description" content="由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成$\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}$這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$ \cos\theta = \frac{p\cdot q}{|p||q|} $，我們需加入mathJax的插件。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-01-24T15:53:58.319Z">
+<meta property="og:updated_time" content="2018-01-24T16:30:52.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Hexo顯示數學公式">
-<meta name="twitter:description" content="由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成$\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}$這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$\cos\theta = \frac{p\cdot q}{|p||q|}$，我們需加入mathJax的插件。">
+<meta name="twitter:description" content="由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成$\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}$這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$ \cos\theta = \frac{p\cdot q}{|p||q|} $，我們需加入mathJax的插件。">
 
 
 
@@ -366,8 +366,9 @@
       
 
       
-        <p>由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成<code>$\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}$</code>這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$\cos\theta = \frac{p\cdot q}{|p||q|}$，我們需加入<code>mathJax</code>的插件。</p>
+        <p>由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成<code>$\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}$</code>這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$ \cos\theta = \frac{p\cdot q}{|p||q|} $，我們需加入<code>mathJax</code>的插件。</p>
 <a id="more"></a>
+<p>$ \cos\theta = \frac{p\cdot q}{|p||q|} $<br>$$<br>\cos\theta = \frac{p\cdot q}{|p||q|}<br>$$</p>
 <h2 id="安裝mathJax"><a href="#安裝mathJax" class="headerlink" title="安裝mathJax"></a>安裝<code>mathJax</code></h2><p>安裝<code>mathJax</code>的方式相當簡單，只需在terminal中輸入下面指令：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install hexo-math --save</span></span><br></pre></td></tr></table></figure>
 <p>接下來在Hexo中的<code>_config.yml</code>裡新增以下指令：</p>
