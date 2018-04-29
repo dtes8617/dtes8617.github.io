@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Dummy Variable,Stepwise Selection,R," />
 
 
 
@@ -81,13 +81,23 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="隨談雜記">
-<meta property="og:url" content="https://dtes8617.github.io/categories/程式那點事/index.html">
+<meta name="description" content="在建迴歸模型時，為了在解釋力提升及過擬合間取得平衡，我們會挑選適切的變數出來。在R中有個很方便的函數step幫我們挑選，但如果資料集當中有類別變數超過三個類別時，挑選上會有一些問題。">
+<meta name="keywords" content="Dummy Variable,Stepwise Selection,R">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stepwise Selection for Dummy Variable">
+<meta property="og:url" content="https://dtes8617.github.io/2018/04/30/Stepwise Selection for Dummy Variable/index.html">
 <meta property="og:site_name" content="隨談雜記">
+<meta property="og:description" content="在建迴歸模型時，為了在解釋力提升及過擬合間取得平衡，我們會挑選適切的變數出來。在R中有個很方便的函數step幫我們挑選，但如果資料集當中有類別變數超過三個類別時，挑選上會有一些問題。">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://www.dropbox.com/s/5idm4gvfimhp5g5/Screenshot%202018-04-30%2000.05.59.png?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/ntf8q5kyoxg1gy0/Screenshot%202018-04-30%2000.30.40.png?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/2v5qvho08ljuxda/Screenshot%202018-04-30%2000.37.26.png?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/bc0wscrszvfsz2l/Screenshot%202018-04-30%2000.40.06.png?raw=1">
+<meta property="og:updated_time" content="2018-04-29T16:46:07.941Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="隨談雜記">
+<meta name="twitter:title" content="Stepwise Selection for Dummy Variable">
+<meta name="twitter:description" content="在建迴歸模型時，為了在解釋力提升及過擬合間取得平衡，我們會挑選適切的變數出來。在R中有個很方便的函數step幫我們挑選，但如果資料集當中有類別變數超過三個類別時，挑選上會有一些問題。">
+<meta name="twitter:image" content="https://www.dropbox.com/s/5idm4gvfimhp5g5/Screenshot%202018-04-30%2000.05.59.png?raw=1">
 
 
 
@@ -117,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://dtes8617.github.io/categories/程式那點事/"/>
+  <link rel="canonical" href="https://dtes8617.github.io/2018/04/30/Stepwise Selection for Dummy Variable/"/>
 
 
 
 
 
-  <title>Category: 程式那點事 | 隨談雜記</title>
+  <title>Stepwise Selection for Dummy Variable | 隨談雜記</title>
   
 
 
@@ -151,7 +161,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -245,83 +255,212 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>程式那點事<small>Category</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://dtes8617.github.io/2018/04/30/Stepwise Selection for Dummy Variable/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jude Su">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隨談雜記">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/01/24/在Hexo顯示數學公式/" itemprop="url">
-              
-                <span itemprop="name">在Hexo顯示數學公式</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">Stepwise Selection for Dummy Variable</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-24T23:53:58+08:00"
-              content="2018-01-24" >
-          01-24
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-30T00:43:11+08:00">
+                2018-04-30
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GetHandsDirty/" itemprop="url" rel="index">
+                    <span itemprop="name">GetHandsDirty</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/30/Stepwise Selection for Dummy Variable/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/04/30/Stepwise Selection for Dummy Variable/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/04/30/Stepwise Selection for Dummy Variable/" class="leancloud_visitors" data-flag-title="Stepwise Selection for Dummy Variable">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
+      
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/16/用Hexo打造你的專屬Blog/" itemprop="url">
-              
-                <span itemprop="name">用Hexo打造你的專屬Blog</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-16T03:02:21+08:00"
-              content="2018-01-16" >
-          01-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
+        <p>在建迴歸模型時，為了在解釋力提升及過擬合間取得平衡，我們會挑選適切的變數出來。在R中有個很方便的函數<code>step</code>幫我們挑選，但如果資料集當中有類別變數超過三個類別時，挑選上會有一些問題。</p>
+<a id="more"></a>
+<p>舉例來說，假設一個變數X有三個類別A、B、C，轉換成factor後，R會以dummy variable來處理，分別為X_A及X_B。迴歸模型計算結果告訴我們X_A顯著但X_B不顯著。照理來說我們會排掉X_B再重新建一次模型，但<code>step</code>無法單純把X_B踢掉，他針對的是變數本身。因此要嘛就是X全部進入模型，要嘛就全出。</p>
+<p>以下會更清楚的說明以及解決方式。</p>
+<h2 id="問題說明"><a href="#問題說明" class="headerlink" title="問題說明"></a>問題說明</h2><p>現在有一個銀行的資料集，用來預測用戶離開銀行的原因。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glimpse(db)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.dropbox.com/s/5idm4gvfimhp5g5/Screenshot%202018-04-30%2000.05.59.png?raw=1" alt="圖片"></p>
+<p>其中變數Geography超過三個類別，分別為France、Spain、Germany。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y &lt;- glm(Exited ~ ., data = dat, family = binomial())</span><br><span class="line">summary(y)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.dropbox.com/s/ntf8q5kyoxg1gy0/Screenshot%202018-04-30%2000.30.40.png?raw=1" alt="圖片"></p>
+<p>在Backward Elimination的方法中，Geography的Spain是需要排除的變數，但當我們使用<code>step</code>會發現狀況。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">z &lt;- step(y, direction = <span class="string">'backward'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.dropbox.com/s/2v5qvho08ljuxda/Screenshot%202018-04-30%2000.37.26.png?raw=1" alt="圖片"></p>
+<p>該方法只會針對Geography這個變數做篩選，並不會用Dummy Variable來處理。</p>
+<h2 id="解決方式"><a href="#解決方式" class="headerlink" title="解決方式"></a>解決方式</h2><p>如果遇到這樣的問題，目前的方式還是老實的把變數轉換成Dummy Variable再做Stepwise Selection。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dat_dummy &lt;- fastDummies::dummy_cols(dat, select_columns = c(<span class="string">'Geography'</span>, <span class="string">'Gender'</span>), remove_first_dummy = <span class="literal">T</span>) %&gt;% </span><br><span class="line">  select(-Gender, -Geography)</span><br><span class="line">y_dummy &lt;- glm(Exited ~ ., data = dat_dummy, family = binomial())</span><br><span class="line"></span><br><span class="line">z_dummy &lt;- step(y_dummy, direction = <span class="string">'backward'</span>)</span><br><span class="line">summary(z_dummy)</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.dropbox.com/s/bc0wscrszvfsz2l/Screenshot%202018-04-30%2000.40.06.png?raw=1" alt="圖片"></p>
+<p>這樣就能單獨處理多類別的變數了。</p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Dummy-Variable/" rel="tag"># Dummy Variable</a>
+          
+            <a href="/tags/Stepwise-Selection/" rel="tag"># Stepwise Selection</a>
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/10/文字探勘 - 創造專屬字典/" rel="next" title="文字探勘 - 創造專屬字典">
+                <i class="fa fa-chevron-left"></i> 文字探勘 - 創造專屬字典
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -329,6 +468,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -349,8 +502,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -417,6 +579,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#問題說明"><span class="nav-number">1.</span> <span class="nav-text">問題說明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解決方式"><span class="nav-number">2.</span> <span class="nav-text">解決方式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -566,6 +744,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -583,6 +765,18 @@
       <script id="dsq-count-scr" src="https://cookiekang.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://dtes8617.github.io/2018/04/30/Stepwise Selection for Dummy Variable/';
+          this.page.identifier = '2018/04/30/Stepwise Selection for Dummy Variable/';
+          this.page.title = 'Stepwise Selection for Dummy Variable';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://cookiekang.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   

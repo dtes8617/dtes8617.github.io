@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dtes8617.github.io/"/>
-  <updated>2018-03-06T13:36:05.209Z</updated>
+  <updated>2018-04-29T16:46:07.941Z</updated>
   <id>https://dtes8617.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Stepwise Selection for Dummy Variable</title>
+    <link href="https://dtes8617.github.io/2018/04/30/Stepwise%20Selection%20for%20Dummy%20Variable/"/>
+    <id>https://dtes8617.github.io/2018/04/30/Stepwise Selection for Dummy Variable/</id>
+    <published>2018-04-29T16:43:11.797Z</published>
+    <updated>2018-04-29T16:46:07.941Z</updated>
+    
+    <content type="html"><![CDATA[<p>在建迴歸模型時，為了在解釋力提升及過擬合間取得平衡，我們會挑選適切的變數出來。在R中有個很方便的函數<code>step</code>幫我們挑選，但如果資料集當中有類別變數超過三個類別時，挑選上會有一些問題。</p><a id="more"></a><p>舉例來說，假設一個變數X有三個類別A、B、C，轉換成factor後，R會以dummy variable來處理，分別為X_A及X_B。迴歸模型計算結果告訴我們X_A顯著但X_B不顯著。照理來說我們會排掉X_B再重新建一次模型，但<code>step</code>無法單純把X_B踢掉，他針對的是變數本身。因此要嘛就是X全部進入模型，要嘛就全出。</p><p>以下會更清楚的說明以及解決方式。</p><h2 id="問題說明"><a href="#問題說明" class="headerlink" title="問題說明"></a>問題說明</h2><p>現在有一個銀行的資料集，用來預測用戶離開銀行的原因。</p><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glimpse(db)</span><br></pre></td></tr></table></figure><p><img src="https://www.dropbox.com/s/5idm4gvfimhp5g5/Screenshot%202018-04-30%2000.05.59.png?raw=1" alt="圖片"></p><p>其中變數Geography超過三個類別，分別為France、Spain、Germany。</p><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y &lt;- glm(Exited ~ ., data = dat, family = binomial())</span><br><span class="line">summary(y)</span><br></pre></td></tr></table></figure><p><img src="https://www.dropbox.com/s/ntf8q5kyoxg1gy0/Screenshot%202018-04-30%2000.30.40.png?raw=1" alt="圖片"></p><p>在Backward Elimination的方法中，Geography的Spain是需要排除的變數，但當我們使用<code>step</code>會發現狀況。</p><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">z &lt;- step(y, direction = <span class="string">'backward'</span>)</span><br></pre></td></tr></table></figure><p><img src="https://www.dropbox.com/s/2v5qvho08ljuxda/Screenshot%202018-04-30%2000.37.26.png?raw=1" alt="圖片"></p><p>該方法只會針對Geography這個變數做篩選，並不會用Dummy Variable來處理。</p><h2 id="解決方式"><a href="#解決方式" class="headerlink" title="解決方式"></a>解決方式</h2><p>如果遇到這樣的問題，目前的方式還是老實的把變數轉換成Dummy Variable再做Stepwise Selection。</p><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dat_dummy &lt;- fastDummies::dummy_cols(dat, select_columns = c(<span class="string">'Geography'</span>, <span class="string">'Gender'</span>), remove_first_dummy = <span class="literal">T</span>) %&gt;% </span><br><span class="line">  select(-Gender, -Geography)</span><br><span class="line">y_dummy &lt;- glm(Exited ~ ., data = dat_dummy, family = binomial())</span><br><span class="line"></span><br><span class="line">z_dummy &lt;- step(y_dummy, direction = <span class="string">'backward'</span>)</span><br><span class="line">summary(z_dummy)</span><br></pre></td></tr></table></figure><p><img src="https://www.dropbox.com/s/bc0wscrszvfsz2l/Screenshot%202018-04-30%2000.40.06.png?raw=1" alt="圖片"></p><p>這樣就能單獨處理多類別的變數了。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在建迴歸模型時，為了在解釋力提升及過擬合間取得平衡，我們會挑選適切的變數出來。在R中有個很方便的函數&lt;code&gt;step&lt;/code&gt;幫我們挑選，但如果資料集當中有類別變數超過三個類別時，挑選上會有一些問題。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="GetHandsDirty" scheme="https://dtes8617.github.io/categories/GetHandsDirty/"/>
+    
+    
+      <category term="Dummy Variable" scheme="https://dtes8617.github.io/tags/Dummy-Variable/"/>
+    
+      <category term="Stepwise Selection" scheme="https://dtes8617.github.io/tags/Stepwise-Selection/"/>
+    
+      <category term="R" scheme="https://dtes8617.github.io/tags/R/"/>
+    
+  </entry>
   
   <entry>
     <title>文字探勘 - 創造專屬字典</title>
@@ -36,9 +62,9 @@
       <category term="GetHandsDirty" scheme="https://dtes8617.github.io/categories/%E6%95%B8%E6%93%9A%E5%AD%B8%E5%A0%82/GetHandsDirty/"/>
     
     
-      <category term="Text Mining" scheme="https://dtes8617.github.io/tags/Text-Mining/"/>
-    
       <category term="R" scheme="https://dtes8617.github.io/tags/R/"/>
+    
+      <category term="Text Mining" scheme="https://dtes8617.github.io/tags/Text-Mining/"/>
     
   </entry>
   
