@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dtes8617.github.io/"/>
-  <updated>2018-06-16T08:27:19.931Z</updated>
+  <updated>2018-06-18T13:25:32.143Z</updated>
   <id>https://dtes8617.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Jupyter Notebook</title>
+    <link href="https://dtes8617.github.io/2018/06/18/Jupyter/"/>
+    <id>https://dtes8617.github.io/2018/06/18/Jupyter/</id>
+    <published>2018-06-18T13:24:55.176Z</published>
+    <updated>2018-06-18T13:25:32.143Z</updated>
+    
+    <content type="html"><![CDATA[<p>Jupyter相當於RMarkdown但又更勝一籌，他可以在一個頁面中書寫文字、即使呈現圖表，這讓程式碼更容易被理解及閱讀，也因此在分析上Jupyter已經有相當多的擁護者。</p><a id="more"></a><p>安裝上最簡單的方式是使用Anaconda，只要輸入<code>conda install jupyter notebook</code>即可。</p><p>開啟Jupyter輸入<code>jupyter notebook</code></p><h2 id="管理環境"><a href="#管理環境" class="headerlink" title="管理環境"></a>管理環境</h2><p>為了讓Jupyter能管理不同環境，輸入<code>conda install nb_conda</code></p><p><img src="https://www.dropbox.com/s/j55lfz1e973ejzy/Screenshot%202018-06-18%2013.11.45.png?raw=1" alt="圖片"></p><p>標籤頁除了多<em>Conda</em>來協助管理環境外，在<em>New</em>裡面也有不同的環境選項。要注意的是如果裡面沒有你要找的環境，則需將<code>nb_conda</code>裝在環境中，才會顯示於<em>New</em>的清單裡。</p><h2 id="Magic-Keywords"><a href="#Magic-Keywords" class="headerlink" title="Magic Keywords"></a>Magic Keywords</h2><p>Jupyter提供一些功能，可在撰寫code時加載上去。其中<code>%</code>代表單行，<code>%%</code>則是一整個Cell的效果。詳細的功能可以點<a href="http://ipython.readthedocs.io/en/stable/interactive/magics.html" target="_blank" rel="noopener">這裡</a>。</p><h3 id="Timing-Code"><a href="#Timing-Code" class="headerlink" title="Timing Code"></a>Timing Code</h3><p>用來計算程式的執行時間。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%timeit function</span><br></pre></td></tr></table></figure><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">%%timeit</span><br><span class="line">code <span class="number">1</span></span><br><span class="line">code <span class="number">2</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure><h3 id="Embedding-Visualization-in-Notebooks"><a href="#Embedding-Visualization-in-Notebooks" class="headerlink" title="Embedding Visualization in Notebooks"></a>Embedding Visualization in Notebooks</h3><p>將圖形呈現在頁面中，一般可使用指令<code>plot.show()</code>來顯示，但每次繪製圖型皆需打此指令就有點麻煩了。可使用以下magic keyword來將圖形呈現在頁面上。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure><p>如果是使用高解析顯示器如Retina，畫面會變得有點模糊，則可加入以下指令讓畫素更高。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%config InlineBackend.figure_format = <span class="string">'retina'</span></span><br></pre></td></tr></table></figure><h3 id="Debugging-in-the-Notebook"><a href="#Debugging-in-the-Notebook" class="headerlink" title="Debugging in the Notebook"></a>Debugging in the Notebook</h3><p>開啟互動式的偵錯介面，一般會呈現以下介面。</p><p><img src="https://www.dropbox.com/s/oop4xopssbhgvf5/Screenshot%202018-06-18%2014.29.45.png?raw=1" alt="圖片"></p><p>開啟後，可以查詢錯誤當下變數的資訊。<br><img src="https://www.dropbox.com/s/zz0io57p6utiqgn/Screenshot%202018-06-18%2014.31.35.png?raw=1" alt="圖片"></p><h2 id="轉換格式"><a href="#轉換格式" class="headerlink" title="轉換格式"></a>轉換格式</h2><p>Notebooks是用<a href="http://www.json.org/" target="_blank" rel="noopener">JSON</a>的格式，為了可以分享給其他人閱讀或使用，可用<a href="https://nbconvert.readthedocs.io/en/latest/usage.html" target="_blank" rel="noopener">指令</a>轉換成其他格式(HTML, Markdown, slideshows, etc)。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter nbconvert --to html notebook.ipynb</span><br></pre></td></tr></table></figure><h2 id="製作簡報"><a href="#製作簡報" class="headerlink" title="製作簡報"></a>製作簡報</h2><p>Jupyter可以直接將頁面製作成簡報，透過以下路徑點選就可以開啟簡報模式。</p><p><img src="https://www.dropbox.com/s/xrdr0je1uv88afc/Screenshot%202018-06-18%2017.51.49.png?raw=1" alt="圖片"></p><p>開啟後可以在各cell點選簡報的形式，分別有幾種形式可以選：</p><ul><li>Slide：主頁面，可以左右滑動</li><li>Sub-Slide：副頁面，可以上下滑動</li><li>Fragment：這個有點類似動畫，會在上一張投影片中呈現</li><li>Skip：隱藏此投影片</li><li>Notes：同樣不會在簡報中播放，會作為註記</li></ul><p><img src="https://www.dropbox.com/s/uaspuxcz2lfzj6x/Screenshot%202018-06-18%2017.53.59.png?raw=1" alt="圖片"></p><p>完成後透過下列指令可以轉換成簡報</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter nbconvert notebook.ipynb --to slides</span><br></pre></td></tr></table></figure><p>這樣只會產生html檔，想呈現presentation的形式，則需輸入</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter nbconvert notebook.ipynb --to slides --post serve</span><br></pre></td></tr></table></figure><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ol><li><a href="https://classroom.udacity.com/courses/ud1111" target="_blank" rel="noopener">Anaconda and Jupyter Notebooks</a></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Jupyter相當於RMarkdown但又更勝一籌，他可以在一個頁面中書寫文字、即使呈現圖表，這讓程式碼更容易被理解及閱讀，也因此在分析上Jupyter已經有相當多的擁護者。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="數據學堂" scheme="https://dtes8617.github.io/categories/%E6%95%B8%E6%93%9A%E5%AD%B8%E5%A0%82/"/>
+    
+    
+      <category term="Python" scheme="https://dtes8617.github.io/tags/Python/"/>
+    
+      <category term="Jupyter" scheme="https://dtes8617.github.io/tags/Jupyter/"/>
+    
+  </entry>
   
   <entry>
     <title>Anaconda</title>
