@@ -81,23 +81,23 @@
 
 
 
-<meta name="description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。 QgridQgrid 是一個可以用互動的方式來操作 Dataframe 的一個套件。目前主要優點有以下二點：  直接用點選的方式做到篩選、排序、">
+<meta name="description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。">
 <meta name="keywords" content="Python,Feature Engineering">
 <meta property="og:type" content="article">
 <meta property="og:title" content="像RStudio一樣查看Python的Dataframe —— Qgrid">
 <meta property="og:url" content="https://dtes8617.github.io/2019/09/23/像RStudio一樣查看Python的Dataframe——Qgrid/index.html">
 <meta property="og:site_name" content="隨談雜記">
-<meta property="og:description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。 QgridQgrid 是一個可以用互動的方式來操作 Dataframe 的一個套件。目前主要優點有以下二點：  直接用點選的方式做到篩選、排序、">
+<meta property="og:description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://www.dropbox.com/s/7osxnn3je8eoj3b/Screenshot%202019-09-25%2000.55.38.png?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/2chtv3l6cq1noz0/Qgrid_basic.gif?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/72x34v4r1cyigpj/Qgrid_tweakData.gif?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/ibgj288n6093w7a/Qgrid_ScrollData.gif?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/88ah4xccywp2ots/Screenshot%202019-09-25%2001.21.02.png?raw=1">
-<meta property="og:updated_time" content="2019-09-29T10:49:15.263Z">
+<meta property="og:updated_time" content="2019-09-29T10:52:06.716Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="像RStudio一樣查看Python的Dataframe —— Qgrid">
-<meta name="twitter:description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。 QgridQgrid 是一個可以用互動的方式來操作 Dataframe 的一個套件。目前主要優點有以下二點：  直接用點選的方式做到篩選、排序、">
+<meta name="twitter:description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。">
 <meta name="twitter:image" content="https://www.dropbox.com/s/7osxnn3je8eoj3b/Screenshot%202019-09-25%2000.55.38.png?raw=1">
 
 
@@ -382,6 +382,7 @@
 
       
         <p>因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——<strong>Qgrid</strong>。</p>
+<a id="more"></a>
 <h2 id="Qgrid"><a href="#Qgrid" class="headerlink" title="Qgrid"></a>Qgrid</h2><p>Qgrid 是一個可以用互動的方式來操作 Dataframe 的一個套件。目前主要優點有以下二點：</p>
 <ol>
 <li>直接用點選的方式做到篩選、排序、甚至是更改 cell 的值。</li>
