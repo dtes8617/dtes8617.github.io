@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://www.dropbox.com/s/72x34v4r1cyigpj/Qgrid_tweakData.gif?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/ibgj288n6093w7a/Qgrid_ScrollData.gif?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/88ah4xccywp2ots/Screenshot%202019-09-25%2001.21.02.png?raw=1">
-<meta property="og:updated_time" content="2019-09-29T14:29:03.049Z">
+<meta property="og:updated_time" content="2019-09-29T17:56:45.653Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="像RStudio一樣查看Python的Dataframe —— Qgrid">
 <meta name="twitter:description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。">
@@ -390,7 +390,7 @@
 <li>直接用點選的方式做到篩選、排序、甚至是更改 cell 的值。</li>
 <li>做 EDA 時可以看到整個 Dataframe 的全貌，而不是用 … 的方式來顯示，且讀取速度很快。</li>
 </ol>
-<p>有興趣的話讓我們開始吧！</p>
+<p>有興趣的話讓我們開始吧！<br>check</p>
 <h3 id="安裝-Qgrid"><a href="#安裝-Qgrid" class="headerlink" title="安裝 Qgrid"></a>安裝 Qgrid</h3><p>基本上依據<a href="https://github.com/quantopian/qgrid" target="_blank" rel="noopener">官方文檔</a>就可以順利安裝了，基本上不外乎就是 pip 及 conda 兩種管道。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pip 安裝方式</span></span><br><span class="line">pip install qgrid</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py --sys-prefix qgrid</span><br><span class="line"></span><br><span class="line"><span class="comment"># conda 安裝方式</span></span><br><span class="line">conda install qgrid -c conda-forge</span><br></pre></td></tr></table></figure>
 <p>官網還有提及需安裝 Jupyterlab ，我試過使用 Jupyter notebook 也是可以運行的，這裡是否要安裝 Jupyterlab 就依自己習慣即可。</p>
@@ -931,24 +931,7 @@
         showTime(Counter);
       }
     });
-  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
