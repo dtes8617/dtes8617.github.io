@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Python,Feature Engineering," />
 
 
 
@@ -81,19 +81,24 @@
 
 
 
-<meta name="description" content="一直以來都有在做筆記的習慣，只是以往都是放在OneNote, Evernote之類的比較多。隨著吸收得知識越來越多，漸漸了解到有一個自己的Blog來經營還是重要的。倒也不是要給誰看，就算是我自己的一個成長歷程吧！ 我是數學背景出身，碩士轉工業工程，主要研究隨機最佳化的領域。也因為這樣的經歷，讓我對用數學的方法解決現實問題 很感興趣，順理成章就往數據分析師這條路走下去。只是這條路畢竟是新的領域，不">
+<meta name="description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。 QgridQgrid 是一個可以用互動的方式來操作 Dataframe 的一個套件。目前主要優點有以下二點：  直接用點選的方式做到篩選、排序、">
+<meta name="keywords" content="Python,Feature Engineering">
 <meta property="og:type" content="article">
-<meta property="og:title" content="個人Blog開張啦！">
-<meta property="og:url" content="https://dtes8617.github.io/2018/01/01/個人Blog開張啦！/index.html">
+<meta property="og:title" content="像RStudio一樣查看Python的Dataframe —— Qgrid">
+<meta property="og:url" content="https://dtes8617.github.io/2019/09/23/像RStudio一樣查看Python的Dataframe——Qgrid/index.html">
 <meta property="og:site_name" content="隨談雜記">
-<meta property="og:description" content="一直以來都有在做筆記的習慣，只是以往都是放在OneNote, Evernote之類的比較多。隨著吸收得知識越來越多，漸漸了解到有一個自己的Blog來經營還是重要的。倒也不是要給誰看，就算是我自己的一個成長歷程吧！ 我是數學背景出身，碩士轉工業工程，主要研究隨機最佳化的領域。也因為這樣的經歷，讓我對用數學的方法解決現實問題 很感興趣，順理成章就往數據分析師這條路走下去。只是這條路畢竟是新的領域，不">
+<meta property="og:description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。 QgridQgrid 是一個可以用互動的方式來操作 Dataframe 的一個套件。目前主要優點有以下二點：  直接用點選的方式做到篩選、排序、">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://www.dropbox.com/s/vngbtvjt959mbhl/UNADJUSTEDNONRAW_thumb_633.jpg?raw=1">
-<meta property="og:updated_time" content="2018-01-24T17:09:05.284Z">
+<meta property="og:image" content="https://www.dropbox.com/s/7osxnn3je8eoj3b/Screenshot%202019-09-25%2000.55.38.png?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/2chtv3l6cq1noz0/Qgrid_basic.gif?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/72x34v4r1cyigpj/Qgrid_tweakData.gif?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/ibgj288n6093w7a/Qgrid_ScrollData.gif?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/88ah4xccywp2ots/Screenshot%202019-09-25%2001.21.02.png?raw=1">
+<meta property="og:updated_time" content="2019-09-29T10:49:15.263Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="個人Blog開張啦！">
-<meta name="twitter:description" content="一直以來都有在做筆記的習慣，只是以往都是放在OneNote, Evernote之類的比較多。隨著吸收得知識越來越多，漸漸了解到有一個自己的Blog來經營還是重要的。倒也不是要給誰看，就算是我自己的一個成長歷程吧！ 我是數學背景出身，碩士轉工業工程，主要研究隨機最佳化的領域。也因為這樣的經歷，讓我對用數學的方法解決現實問題 很感興趣，順理成章就往數據分析師這條路走下去。只是這條路畢竟是新的領域，不">
-<meta name="twitter:image" content="https://www.dropbox.com/s/vngbtvjt959mbhl/UNADJUSTEDNONRAW_thumb_633.jpg?raw=1">
+<meta name="twitter:title" content="像RStudio一樣查看Python的Dataframe —— Qgrid">
+<meta name="twitter:description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。 QgridQgrid 是一個可以用互動的方式來操作 Dataframe 的一個套件。目前主要優點有以下二點：  直接用點選的方式做到篩選、排序、">
+<meta name="twitter:image" content="https://www.dropbox.com/s/7osxnn3je8eoj3b/Screenshot%202019-09-25%2000.55.38.png?raw=1">
 
 
 
@@ -123,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="https://dtes8617.github.io/2018/01/01/個人Blog開張啦！/"/>
+  <link rel="canonical" href="https://dtes8617.github.io/2019/09/23/像RStudio一樣查看Python的Dataframe——Qgrid/"/>
 
 
 
 
 
-  <title>個人Blog開張啦！ | 隨談雜記</title>
+  <title>像RStudio一樣查看Python的Dataframe —— Qgrid | 隨談雜記</title>
   
 
 
@@ -265,7 +270,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://dtes8617.github.io/2018/01/01/個人Blog開張啦！/">
+    <link itemprop="mainEntityOfPage" href="https://dtes8617.github.io/2019/09/23/像RStudio一樣查看Python的Dataframe——Qgrid/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jude Su">
@@ -282,7 +287,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">個人Blog開張啦！</h1>
+          <h1 class="post-title" itemprop="name headline">像RStudio一樣查看Python的Dataframe —— Qgrid</h1>
         
 
         <div class="post-meta">
@@ -294,8 +299,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-01T22:02:00+07:00">
-                2018-01-01
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-23T01:55:41+07:00">
+                2019-09-23
               </time>
             
 
@@ -305,6 +310,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/數據學堂/" itemprop="url" rel="index">
+                    <span itemprop="name">數據學堂</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -313,9 +340,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/01/01/個人Blog開張啦！/#comments" itemprop="discussionUrl">
+                <a href="/2019/09/23/像RStudio一樣查看Python的Dataframe——Qgrid/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/01/01/個人Blog開張啦！/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/09/23/像RStudio一樣查看Python的Dataframe——Qgrid/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -323,7 +350,7 @@
 
           
           
-             <span id="/2018/01/01/個人Blog開張啦！/" class="leancloud_visitors" data-flag-title="個人Blog開張啦！">
+             <span id="/2019/09/23/像RStudio一樣查看Python的Dataframe——Qgrid/" class="leancloud_visitors" data-flag-title="像RStudio一樣查看Python的Dataframe —— Qgrid">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -354,10 +381,36 @@
       
 
       
-        <p><img src="https://www.dropbox.com/s/vngbtvjt959mbhl/UNADJUSTEDNONRAW_thumb_633.jpg?raw=1" alt="圖片"></p>
-<p>一直以來都有在做筆記的習慣，只是以往都是放在OneNote, Evernote之類的比較多。隨著吸收得知識越來越多，漸漸了解到有一個自己的Blog來經營還是重要的。倒也不是要給誰看，就算是我自己的一個成長歷程吧！</p>
-<p>我是數學背景出身，碩士轉工業工程，主要研究隨機最佳化的領域。也因為這樣的經歷，讓我對<em><strong>用數學的方法解決現實問題</strong></em> 很感興趣，順理成章就往數據分析師這條路走下去。只是這條路畢竟是新的領域，不足的地方還太多，雖然一路上程式的底子還過得去，但畢竟不是資工背景。機器學習、深度學習就是要讓機器去挖掘一些我們尚不可見的資訊，那麼不懂機器又怎麼可以呢？</p>
-<p>所以這個部落格的走向也就很明顯了，它不會只是我用來記錄數據分析領域的地方，當然還囊括了程式語言、網頁設計甚至是讀書心得等等的內容。就讓我們拭目以待吧！</p>
+        <p>因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——<strong>Qgrid</strong>。</p>
+<h2 id="Qgrid"><a href="#Qgrid" class="headerlink" title="Qgrid"></a>Qgrid</h2><p>Qgrid 是一個可以用互動的方式來操作 Dataframe 的一個套件。目前主要優點有以下二點：</p>
+<ol>
+<li>直接用點選的方式做到篩選、排序、甚至是更改 cell 的值。</li>
+<li>做 EDA 時可以看到整個 Dataframe 的全貌，而不是用 … 的方式來顯示，且讀取速度很快。</li>
+</ol>
+<p>有興趣的話讓我們開始吧！</p>
+<h3 id="安裝-Qgrid"><a href="#安裝-Qgrid" class="headerlink" title="安裝 Qgrid"></a>安裝 Qgrid</h3><p>基本上依據<a href="https://github.com/quantopian/qgrid" target="_blank" rel="noopener">官方文檔</a>就可以順利安裝了，基本上不外乎就是 pip 及 conda 兩種管道。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pip 安裝方式</span></span><br><span class="line">pip install qgrid</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py --sys-prefix qgrid</span><br><span class="line"></span><br><span class="line"><span class="comment"># conda 安裝方式</span></span><br><span class="line">conda install qgrid -c conda-forge</span><br></pre></td></tr></table></figure>
+<p>官網還有提及需安裝 Jupyterlab ，我試過使用 Jupyter notebook 也是可以運行的，這裡是否要安裝 Jupyterlab 就依自己習慣即可。</p>
+<h3 id="直接調整-Dataframe"><a href="#直接調整-Dataframe" class="headerlink" title="直接調整 Dataframe"></a>直接調整 Dataframe</h3><p>一開始，我們先建立所需要的 Dataframe 資料來做測試，為了之後測試效能，我們把數量調大一點。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 載入所需套件</span></span><br><span class="line"><span class="keyword">import</span> qgrid</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 為了讓結果相同，設定種子以及資料數量</span></span><br><span class="line">np.random.seed(<span class="number">1</span>)</span><br><span class="line">nrow = <span class="number">1000000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立 Dataframe</span></span><br><span class="line">df = pd.DataFrame(&#123;<span class="string">'Index'</span>: range(nrow), </span><br><span class="line">                   <span class="string">'Sex'</span>: np.random.choice([<span class="string">'M'</span>, <span class="string">'F'</span>], nrow), </span><br><span class="line">                   <span class="string">'Age'</span>: np.random.randint(<span class="number">12</span>, <span class="number">56</span>, nrow),</span><br><span class="line">                   <span class="string">'Height'</span>: np.round(np.random.random(nrow),<span class="number">3</span>)*<span class="number">30</span>+<span class="number">160</span>,</span><br><span class="line">                   <span class="string">'Weight'</span>: np.round(np.random.random(nrow),<span class="number">3</span>)*<span class="number">30</span>+<span class="number">55</span>,</span><br><span class="line">                   <span class="string">'Tag'</span>: np.random.choice([<span class="keyword">True</span>, <span class="keyword">False</span>], nrow)&#125;)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.dropbox.com/s/7osxnn3je8eoj3b/Screenshot%202019-09-25%2000.55.38.png?raw=1" alt="圖片"></p>
+<p>可以看到基本上在 Jupyter notebook，只要不特地去設定 pandas 的 display 值，過多的資料都會用 … 帶過。接下來我們想用 Qgrid 來接管這個 Datafram，我們只要下以下語法就好。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">qgrid_widget = qgrid.show_grid(df, show_toolbar=<span class="keyword">True</span>)</span><br><span class="line">qgrid_widget</span><br></pre></td></tr></table></figure>
+<p>我們可以直接在 Dataframe 上排序、篩選（數值、類別、布林）資料。</p>
+<p><img src="https://www.dropbox.com/s/2chtv3l6cq1noz0/Qgrid_basic.gif?raw=1" alt="圖片"></p>
+<p>甚至可以直接更改 Dataframe 的值。</p>
+<p><img src="https://www.dropbox.com/s/72x34v4r1cyigpj/Qgrid_tweakData.gif?raw=1" alt="圖片"></p>
+<p>除此之外，瀏覽資料的速度也是相當迅速的。</p>
+<p><img src="https://www.dropbox.com/s/ibgj288n6093w7a/Qgrid_ScrollData.gif?raw=1" alt="圖片"></p>
+<p>如果想要擷取這些更動過的資料，可以下以下指令。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qgrid_widget.get_changed_df()</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.dropbox.com/s/88ah4xccywp2ots/Screenshot%202019-09-25%2001.21.02.png?raw=1" alt="圖片"></p>
+<p>擷取的資料保留了排序、篩選及我們更動後的資料，這對想直接動手調整資料的人來說相當方便。</p>
+<h3 id="後記"><a href="#後記" class="headerlink" title="後記"></a>後記</h3><p>Qgrid 還在不斷的更新及維護，舉例來說，最近更新的版本，可以在修改資料後直接反應結果在圖形上。官方舉例的文件中用數據畫了迴歸線及資料點的圖形，在更改 Qgrid 的資料時，圖形會即時更動。其實語法也不會很難，但因我們在這討論此套件如何幫助我們在 EDA 流程中更好掌握資料，有興趣的人就自己再看一下官方文檔吧！</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ol>
+<li><a href="https://medium.com/@williams.evanpaul/edit-pandas-dataframes-within-jupyterlab-36f129129496" target="_blank" rel="noopener">Easily edit DataFrames within JupyterLab</a></li>
+<li><a href="https://github.com/quantopian/qgrid" target="_blank" rel="noopener">Qgrid Github</a></li>
+</ol>
 
       
     </div>
@@ -373,6 +426,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/Feature-Engineering/" rel="tag"># Feature Engineering</a>
+          
+        </div>
+      
 
       
       
@@ -382,15 +443,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/02/10/文字探勘 - 創造專屬字典/" rel="next" title="文字探勘 - 創造專屬字典">
+                <i class="fa fa-chevron-left"></i> 文字探勘 - 創造專屬字典
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/16/用Hexo打造你的專屬Blog/" rel="prev" title="用Hexo打造你的專屬Blog">
-                用Hexo打造你的專屬Blog <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -452,8 +513,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -520,6 +590,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Qgrid"><span class="nav-number">1.</span> <span class="nav-text">Qgrid</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝-Qgrid"><span class="nav-number">1.1.</span> <span class="nav-text">安裝 Qgrid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接調整-Dataframe"><span class="nav-number">1.2.</span> <span class="nav-text">直接調整 Dataframe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#後記"><span class="nav-number">1.3.</span> <span class="nav-text">後記</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#參考資料"><span class="nav-number">2.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -694,9 +780,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://dtes8617.github.io/2018/01/01/個人Blog開張啦！/';
-          this.page.identifier = '2018/01/01/個人Blog開張啦！/';
-          this.page.title = '個人Blog開張啦！';
+          this.page.url = 'https://dtes8617.github.io/2019/09/23/像RStudio一樣查看Python的Dataframe——Qgrid/';
+          this.page.identifier = '2019/09/23/像RStudio一樣查看Python的Dataframe——Qgrid/';
+          this.page.title = '像RStudio一樣查看Python的Dataframe —— Qgrid';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://cookiekang.disqus.com/embed.js';
