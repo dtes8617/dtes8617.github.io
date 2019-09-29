@@ -89,17 +89,17 @@
 <meta property="og:site_name" content="隨談雜記">
 <meta property="og:description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://www.dropbox.com/s/fc8uvclm9f6zmy3/Qgrid.png?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/hn0zxhtgnpjap5c/Screenshot%202019-09-29%2021.28.32.png?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/7osxnn3je8eoj3b/Screenshot%202019-09-25%2000.55.38.png?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/2chtv3l6cq1noz0/Qgrid_basic.gif?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/72x34v4r1cyigpj/Qgrid_tweakData.gif?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/ibgj288n6093w7a/Qgrid_ScrollData.gif?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/88ah4xccywp2ots/Screenshot%202019-09-25%2001.21.02.png?raw=1">
-<meta property="og:updated_time" content="2019-09-29T10:54:29.698Z">
+<meta property="og:updated_time" content="2019-09-29T14:29:03.049Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="像RStudio一樣查看Python的Dataframe —— Qgrid">
 <meta name="twitter:description" content="因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——Qgrid。">
-<meta name="twitter:image" content="https://www.dropbox.com/s/fc8uvclm9f6zmy3/Qgrid.png?raw=1">
+<meta name="twitter:image" content="https://www.dropbox.com/s/hn0zxhtgnpjap5c/Screenshot%202019-09-29%2021.28.32.png?raw=1">
 
 
 
@@ -382,22 +382,19 @@
       
 
       
-        <p><img src="https://www.dropbox.com/s/fc8uvclm9f6zmy3/Qgrid.png?raw=1" alt="圖片"></p>
-<p>因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——<strong>Qgrid</strong>。</p>
+        <p><img src="https://www.dropbox.com/s/hn0zxhtgnpjap5c/Screenshot%202019-09-29%2021.28.32.png?raw=1" alt="圖片"></p>
+<p>因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——<strong><a href="https://github.com/quantopian/qgrid" target="_blank" rel="noopener">Qgrid</a></strong>。</p>
 <a id="more"></a>
-<h2 id="qgrid"><a class="markdownIt-Anchor" href="#qgrid"></a> Qgrid</h2>
-<p>Qgrid 是一個可以用互動的方式來操作 Dataframe 的一個套件。目前主要優點有以下二點：</p>
+<h2 id="Qgrid"><a href="#Qgrid" class="headerlink" title="Qgrid"></a>Qgrid</h2><p>Qgrid 是一個可以用互動的方式來操作 Dataframe 的一個套件。目前主要優點有以下二點：</p>
 <ol>
 <li>直接用點選的方式做到篩選、排序、甚至是更改 cell 的值。</li>
 <li>做 EDA 時可以看到整個 Dataframe 的全貌，而不是用 … 的方式來顯示，且讀取速度很快。</li>
 </ol>
 <p>有興趣的話讓我們開始吧！</p>
-<h3 id="安裝-qgrid"><a class="markdownIt-Anchor" href="#安裝-qgrid"></a> 安裝 Qgrid</h3>
-<p>基本上依據<a href="https://github.com/quantopian/qgrid" target="_blank" rel="noopener">官方文檔</a>就可以順利安裝了，基本上不外乎就是 pip 及 conda 兩種管道。</p>
+<h3 id="安裝-Qgrid"><a href="#安裝-Qgrid" class="headerlink" title="安裝 Qgrid"></a>安裝 Qgrid</h3><p>基本上依據<a href="https://github.com/quantopian/qgrid" target="_blank" rel="noopener">官方文檔</a>就可以順利安裝了，基本上不外乎就是 pip 及 conda 兩種管道。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pip 安裝方式</span></span><br><span class="line">pip install qgrid</span><br><span class="line">jupyter nbextension <span class="built_in">enable</span> --py --sys-prefix qgrid</span><br><span class="line"></span><br><span class="line"><span class="comment"># conda 安裝方式</span></span><br><span class="line">conda install qgrid -c conda-forge</span><br></pre></td></tr></table></figure>
 <p>官網還有提及需安裝 Jupyterlab ，我試過使用 Jupyter notebook 也是可以運行的，這裡是否要安裝 Jupyterlab 就依自己習慣即可。</p>
-<h3 id="直接調整-dataframe"><a class="markdownIt-Anchor" href="#直接調整-dataframe"></a> 直接調整 Dataframe</h3>
-<p>一開始，我們先建立所需要的 Dataframe 資料來做測試，為了之後測試效能，我們把數量調大一點。</p>
+<h3 id="直接調整-Dataframe"><a href="#直接調整-Dataframe" class="headerlink" title="直接調整 Dataframe"></a>直接調整 Dataframe</h3><p>一開始，我們先建立所需要的 Dataframe 資料來做測試，為了之後測試效能，我們把數量調大一點。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 載入所需套件</span></span><br><span class="line"><span class="keyword">import</span> qgrid</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 為了讓結果相同，設定種子以及資料數量</span></span><br><span class="line">np.random.seed(<span class="number">1</span>)</span><br><span class="line">nrow = <span class="number">1000000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立 Dataframe</span></span><br><span class="line">df = pd.DataFrame(&#123;<span class="string">'Index'</span>: range(nrow), </span><br><span class="line">                   <span class="string">'Sex'</span>: np.random.choice([<span class="string">'M'</span>, <span class="string">'F'</span>], nrow), </span><br><span class="line">                   <span class="string">'Age'</span>: np.random.randint(<span class="number">12</span>, <span class="number">56</span>, nrow),</span><br><span class="line">                   <span class="string">'Height'</span>: np.round(np.random.random(nrow),<span class="number">3</span>)*<span class="number">30</span>+<span class="number">160</span>,</span><br><span class="line">                   <span class="string">'Weight'</span>: np.round(np.random.random(nrow),<span class="number">3</span>)*<span class="number">30</span>+<span class="number">55</span>,</span><br><span class="line">                   <span class="string">'Tag'</span>: np.random.choice([<span class="keyword">True</span>, <span class="keyword">False</span>], nrow)&#125;)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
 <p><img src="https://www.dropbox.com/s/7osxnn3je8eoj3b/Screenshot%202019-09-25%2000.55.38.png?raw=1" alt="圖片"></p>
 <p>可以看到基本上在 Jupyter notebook，只要不特地去設定 pandas 的 display 值，過多的資料都會用 … 帶過。接下來我們想用 Qgrid 來接管這個 Datafram，我們只要下以下語法就好。</p>
@@ -412,10 +409,8 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qgrid_widget.get_changed_df()</span><br></pre></td></tr></table></figure>
 <p><img src="https://www.dropbox.com/s/88ah4xccywp2ots/Screenshot%202019-09-25%2001.21.02.png?raw=1" alt="圖片"></p>
 <p>擷取的資料保留了排序、篩選及我們更動後的資料，這對想直接動手調整資料的人來說相當方便。</p>
-<h3 id="後記"><a class="markdownIt-Anchor" href="#後記"></a> 後記</h3>
-<p>Qgrid 還在不斷的更新及維護，舉例來說，最近更新的版本，可以在修改資料後直接反應結果在圖形上。官方舉例的文件中用數據畫了迴歸線及資料點的圖形，在更改 Qgrid 的資料時，圖形會即時更動。其實語法也不會很難，但因我們在這討論此套件如何幫助我們在 EDA 流程中更好掌握資料，有興趣的人就自己再看一下官方文檔吧！</p>
-<h2 id="參考資料"><a class="markdownIt-Anchor" href="#參考資料"></a> 參考資料</h2>
-<ol>
+<h3 id="後記"><a href="#後記" class="headerlink" title="後記"></a>後記</h3><p>Qgrid 還在不斷的更新及維護，舉例來說，最近更新的版本，可以在修改資料後直接反應結果在圖形上。官方舉例的文件中用數據畫了迴歸線及資料點的圖形，在更改 Qgrid 的資料時，圖形會即時更動。其實語法也不會很難，但因我們在這討論此套件如何幫助我們在 EDA 流程中更好掌握資料，有興趣的人就自己再看一下<a href="https://qgrid.readthedocs.io/en/latest/" target="_blank" rel="noopener">官方文檔</a>吧！</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ol>
 <li><a href="https://medium.com/@williams.evanpaul/edit-pandas-dataframes-within-jupyterlab-36f129129496" target="_blank" rel="noopener">Easily edit DataFrames within JupyterLab</a></li>
 <li><a href="https://github.com/quantopian/qgrid" target="_blank" rel="noopener">Qgrid Github</a></li>
 </ol>
@@ -608,7 +603,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#qgrid"><span class="nav-number">1.</span> <span class="nav-text"> Qgrid</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝-qgrid"><span class="nav-number">1.1.</span> <span class="nav-text"> 安裝 Qgrid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接調整-dataframe"><span class="nav-number">1.2.</span> <span class="nav-text"> 直接調整 Dataframe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#後記"><span class="nav-number">1.3.</span> <span class="nav-text"> 後記</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#參考資料"><span class="nav-number">2.</span> <span class="nav-text"> 參考資料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Qgrid"><span class="nav-number">1.</span> <span class="nav-text">Qgrid</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝-Qgrid"><span class="nav-number">1.1.</span> <span class="nav-text">安裝 Qgrid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接調整-Dataframe"><span class="nav-number">1.2.</span> <span class="nav-text">直接調整 Dataframe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#後記"><span class="nav-number">1.3.</span> <span class="nav-text">後記</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#參考資料"><span class="nav-number">2.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
             
 
           </div>
