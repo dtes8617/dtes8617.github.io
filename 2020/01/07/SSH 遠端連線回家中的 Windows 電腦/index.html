@@ -96,7 +96,7 @@
 <meta property="og:image" content="https://www.dropbox.com/s/96df0s5d25ngmjh/Screenshot%202020-01-07%2023.48.51.png?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/n08ast4owe3at3a/Screenshot%202020-01-07%2023.59.31.png?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/xl01gz0z063zeyt/Screenshot%202020-01-08%2000.02.35.png?raw=1">
-<meta property="og:updated_time" content="2020-01-07T17:47:01.994Z">
+<meta property="og:updated_time" content="2020-01-07T18:25:36.597Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSH 遠端連線回家中的 Windows 電腦">
 <meta name="twitter:description" content="前陣子為了想玩 Deep Learning ，買了一張近兩萬元的顯卡。結果沒用多久就收到泰國的工作，家裡的桌電就一直擺著生灰塵，實在太痛心了。為了能夠更有效利用桌電，就想到用 ssh 的方式連回家裡操作。網路上其實有蠻多將 Windows 作為 ssh 伺服器的方式，但因為家裡電腦並不是直接連接網路，中間還隔了一層小米路由器，我就把部署的過程一步步放上來。">
@@ -399,7 +399,7 @@
 <p>這裡可以看到 IP 位置與剛剛電腦顯示的不同，這是別人從外連進來可以辨識的真正 IP 位置。但我們從外面連進來會先進到路由器，我們必須告訴路由器要連線的桌機在哪，所以我們還必須多一層設置。</p>
 <p>這裡點選「進階設定」的「通訊埠轉發」，並點選「新增規則」。因為 ssh 預設閘道為 22， 這裡為了方便我們就設定「外部埠」及「內部埠」為22，名稱隨意填，協議選擇 TCP，內部 IP 位置則填入剛剛用 <code>ipconfig</code> 查到的 IP。<br><img src="https://www.dropbox.com/s/xl01gz0z063zeyt/Screenshot%202020-01-08%2000.02.35.png?raw=1" alt="圖片"></p>
 <p>新增完成後，別忘了把網頁拉到最底下點選「儲存並生效」。我在這裡就是忘記點選這個，結果搞了幾個小時一直連不進來。</p>
-<h2 id="SSH-連線登入"><a href="#SSH-連線登入" class="headerlink" title="SSH 連線登入"></a>SSH 連線登入</h2><p>到這一步總算是完成打扮啦！基本上最後是最簡單的部分，也就是用其他電腦連線到你的桌機。要注意的是如果其他電腦是 Windows 10，也是要到設定去安裝 OpenSSH 用戶端。<br>接下來輸入以下指令</p>
+<h2 id="SSH-連線登入"><a href="#SSH-連線登入" class="headerlink" title="SSH 連線登入"></a>SSH 連線登入</h2><p>到這一步總算是完成啦！基本上最後是最簡單的部分，也就是用其他電腦連線到你的桌機。要注意的是如果其他電腦是 Windows 10，也是要到設定去安裝 OpenSSH 用戶端。<br>接下來輸入以下指令</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh 使用者名稱@實體IP位置</span><br></pre></td></tr></table></figure>
 <p>使用者名稱為主機的使用者，實體IP位置則是剛剛小米路由器顯示的IP位置，輸入完主機的密碼就大功告成啦！祝大家連線愉快～</p>
 <h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ol>
