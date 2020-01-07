@@ -89,19 +89,19 @@
 <meta property="og:site_name" content="隨談雜記">
 <meta property="og:description" content="前陣子為了想玩 Deep Learning ，買了一張近兩萬元的顯卡。結果沒用多久就收到泰國的工作，家裡的桌電就一直擺著生灰塵，實在太痛心了。為了能夠更有效利用桌電，就想到用 ssh 的方式連回家裡操作。 網路上其實有蠻多將 Windows 作為 ssh 伺服器的方式，但因為家裡電腦並不是直接連接網路，中間還隔了一層小米路由器，我就把部署的過程一步步放上來。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https://www.dropbox.com/s/ndounjgeiz5adf1/E6FD2FDE-DEC8-4D21-9E23-D839593E5181_1_105_c.jpeg?dl=1">
-<meta property="og:image" content="https://www.dropbox.com/s/ecn1f4gbh0ttpxx/Screenshot%202020-01-07%2023.20.43.png?dl=1">
+<meta property="og:image" content="https://www.dropbox.com/s/ndounjgeiz5adf1/E6FD2FDE-DEC8-4D21-9E23-D839593E5181_1_105_c.jpeg?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/ecn1f4gbh0ttpxx/Screenshot%202020-01-07%2023.20.43.png?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/z3fddy5ebmebj23/Screenshot%202020-01-07%2023.40.58.png?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/wc60lekc97il8u7/Screenshot%202020-01-07%2023.42.15.png?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/pltume36udhpyed/Screenshot%202020-01-07%2023.43.14.png?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/96df0s5d25ngmjh/Screenshot%202020-01-07%2023.48.51.png?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/n08ast4owe3at3a/Screenshot%202020-01-07%2023.59.31.png?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/xl01gz0z063zeyt/Screenshot%202020-01-08%2000.02.35.png?raw=1">
-<meta property="og:updated_time" content="2020-01-07T17:41:08.203Z">
+<meta property="og:updated_time" content="2020-01-07T17:44:43.132Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSH 遠端連線回家中的 Windows 電腦">
 <meta name="twitter:description" content="前陣子為了想玩 Deep Learning ，買了一張近兩萬元的顯卡。結果沒用多久就收到泰國的工作，家裡的桌電就一直擺著生灰塵，實在太痛心了。為了能夠更有效利用桌電，就想到用 ssh 的方式連回家裡操作。 網路上其實有蠻多將 Windows 作為 ssh 伺服器的方式，但因為家裡電腦並不是直接連接網路，中間還隔了一層小米路由器，我就把部署的過程一步步放上來。">
-<meta name="twitter:image" content="https://www.dropbox.com/s/ndounjgeiz5adf1/E6FD2FDE-DEC8-4D21-9E23-D839593E5181_1_105_c.jpeg?dl=1">
+<meta name="twitter:image" content="https://www.dropbox.com/s/ndounjgeiz5adf1/E6FD2FDE-DEC8-4D21-9E23-D839593E5181_1_105_c.jpeg?raw=1">
 
 
 
@@ -384,14 +384,14 @@
       
 
       
-        <p><img src="https://www.dropbox.com/s/ndounjgeiz5adf1/E6FD2FDE-DEC8-4D21-9E23-D839593E5181_1_105_c.jpeg?dl=1" alt="圖片"></p>
+        <p><img src="https://www.dropbox.com/s/ndounjgeiz5adf1/E6FD2FDE-DEC8-4D21-9E23-D839593E5181_1_105_c.jpeg?raw=1" alt="圖片"></p>
 <p>前陣子為了想玩 Deep Learning ，買了一張近兩萬元的顯卡。結果沒用多久就收到泰國的工作，家裡的桌電就一直擺著生灰塵，實在太痛心了。為了能夠更有效利用桌電，就想到用 ssh 的方式連回家裡操作。<br>
 網路上其實有蠻多將 Windows 作為 ssh 伺服器的方式，但因為家裡電腦並不是直接連接網路，中間還隔了一層小米路由器，我就把部署的過程一步步放上來。</p>
 <a id="more"></a>
 <h2 id="windows-主機設置"><a class="markdownIt-Anchor" href="#windows-主機設置"></a> Windows 主機設置</h2>
 <p>由於桌電是 Windows 10 的作業系統，基本上已經支援 SSH 的伺服器部署。不過這不是一般人會使用到的功能，所以預設是關閉的。我們必須到設定&gt;應用程式與功能的地方把他打開。</p>
 <p>到應用程式畫面後，點選<strong>管理選用功能</strong><br>
-<img src="https://www.dropbox.com/s/ecn1f4gbh0ttpxx/Screenshot%202020-01-07%2023.20.43.png?dl=1" alt="圖片"></p>
+<img src="https://www.dropbox.com/s/ecn1f4gbh0ttpxx/Screenshot%202020-01-07%2023.20.43.png?raw=1" alt="圖片"></p>
 <p>進到裡面之後，確認清單中有沒有 OpenSSH 伺服器 並且安裝，如果沒有的話在新增功能 的選項裡安裝。要特別注意是 OpenSSH 伺服器，不是 OpenSSH 用戶端。</p>
 <p>接下來用系統管理員身分打開 PowerShell，並輸入以下指令：</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Start-Service</span> sshd</span><br><span class="line"><span class="built_in">Set-Service</span> -Name sshd -StartupType <span class="string">'Automatic'</span></span><br></pre></td></tr></table></figure>
