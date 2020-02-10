@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://dtes8617.github.io/"/>
-  <updated>2020-01-07T18:25:36.597Z</updated>
+  <updated>2020-02-10T16:48:30.353Z</updated>
   <id>https://dtes8617.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>用 電腦  iPad 遠端連接家用電腦的 Jupyter Lab</title>
+    <link href="https://dtes8617.github.io/2020/01/12/%E7%94%A8%20%E9%9B%BB%E8%85%A6%20%20iPad%20%E9%81%A0%E7%AB%AF%E9%80%A3%E6%8E%A5%E5%AE%B6%E7%94%A8%E9%9B%BB%E8%85%A6%E7%9A%84%20Jupyter%20Lab/"/>
+    <id>https://dtes8617.github.io/2020/01/12/用 電腦  iPad 遠端連接家用電腦的 Jupyter Lab/</id>
+    <published>2020-01-11T17:38:59.903Z</published>
+    <updated>2020-02-10T16:48:30.353Z</updated>
+    
+    <content type="html"><![CDATA[<p>上一片文章<a href="https://dtes8617.github.io/2020/01/07/SSH%20遠端連線回家中的%20Windows%20電腦/#more">SSH 遠端連線回家中的 Windows 電腦</a>提到如何在電腦與遠程桌機之間建立通道。在遠程桌電的通道建立之後，我們可以直接在手上 電腦/ iPad 開啟 Jupyter Lab ，但是由遠程的家中電腦來跑 code。</p><p>在這篇文章中主要會實作 _開啟遠端Jupyter伺服器、用電腦/iPad連結遠端Jupyter伺服器_ 等兩部分。讓我們開始吧！</p><a id="more"></a><h2 id="開啟遠端Jupyter伺服器"><a href="#開啟遠端Jupyter伺服器" class="headerlink" title="開啟遠端Jupyter伺服器"></a>開啟遠端Jupyter伺服器</h2><p>要開啟遠端伺服器相當簡單，只要在遠端主機上開啟 cmd，並輸入以下指令就可以開啟了。其中 port 可以是其他的值，只要不要跟其他已佔用 port 衝突就好。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter notebook —-no-browser —-port=8080</span><br></pre></td></tr></table></figure><p>但如果你沒辦法直接操作遠端主機，當然也是可以透過<a href="https://dtes8617.github.io/2020/01/07/SSH%20遠端連線回家中的%20Windows%20電腦/#more">上篇文章</a>提到的，從手中的電腦開啟 ssh 連接回遠端主機，並輸入上述指令開啟 Jupyter notebook。不過要注意的是，這個視窗只要一關閉，伺服器端的 Jupyter notebook 也會同步關閉。</p><p>如果想要一勞永逸，開啟後就不讓遠端電腦關掉的話，可以用類似 tmux 來達到目的，可惜的是 Windows 不能使用。我們可以用 TeamViewer 直接在遠端電腦輸入上述指令並且讓他一直開著，也是可行的方法。</p><h2 id="連結遠端-Jupyter-伺服器"><a href="#連結遠端-Jupyter-伺服器" class="headerlink" title="連結遠端 Jupyter 伺服器"></a>連結遠端 Jupyter 伺服器</h2><p>在我們開啟遠端 Jupyter 伺服器後，接下來只要用你手上這台機器連上伺服器即可。這裡我會分別依據 電腦/iPad 來說明。</p><h3 id="使用電腦連接"><a href="#使用電腦連接" class="headerlink" title="使用電腦連接"></a>使用電腦連接</h3><p>用電腦連結其實相對簡單，僅需要在所使用的電腦打開終端，並輸入以下指令，就可以連結上遠端伺服器。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -CNL 8080:localhost:8080 遠端使用者名稱@遠端實體IP</span><br></pre></td></tr></table></figure><p>這時在打開瀏覽器並輸入 <code>localhost:8080</code> 就可以看到跑在遠端的 Jupyter notebook 了。</p><h3 id="使用-iPad連接"><a href="#使用-iPad連接" class="headerlink" title="使用 iPad連接"></a>使用 iPad連接</h3><p>用 iPad 連接有兩種方法，一種是要錢的一種是不要錢的。當然要錢的方式簡單殘暴，無腦連結。如果你的 iPad 版本是 iOS 13 或以上，也僅建議用這種方式連接，我會在後續說明。</p><h4 id="採用-Termius-及-Safari-連接-（免費）"><a href="#採用-Termius-及-Safari-連接-（免費）" class="headerlink" title="採用 Termius 及 Safari 連接 （免費）"></a>採用 Termius 及 Safari 連接 （免費）</h4><p>Termius 是採用訂閱制的，但是免費的功能就已經可以達到我們的需求了。首先至 App Store 下載 Termius 。打開後點選左邊選單的 Host 並點擊右上角 +，就會看到以下畫面。</p><p><img src="https://www.dropbox.com/s/bixnyi67miclna7/Photo%20Jan%2024%2C%202020%20at%2091230%20PM.jpg?raw=1" alt="圖片"></p><p>這裡是為了建立到遠端主機的連線，依序填入內容：</p><blockquote><p><strong>Alias</strong> 建立連線的名稱（隨意填）<br><strong>Hostname</strong> 遠端伺服器的 IP<br><strong>Port</strong> 填預設的 22 即可<br><strong>Username</strong> 遠端伺服器使用者名稱<br><strong>Password</strong> 遠端伺服器使用者密碼  </p></blockquote><p>接下來我們到左邊選單的 Port Forwarding 並點擊右上角的 +，會來到這個畫面。</p><p><img src="https://www.dropbox.com/s/dcsheu1du7uv4t5/Photo%20Jan%2024%2C%202020%20at%2092044%20PM.jpg?raw=1" alt="圖片"></p><p>我們只要在 Local 的標籤中，填入下列內容：</p><blockquote><p><strong>Lobel</strong> 建立名稱（隨意填）<br><strong>Host</strong> 遠端使用者名稱@遠端實體IP<br><strong>Port From</strong> 填寫 8080<br><strong>Destination</strong> localhost<br><strong>Port To</strong> 填寫 8080  </p></blockquote><p>儲存後執行，並且用多工的方式開啟瀏覽器輸入 localhost:8080。就可以看到成功運行的 Jupyter notebook。</p><p><img src="https://www.dropbox.com/s/dcsheu1du7uv4t5/Photo%20Jan%2024%2C%202020%20at%2092044%20PM.jpg?raw=1" alt="圖片"></p><p>不過這裡你一定會想，為什麼我們一定要用分屏的方式執行對吧！這就是免費的缺點了，因為更新到 iOS13 之後，只要你將 termius 縮小或是藏到旁邊，20秒後就會直接關閉。所以這裡得用分屏的方式讓他一直開著，連線才不會斷開。</p><h4 id="採用-Junoconnect-連接-（付費）"><a href="#採用-Junoconnect-連接-（付費）" class="headerlink" title="採用 Junoconnect 連接 （付費）"></a>採用 Junoconnect 連接 （付費）</h4><p>這是用 iPad 連線最簡單暴力的方式，我們只要開啟後點選左邊選單的 Add Jupyter Server… </p><p><img src="https://www.dropbox.com/s/dcsheu1du7uv4t5/Photo%20Jan%2024%2C%202020%20at%2092044%20PM.jpg?raw=1" alt="圖片"></p><p>輸入下列資訊：</p><blockquote><p><strong>Description</strong> 建立名稱（隨意填）<br><strong>Type</strong> 選擇 Local port forwarding<br><strong>Host</strong> 遠端伺服器的 IP<br><strong>Port</strong> 填預設的 22 即可<br><strong>User</strong> 遠端伺服器使用者名稱<br><strong>Password</strong> 遠端伺服器使用者密碼<br>—<br><strong>Host</strong> localhost<br><strong>Port</strong> 8080  </p></blockquote><p>完成後執行，恭喜你可以直接使用 Jupyter notebook了！</p><h2 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h2><p>用 Windows 當 Server 真的會遇到比較多問題，譬如說前陣子我將 Windows 版本更新，結果 OpenSSH server 在使用者認證上就一直出問題，最後還是用降版本的方式才保證我的 Windows 能繼續連線。但為了因應許多人不會在安裝 Linux 到電腦中，用這方式連線也是可以接受的。<br>另外，如果是用 iPad 連線的使用者，Junoconnect 是非常建議買的（非業配），使用體驗很好，幾乎跟直接用本機計算的體驗相當，真的可以只帶一台 iPad 就隨時隨地寫程式的XDD</p><h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ol><li><a href="https://blog.jaycetyle.com/2018/02/github-ssh/" target="_blank" rel="noopener">Git 版本控制筆記 - 使用 github 及 ssh 金鑰設定 | Jayce 的共享記憶體</a></li><li><a href="https://blog.csdn.net/Basu_Lee/article/details/78547567" target="_blank" rel="noopener">git在push时候出现timeout的解决方法_Basu_Lee的博客-CSDN博客</a></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;上一片文章&lt;a href=&quot;https://dtes8617.github.io/2020/01/07/SSH%20遠端連線回家中的%20Windows%20電腦/#more&quot;&gt;SSH 遠端連線回家中的 Windows 電腦&lt;/a&gt;提到如何在電腦與遠程桌機之間建立通道。在遠程桌電的通道建立之後，我們可以直接在手上 電腦/ iPad 開啟 Jupyter Lab ，但是由遠程的家中電腦來跑 code。&lt;/p&gt;
+&lt;p&gt;在這篇文章中主要會實作 _開啟遠端Jupyter伺服器、用電腦/iPad連結遠端Jupyter伺服器_ 等兩部分。讓我們開始吧！&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="程式那點事" scheme="https://dtes8617.github.io/categories/%E7%A8%8B%E5%BC%8F%E9%82%A3%E9%BB%9E%E4%BA%8B/"/>
+    
+    
+      <category term="Jupyter" scheme="https://dtes8617.github.io/tags/Jupyter/"/>
+    
+      <category term="SSH" scheme="https://dtes8617.github.io/tags/SSH/"/>
+    
+      <category term="Remote Control" scheme="https://dtes8617.github.io/tags/Remote-Control/"/>
+    
+  </entry>
   
   <entry>
     <title>SSH 遠端連線回家中的 Windows 電腦</title>
