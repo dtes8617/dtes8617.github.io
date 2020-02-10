@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://www.dropbox.com/s/dcsheu1du7uv4t5/Photo%20Jan%2024%2C%202020%20at%2092044%20PM.jpg?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/dcsheu1du7uv4t5/Photo%20Jan%2024%2C%202020%20at%2092044%20PM.jpg?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/dcsheu1du7uv4t5/Photo%20Jan%2024%2C%202020%20at%2092044%20PM.jpg?raw=1">
-<meta property="og:updated_time" content="2020-02-10T16:52:19.658Z">
+<meta property="og:updated_time" content="2020-02-10T17:07:19.955Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用 電腦  iPad 遠端連接家用電腦的 Jupyter Lab">
 <meta name="twitter:description" content="上一片文章SSH 遠端連線回家中的 Windows 電腦提到如何在電腦與遠程桌機之間建立通道。在遠程桌電的通道建立之後，我們可以直接在手上 電腦/ iPad 開啟 Jupyter Lab ，但是由遠程的家中電腦來跑 code。 在這篇文章中主要會實作 _開啟遠端Jupyter伺服器、用電腦/iPad連結遠端Jupyter伺服器_ 等兩部分。讓我們開始吧！">
@@ -380,12 +380,12 @@
       
 
       
-        <p>上一片文章<a href="https://dtes8617.github.io/2020/01/07/SSH%20遠端連線回家中的%20Windows%20電腦/#more">SSH 遠端連線回家中的 Windows 電腦</a>提到如何在電腦與遠程桌機之間建立通道。在遠程桌電的通道建立之後，我們可以直接在手上 電腦/ iPad 開啟 Jupyter Lab ，但是由遠程的家中電腦來跑 code。</p>
+        <p>上一片文章<a href="https://dtes8617.github.io/2020/01/08/SSH%20遠端連線回家中的%20Windows%20電腦/#more">SSH 遠端連線回家中的 Windows 電腦</a>提到如何在電腦與遠程桌機之間建立通道。在遠程桌電的通道建立之後，我們可以直接在手上 電腦/ iPad 開啟 Jupyter Lab ，但是由遠程的家中電腦來跑 code。</p>
 <p>在這篇文章中主要會實作 _開啟遠端Jupyter伺服器、用電腦/iPad連結遠端Jupyter伺服器_ 等兩部分。讓我們開始吧！</p>
 <a id="more"></a>
 <h2 id="開啟遠端Jupyter伺服器"><a href="#開啟遠端Jupyter伺服器" class="headerlink" title="開啟遠端Jupyter伺服器"></a>開啟遠端Jupyter伺服器</h2><p>要開啟遠端伺服器相當簡單，只要在遠端主機上開啟 cmd，並輸入以下指令就可以開啟了。其中 port 可以是其他的值，只要不要跟其他已佔用 port 衝突就好。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter notebook —-no-browser —-port=8080</span><br></pre></td></tr></table></figure>
-<p>但如果你沒辦法直接操作遠端主機，當然也是可以透過<a href="https://dtes8617.github.io/2020/01/07/SSH%20遠端連線回家中的%20Windows%20電腦/#more">上篇文章</a>提到的，從手中的電腦開啟 ssh 連接回遠端主機，並輸入上述指令開啟 Jupyter notebook。不過要注意的是，這個視窗只要一關閉，伺服器端的 Jupyter notebook 也會同步關閉。</p>
+<p>但如果你沒辦法直接操作遠端主機，當然也是可以透過<a href="https://dtes8617.github.io/2020/01/08/SSH%20遠端連線回家中的%20Windows%20電腦/#more">上篇文章</a>提到的，從手中的電腦開啟 ssh 連接回遠端主機，並輸入上述指令開啟 Jupyter notebook。不過要注意的是，這個視窗只要一關閉，伺服器端的 Jupyter notebook 也會同步關閉。</p>
 <p>如果想要一勞永逸，開啟後就不讓遠端電腦關掉的話，可以用類似 tmux 來達到目的，可惜的是 Windows 不能使用。我們可以用 TeamViewer 直接在遠端電腦輸入上述指令並且讓他一直開著，也是可行的方法。</p>
 <h2 id="連結遠端-Jupyter-伺服器"><a href="#連結遠端-Jupyter-伺服器" class="headerlink" title="連結遠端 Jupyter 伺服器"></a>連結遠端 Jupyter 伺服器</h2><p>在我們開啟遠端 Jupyter 伺服器後，接下來只要用你手上這台機器連上伺服器即可。這裡我會分別依據 電腦/iPad 來說明。</p>
 <h3 id="使用電腦連接"><a href="#使用電腦連接" class="headerlink" title="使用電腦連接"></a>使用電腦連接</h3><p>用電腦連結其實相對簡單，僅需要在所使用的電腦打開終端，並輸入以下指令，就可以連結上遠端伺服器。</p>
