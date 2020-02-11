@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://www.dropbox.com/s/dcsheu1du7uv4t5/Photo%20Jan%2024%2C%202020%20at%2092044%20PM.jpg?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/o1dltbxcq3dvqsq/Photo%20Feb%2010%2C%202020%20at%20111740%20PM.jpg?raw=1">
 <meta property="og:image" content="https://www.dropbox.com/s/bhglf57ciibu66b/Photo%20Feb%2010%2C%202020%20at%20112428%20PM.jpg?raw=1">
-<meta property="og:updated_time" content="2020-02-11T11:57:33.569Z">
+<meta property="og:updated_time" content="2020-02-11T12:00:28.921Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用 電腦  iPad 遠端連接家用電腦的 Jupyter Lab">
 <meta name="twitter:description" content="上一篇文章SSH 遠端連線回家中的 Windows 電腦提到如何在電腦與遠程桌機之間建立通道。在遠程桌電的通道建立之後，我們可以直接在手上 電腦/ iPad 開啟 Jupyter Lab ，但是由遠程的家中電腦來跑 code。 在這篇文章中主要會實作 開啟遠端Jupyter伺服器、用電腦/iPad連結遠端Jupyter伺服器 等兩部分。讓我們開始吧！">
@@ -439,11 +439,6 @@
 <h2 id="總結"><a class="markdownIt-Anchor" href="#總結"></a> 總結</h2>
 <p>用 Windows 當 Server 真的會遇到比較多問題，譬如說前陣子我將 Windows 版本更新，結果 OpenSSH server 在使用者認證上就一直出問題，最後還是用降版本的方式才保證我的 Windows 能繼續連線。但為了因應許多人不會特地安裝 Linux 到電腦中，用這方式連線也是可以接受的。<br>
 另外，如果是用 iPad 連線的使用者，Junoconnect 是非常建議買的（非業配），使用體驗很好，幾乎跟直接用本機計算的體驗相當，真的可以只帶一台 iPad 就隨時隨地寫程式的XDD</p>
-<h2 id="參考資料"><a class="markdownIt-Anchor" href="#參考資料"></a> 參考資料</h2>
-<ol>
-<li><a href="https://blog.jaycetyle.com/2018/02/github-ssh/" target="_blank" rel="noopener">Git 版本控制筆記 - 使用 github 及 ssh 金鑰設定 | Jayce 的共享記憶體</a></li>
-<li><a href="https://blog.csdn.net/Basu_Lee/article/details/78547567" target="_blank" rel="noopener">git在push时候出现timeout的解决方法_Basu_Lee的博客-CSDN博客</a></li>
-</ol>
 
       
     </div>
@@ -651,7 +646,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#開啟遠端jupyter伺服器"><span class="nav-number">1.</span> <span class="nav-text"> 開啟遠端Jupyter伺服器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#連結遠端-jupyter-伺服器"><span class="nav-number">2.</span> <span class="nav-text"> 連結遠端 Jupyter 伺服器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用電腦連接"><span class="nav-number">2.1.</span> <span class="nav-text"> 使用電腦連接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-ipad連接"><span class="nav-number">2.2.</span> <span class="nav-text"> 使用 iPad連接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#採用-termius-及-safari-連接-免費"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 採用 Termius 及 Safari 連接 （免費）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#採用-junoconnect-連接-付費"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 採用 Junoconnect 連接 （付費）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#總結"><span class="nav-number">3.</span> <span class="nav-text"> 總結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#參考資料"><span class="nav-number">4.</span> <span class="nav-text"> 參考資料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#開啟遠端jupyter伺服器"><span class="nav-number">1.</span> <span class="nav-text"> 開啟遠端Jupyter伺服器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#連結遠端-jupyter-伺服器"><span class="nav-number">2.</span> <span class="nav-text"> 連結遠端 Jupyter 伺服器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用電腦連接"><span class="nav-number">2.1.</span> <span class="nav-text"> 使用電腦連接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-ipad連接"><span class="nav-number">2.2.</span> <span class="nav-text"> 使用 iPad連接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#採用-termius-及-safari-連接-免費"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 採用 Termius 及 Safari 連接 （免費）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#採用-junoconnect-連接-付費"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 採用 Junoconnect 連接 （付費）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#總結"><span class="nav-number">3.</span> <span class="nav-text"> 總結</span></a></li></ol></div>
             
 
           </div>
