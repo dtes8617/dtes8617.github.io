@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+
+  
+  <title>隨談雜記</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="隨談雜記">
+<meta property="og:url" content="https://dtes8617.github.io/index.html">
+<meta property="og:site_name" content="隨談雜記">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Jude Su">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="隨談雜記" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">隨談雜記</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://dtes8617.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-用 Python 建構 Telegram 股票監測機器人" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/27/%E7%94%A8%20Python%20%E5%BB%BA%E6%A7%8B%20Telegram%20%E8%82%A1%E7%A5%A8%E7%9B%A3%E6%B8%AC%E6%A9%9F%E5%99%A8%E4%BA%BA/" class="article-date">
+  <time datetime="2021-01-27T08:06:39.000Z" itemprop="datePublished">2021-01-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%A8%8B%E5%BC%8F%E6%87%89%E7%94%A8/">程式應用</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/27/%E7%94%A8%20Python%20%E5%BB%BA%E6%A7%8B%20Telegram%20%E8%82%A1%E7%A5%A8%E7%9B%A3%E6%B8%AC%E6%A9%9F%E5%99%A8%E4%BA%BA/">用 Python 建構 Telegram 股票監測機器人</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://www.dropbox.com/s/orkdk97kubldzxx/chatbot-1.jpeg?raw=1" alt="圖片" /></p>
+<p>有投資美股的人應該都有一樣的經歷，因為美國跟台灣的時差12小時，看盤可能都得要通宵坐鎮。因為我實在太愛睡覺了，年紀越大也越經不起熬夜折磨，所以就設法用最簡單的方式完成投資時需要做的事情。</p>
+        
+          <p class="article-more-link">
+            <a href="/2021/01/27/%E7%94%A8%20Python%20%E5%BB%BA%E6%A7%8B%20Telegram%20%E8%82%A1%E7%A5%A8%E7%9B%A3%E6%B8%AC%E6%A9%9F%E5%99%A8%E4%BA%BA/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2021/01/27/%E7%94%A8%20Python%20%E5%BB%BA%E6%A7%8B%20Telegram%20%E8%82%A1%E7%A5%A8%E7%9B%A3%E6%B8%AC%E6%A9%9F%E5%99%A8%E4%BA%BA/" data-id="cln9qfd11000fm1ztfp8a9y5f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Telegram/" rel="tag">Telegram</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Telegrambot/" rel="tag">Telegrambot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/robot/" rel="tag">robot</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-30歲工程師的黃斑前膜逆襲" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/07/30%E6%AD%B2%E5%B7%A5%E7%A8%8B%E5%B8%AB%E7%9A%84%E9%BB%83%E6%96%91%E5%89%8D%E8%86%9C%E9%80%86%E8%A5%B2/" class="article-date">
+  <time datetime="2020-10-06T16:00:00.000Z" itemprop="datePublished">2020-10-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9B%9C%E8%A8%98/">雜記</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/07/30%E6%AD%B2%E5%B7%A5%E7%A8%8B%E5%B8%AB%E7%9A%84%E9%BB%83%E6%96%91%E5%89%8D%E8%86%9C%E9%80%86%E8%A5%B2/">30歲工程師的黃斑前膜逆襲</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://www.dropbox.com/s/7lbf2zo1q7fyc75/blog_floaters_1932x862_3.jpg?raw=1" alt="" /><br />
+白內障、青光眼、飛蚊症、黃斑部病變…這樣的眼疾離一個30歲的人來說還太遙遠。作為一個剛動完黃斑前膜手術的年輕電腦工程師，還是說出來讓大家有個前車之鑑。讓大家過度操代碼的時候還是顧慮一下自己的眼睛👀</p>
+        
+          <p class="article-more-link">
+            <a href="/2020/10/07/30%E6%AD%B2%E5%B7%A5%E7%A8%8B%E5%B8%AB%E7%9A%84%E9%BB%83%E6%96%91%E5%89%8D%E8%86%9C%E9%80%86%E8%A5%B2/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2020/10/07/30%E6%AD%B2%E5%B7%A5%E7%A8%8B%E5%B8%AB%E7%9A%84%E9%BB%83%E6%96%91%E5%89%8D%E8%86%9C%E9%80%86%E8%A5%B2/" data-id="cln9qfd0t0001m1ztag5f05mf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-用 電腦  iPad 遠端連接家用電腦的 Jupyter Lab" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/10/%E7%94%A8%20%E9%9B%BB%E8%85%A6%20%20iPad%20%E9%81%A0%E7%AB%AF%E9%80%A3%E6%8E%A5%E5%AE%B6%E7%94%A8%E9%9B%BB%E8%85%A6%E7%9A%84%20Jupyter%20Lab/" class="article-date">
+  <time datetime="2020-02-09T16:00:00.000Z" itemprop="datePublished">2020-02-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%A8%8B%E5%BC%8F%E6%87%89%E7%94%A8/">程式應用</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/10/%E7%94%A8%20%E9%9B%BB%E8%85%A6%20%20iPad%20%E9%81%A0%E7%AB%AF%E9%80%A3%E6%8E%A5%E5%AE%B6%E7%94%A8%E9%9B%BB%E8%85%A6%E7%9A%84%20Jupyter%20Lab/">用 電腦  iPad 遠端連接家用電腦的 Jupyter Lab</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上一篇文章<a href="https://dtes8617.github.io/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/#more">SSH 遠端連線回家中的 Windows 電腦</a>提到如何在電腦與遠程桌機之間建立通道。在遠程桌電的通道建立之後，我們可以直接在手上 電腦/ iPad 開啟 Jupyter Lab ，但是由遠程的家中電腦來跑 code。</p>
+<p>在這篇文章中主要會實作 <em><strong>開啟遠端Jupyter伺服器、用電腦/iPad連結遠端Jupyter伺服器</strong></em> 等兩部分。讓我們開始吧！</p>
+        
+          <p class="article-more-link">
+            <a href="/2020/02/10/%E7%94%A8%20%E9%9B%BB%E8%85%A6%20%20iPad%20%E9%81%A0%E7%AB%AF%E9%80%A3%E6%8E%A5%E5%AE%B6%E7%94%A8%E9%9B%BB%E8%85%A6%E7%9A%84%20Jupyter%20Lab/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2020/02/10/%E7%94%A8%20%E9%9B%BB%E8%85%A6%20%20iPad%20%E9%81%A0%E7%AB%AF%E9%80%A3%E6%8E%A5%E5%AE%B6%E7%94%A8%E9%9B%BB%E8%85%A6%E7%9A%84%20Jupyter%20Lab/" data-id="cln9qfd11000hm1ztekouh3fy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jupyter/" rel="tag">Jupyter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Remote-Control/" rel="tag">Remote Control</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-SSH 遠端連線回家中的 Windows 電腦" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/" class="article-date">
+  <time datetime="2020-01-07T16:00:00.000Z" itemprop="datePublished">2020-01-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%A8%8B%E5%BC%8F%E6%87%89%E7%94%A8/">程式應用</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/">SSH 遠端連線回家中的 Windows 電腦</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前陣子為了想玩 Deep Learning ，買了一張近兩萬元的顯卡。結果沒用多久就收到泰國的工作，家裡的桌電就一直擺著生灰塵，實在太痛心了。為了能夠更有效利用桌電，就想到用 ssh 的方式連回家裡操作。<br />
+網路上其實有蠻多將 Windows 作為 ssh 伺服器的方式，但因為家裡電腦並不是直接連接網路，中間還隔了一層小米路由器，我就把部署的過程一步步放上來。</p>
+        
+          <p class="article-more-link">
+            <a href="/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/" data-id="cln9qfd0v0003m1zt5iuwetgk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Remote-Control/" rel="tag">Remote Control</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-像RStudio一樣查看Python的Dataframe——Qgrid" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/30/%E5%83%8FRStudio%E4%B8%80%E6%A8%A3%E6%9F%A5%E7%9C%8BPython%E7%9A%84Dataframe%E2%80%94%E2%80%94Qgrid/" class="article-date">
+  <time datetime="2019-09-29T18:06:24.000Z" itemprop="datePublished">2019-09-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B8%E6%93%9A%E7%A7%91%E5%AD%B8/">數據科學</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/30/%E5%83%8FRStudio%E4%B8%80%E6%A8%A3%E6%9F%A5%E7%9C%8BPython%E7%9A%84Dataframe%E2%80%94%E2%80%94Qgrid/">像RStudio一樣查看Python的Dataframe —— Qgrid</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://www.dropbox.com/s/hn0zxhtgnpjap5c/Screenshot%202019-09-29%2021.28.32.png?raw=1" alt="圖片" /></p>
+<p>因為我是從 R 跳到 Python 的使用者，R 搭配 RStudio 有很多好用的資料處理操作，其中之一就是可以直接視覺化瀏覽 dataframe，操作 filter 等。其實 Python 也是可以做到這一點的，這就是本篇要介紹的主角——<strong><a target="_blank" rel="noopener" href="https://github.com/quantopian/qgrid">Qgrid</a></strong>。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/09/30/%E5%83%8FRStudio%E4%B8%80%E6%A8%A3%E6%9F%A5%E7%9C%8BPython%E7%9A%84Dataframe%E2%80%94%E2%80%94Qgrid/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2019/09/30/%E5%83%8FRStudio%E4%B8%80%E6%A8%A3%E6%9F%A5%E7%9C%8BPython%E7%9A%84Dataframe%E2%80%94%E2%80%94Qgrid/" data-id="cln9qfd0w0007m1zt6oqy7ydu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Feature-Engineering/" rel="tag">Feature Engineering</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-文字探勘 - 創造專屬字典" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/16/%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E5%89%B5%E9%80%A0%E5%B0%88%E5%B1%AC%E5%AD%97%E5%85%B8/" class="article-date">
+  <time datetime="2018-06-16T08:25:39.000Z" itemprop="datePublished">2018-06-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B8%E6%93%9A%E7%A7%91%E5%AD%B8/">數據科學</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/16/%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E5%89%B5%E9%80%A0%E5%B0%88%E5%B1%AC%E5%AD%97%E5%85%B8/">文字探勘 - 創造專屬字典</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一般來說，我們在處理文字斷詞時可以直接使用像是<code>jieba</code>這類型的套件，因他已收集足夠豐富的字詞，所以斷字基本上不會有太大誤差。儘管是一些比較特殊的情境，像假如你要分析哈利波特小說的文字內容，或是魔戒的影評分析，網路上大多都有相對應的字典供你載入。但若你想分析的文章你苦苦找尋就是沒有找著字典，又或者是你想分析公司資料但特有的專業術語太多，這時候就得嘗試自己創造一個專有的字典。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/16/%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E5%89%B5%E9%80%A0%E5%B0%88%E5%B1%AC%E5%AD%97%E5%85%B8/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2018/06/16/%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E5%89%B5%E9%80%A0%E5%B0%88%E5%B1%AC%E5%AD%97%E5%85%B8/" data-id="cln9qfd0x000am1zt7k7x4sns" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Text-Mining/" rel="tag">Text Mining</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-淺談文字探勘 - 轉換非結構化文字" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/01/%E6%B7%BA%E8%AB%87%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E8%BD%89%E6%8F%9B%E9%9D%9E%E7%B5%90%E6%A7%8B%E5%8C%96%E6%96%87%E5%AD%97/" class="article-date">
+  <time datetime="2018-01-31T17:14:28.000Z" itemprop="datePublished">2018-02-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B8%E6%93%9A%E7%A7%91%E5%AD%B8/">數據科學</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/01/%E6%B7%BA%E8%AB%87%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E8%BD%89%E6%8F%9B%E9%9D%9E%E7%B5%90%E6%A7%8B%E5%8C%96%E6%96%87%E5%AD%97/">淺談文字探勘 - 轉換非結構化文字</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://www.dropbox.com/s/tlmpaocd6ykv054/UNADJUSTEDNONRAW_thumb_e06.jpg?raw=1" alt="圖片" /></p>
+<p>我們在分析時，都習慣將資料整理成Tidy Data，以便我們建模來解釋或是預測所關注的事情。但在整理成Tidy Data之前，這些資料基本上都已經是結構化的。所以當我們試圖去分析文字、影像這種非結構化資料時，第一個會碰到的困難點就是如何將這些資料變成我們熟悉的結構化數據。凡通則必有例外，尤其是牽涉到人的時候，那大概只有例外這件事是通則了。與人貼身相關的語言就更不用說了，要能從千變萬化的語言中提煉出「結構化」的型態本身就不是一件容易的事。尤其《Ethnologue: Languages of the World》指稱語言在這世界上起碼有7,102種，即便是同一種語言隨時間、地點的不同也都可能各自發展，就像「擦子」跟「擦布」之類的。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/02/01/%E6%B7%BA%E8%AB%87%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E8%BD%89%E6%8F%9B%E9%9D%9E%E7%B5%90%E6%A7%8B%E5%8C%96%E6%96%87%E5%AD%97/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2018/02/01/%E6%B7%BA%E8%AB%87%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E8%BD%89%E6%8F%9B%E9%9D%9E%E7%B5%90%E6%A7%8B%E5%8C%96%E6%96%87%E5%AD%97/" data-id="cln9qfd10000cm1zt51r233ch" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TDM/" rel="tag">TDM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TF-IDF/" rel="tag">TF-IDF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Text-Mining/" rel="tag">Text Mining</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-在Hexo顯示數學公式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/25/%E5%9C%A8Hexo%E9%A1%AF%E7%A4%BA%E6%95%B8%E5%AD%B8%E5%85%AC%E5%BC%8F/" class="article-date">
+  <time datetime="2018-01-24T17:15:04.000Z" itemprop="datePublished">2018-01-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%A8%8B%E5%BC%8F%E6%87%89%E7%94%A8/">程式應用</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/25/%E5%9C%A8Hexo%E9%A1%AF%E7%A4%BA%E6%95%B8%E5%AD%B8%E5%85%AC%E5%BC%8F/">在Hexo顯示數學公式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://www.dropbox.com/s/4nbvxmorzx8ifvj/mathjax.svg?raw=1" alt="圖片" /></p>
+<p>由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成<code>$\cos\theta = \frac&#123;p\cdot q&#125;&#123;\|p\|\|q\|&#125;$</code>這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>cos</mi><mo>⁡</mo><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>p</mi><mo>⋅</mo><mi>q</mi></mrow><mrow><mi mathvariant="normal">∥</mi><mi>p</mi><mi mathvariant="normal">∥</mi><mi mathvariant="normal">∥</mi><mi>q</mi><mi mathvariant="normal">∥</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mop">cos</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.277223em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.757223em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∥</span><span class="mord mathnormal mtight">p</span><span class="mord mtight">∥</span><span class="mord mtight">∥</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span><span class="mord mtight">∥</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.446108em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">p</span><span class="mbin mtight">⋅</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>，我們需加入<code>mathJax</code>的插件。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/01/25/%E5%9C%A8Hexo%E9%A1%AF%E7%A4%BA%E6%95%B8%E5%AD%B8%E5%85%AC%E5%BC%8F/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2018/01/25/%E5%9C%A8Hexo%E9%A1%AF%E7%A4%BA%E6%95%B8%E5%AD%B8%E5%85%AC%E5%BC%8F/" data-id="cln9qfd0x0008m1zt699x0eoi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MathJax/" rel="tag">MathJax</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-用Hexo打造你的專屬Blog" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/16/%E7%94%A8Hexo%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84%E5%B0%88%E5%B1%ACBlog/" class="article-date">
+  <time datetime="2018-01-15T19:16:30.000Z" itemprop="datePublished">2018-01-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%A8%8B%E5%BC%8F%E6%87%89%E7%94%A8/">程式應用</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/16/%E7%94%A8Hexo%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84%E5%B0%88%E5%B1%ACBlog/">用Hexo打造你的專屬Blog</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://www.dropbox.com/s/1n3neygfv1epo89/Hexo.png?raw=1" alt="Hexo" /></p>
+<p>還記得最後寫網誌已經是大學的事了，那時候還是無名小站稱霸的年代。對於這麼久沒接觸Blog的我來說，需求也已經跟以往相差甚遠了。因為主要是記錄我的學習心得，所以一定要包含：</p>
+<ul>
+<li>漂亮的呈現程式碼及數學公式</li>
+<li>不要有廣告</li>
+<li>不用網路也可以撰寫或排版</li>
+<li>簡單俐落的風格</li>
+</ul>
+<p>在尋尋覓覓後，我總算找到了<a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>這個平台。在很多的Blog中都可以發現它的身影，厲害的是它的作者<a target="_blank" rel="noopener" href="https://zespia.tw/blog/2012/10/11/hexo-debut/">Tommy Chen</a>竟然是台灣人，大家可以去看看他一手打造的心路歷程。</p>
+<p>由於我僅對R及Matlab的語法較熟悉，大學雖然有修過一點系統程式，但也年代久遠，所以在打造這個Blog花了我不少時間。我會將我架設的過程盡可能完整的寫出來，方便讓跟我一樣沒什麼基礎的人可以直接上手！</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/01/16/%E7%94%A8Hexo%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84%E5%B0%88%E5%B1%ACBlog/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2018/01/16/%E7%94%A8Hexo%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84%E5%B0%88%E5%B1%ACBlog/" data-id="cln9qfd18001pm1ztg3qs1utb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-個人Blog開張啦！" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/01/%E5%80%8B%E4%BA%BABlog%E9%96%8B%E5%BC%B5%E5%95%A6%EF%BC%81/" class="article-date">
+  <time datetime="2018-01-01T15:02:00.000Z" itemprop="datePublished">2018-01-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E9%9B%9C%E8%A8%98/">雜記</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/01/%E5%80%8B%E4%BA%BABlog%E9%96%8B%E5%BC%B5%E5%95%A6%EF%BC%81/">個人Blog開張啦！</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://www.dropbox.com/s/vngbtvjt959mbhl/UNADJUSTEDNONRAW_thumb_633.jpg?raw=1" alt="圖片" /></p>
+<p>一直以來都有在做筆記的習慣，只是以往都是放在OneNote, Evernote之類的比較多。隨著吸收得知識越來越多，漸漸了解到有一個自己的Blog來經營還是重要的。倒也不是要給誰看，就算是我自己的一個成長歷程吧！</p>
+<p>我是數學背景出身，碩士轉工業工程，主要研究隨機最佳化的領域。也因為這樣的經歷，讓我對*<strong>用數學的方法解決現實問題</strong>* 很感興趣，順理成章就往數據分析師這條路走下去。只是這條路畢竟是新的領域，不足的地方還太多，雖然一路上程式的底子還過得去，但畢竟不是資工背景。機器學習、深度學習就是要讓機器去挖掘一些我們尚不可見的資訊，那麼不懂機器又怎麼可以呢？</p>
+<p>所以這個部落格的走向也就很明顯了，它不會只是我用來記錄數據分析領域的地方，當然還囊括了程式語言、網頁設計甚至是讀書心得等等的內容。就讓我們拭目以待吧！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2018/01/01/%E5%80%8B%E4%BA%BABlog%E9%96%8B%E5%BC%B5%E5%95%A6%EF%BC%81/" data-id="cln9qfd0w0005m1zteroy5fxg" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B8%E6%93%9A%E7%A7%91%E5%AD%B8/">數據科學</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BC%8F%E6%87%89%E7%94%A8/">程式應用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9B%9C%E8%A8%98/">雜記</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feature-Engineering/" rel="tag">Feature Engineering</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jupyter/" rel="tag">Jupyter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MathJax/" rel="tag">MathJax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Remote-Control/" rel="tag">Remote Control</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TDM/" rel="tag">TDM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TF-IDF/" rel="tag">TF-IDF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telegram/" rel="tag">Telegram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telegrambot/" rel="tag">Telegrambot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Text-Mining/" rel="tag">Text Mining</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/robot/" rel="tag">robot</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Feature-Engineering/" style="font-size: 10px;">Feature Engineering</a> <a href="/tags/Hexo/" style="font-size: 20px;">Hexo</a> <a href="/tags/Jupyter/" style="font-size: 10px;">Jupyter</a> <a href="/tags/MathJax/" style="font-size: 10px;">MathJax</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/R/" style="font-size: 10px;">R</a> <a href="/tags/Remote-Control/" style="font-size: 20px;">Remote Control</a> <a href="/tags/SSH/" style="font-size: 20px;">SSH</a> <a href="/tags/TDM/" style="font-size: 10px;">TDM</a> <a href="/tags/TF-IDF/" style="font-size: 10px;">TF-IDF</a> <a href="/tags/Telegram/" style="font-size: 10px;">Telegram</a> <a href="/tags/Telegrambot/" style="font-size: 10px;">Telegrambot</a> <a href="/tags/Text-Mining/" style="font-size: 20px;">Text Mining</a> <a href="/tags/robot/" style="font-size: 10px;">robot</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/27/%E7%94%A8%20Python%20%E5%BB%BA%E6%A7%8B%20Telegram%20%E8%82%A1%E7%A5%A8%E7%9B%A3%E6%B8%AC%E6%A9%9F%E5%99%A8%E4%BA%BA/">用 Python 建構 Telegram 股票監測機器人</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/07/30%E6%AD%B2%E5%B7%A5%E7%A8%8B%E5%B8%AB%E7%9A%84%E9%BB%83%E6%96%91%E5%89%8D%E8%86%9C%E9%80%86%E8%A5%B2/">30歲工程師的黃斑前膜逆襲</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/10/%E7%94%A8%20%E9%9B%BB%E8%85%A6%20%20iPad%20%E9%81%A0%E7%AB%AF%E9%80%A3%E6%8E%A5%E5%AE%B6%E7%94%A8%E9%9B%BB%E8%85%A6%E7%9A%84%20Jupyter%20Lab/">用 電腦  iPad 遠端連接家用電腦的 Jupyter Lab</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/">SSH 遠端連線回家中的 Windows 電腦</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/30/%E5%83%8FRStudio%E4%B8%80%E6%A8%A3%E6%9F%A5%E7%9C%8BPython%E7%9A%84Dataframe%E2%80%94%E2%80%94Qgrid/">像RStudio一樣查看Python的Dataframe —— Qgrid</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Jude Su<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

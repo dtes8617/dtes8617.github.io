@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+
+  
+  <title>淺談文字探勘 - 轉換非結構化文字 | 隨談雜記</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="我們在分析時，都習慣將資料整理成Tidy Data，以便我們建模來解釋或是預測所關注的事情。但在整理成Tidy Data之前，這些資料基本上都已經是結構化的。所以當我們試圖去分析文字、影像這種非結構化資料時，第一個會碰到的困難點就是如何將這些資料變成我們熟悉的結構化數據。凡通則必有例外，尤其是牽涉到人的時候，那大概只有例外這件事是通則了。與人貼身相關的語言就更不用說了，要能從千變萬化的語言中提煉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="淺談文字探勘 - 轉換非結構化文字">
+<meta property="og:url" content="https://dtes8617.github.io/2018/02/01/%E6%B7%BA%E8%AB%87%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E8%BD%89%E6%8F%9B%E9%9D%9E%E7%B5%90%E6%A7%8B%E5%8C%96%E6%96%87%E5%AD%97/index.html">
+<meta property="og:site_name" content="隨談雜記">
+<meta property="og:description" content="我們在分析時，都習慣將資料整理成Tidy Data，以便我們建模來解釋或是預測所關注的事情。但在整理成Tidy Data之前，這些資料基本上都已經是結構化的。所以當我們試圖去分析文字、影像這種非結構化資料時，第一個會碰到的困難點就是如何將這些資料變成我們熟悉的結構化數據。凡通則必有例外，尤其是牽涉到人的時候，那大概只有例外這件事是通則了。與人貼身相關的語言就更不用說了，要能從千變萬化的語言中提煉">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.dropbox.com/s/tlmpaocd6ykv054/UNADJUSTEDNONRAW_thumb_e06.jpg?raw=1">
+<meta property="article:published_time" content="2018-01-31T17:14:28.000Z">
+<meta property="article:modified_time" content="2023-10-03T01:26:22.396Z">
+<meta property="article:author" content="Jude Su">
+<meta property="article:tag" content="Text Mining">
+<meta property="article:tag" content="TF-IDF">
+<meta property="article:tag" content="TDM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.dropbox.com/s/tlmpaocd6ykv054/UNADJUSTEDNONRAW_thumb_e06.jpg?raw=1">
+  
+    <link rel="alternate" href="/atom.xml" title="隨談雜記" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">隨談雜記</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://dtes8617.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-淺談文字探勘 - 轉換非結構化文字" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/01/%E6%B7%BA%E8%AB%87%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E8%BD%89%E6%8F%9B%E9%9D%9E%E7%B5%90%E6%A7%8B%E5%8C%96%E6%96%87%E5%AD%97/" class="article-date">
+  <time datetime="2018-01-31T17:14:28.000Z" itemprop="datePublished">2018-02-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B8%E6%93%9A%E7%A7%91%E5%AD%B8/">數據科學</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      淺談文字探勘 - 轉換非結構化文字
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="https://www.dropbox.com/s/tlmpaocd6ykv054/UNADJUSTEDNONRAW_thumb_e06.jpg?raw=1" alt="圖片" /></p>
+<p>我們在分析時，都習慣將資料整理成Tidy Data，以便我們建模來解釋或是預測所關注的事情。但在整理成Tidy Data之前，這些資料基本上都已經是結構化的。所以當我們試圖去分析文字、影像這種非結構化資料時，第一個會碰到的困難點就是如何將這些資料變成我們熟悉的結構化數據。凡通則必有例外，尤其是牽涉到人的時候，那大概只有例外這件事是通則了。與人貼身相關的語言就更不用說了，要能從千變萬化的語言中提煉出「結構化」的型態本身就不是一件容易的事。尤其《Ethnologue: Languages of the World》指稱語言在這世界上起碼有7,102種，即便是同一種語言隨時間、地點的不同也都可能各自發展，就像「擦子」跟「擦布」之類的。</p>
+<span id="more"></span>
+<p>那麼在提取結構化的文字資料之前，可能得先問問文字探勘想要做到的事情是什麼？最基本的不外乎就是從一段文字或一篇文章中，找到他真正想要表達的事情。我們可以看看下面的句子：</p>
+<blockquote>
+<p>我想在這裡表達的是，我過去學了很多東西，但我現在想要分享…欸…等等，我想要分享什麼？喔！對了！是那個嘛！就是文字探勘真的很有意思哦！你可以去學一下！</p>
+</blockquote>
+<p>先不要火大XD，我知道這句話很多贅字，讓人摸不著你到底想幹嘛。但這句話最重要的其實只有一句話，就是「文字探勘很有意思」。也就是說，只要我們能將這句話具代表性的詞彙標記出來，我們就能大略知道這句話到底想表達的意思是什麼。(雖然也是有很多話不明所以啦！)</p>
+<p>那麼首先在文字探勘中，最首要的就是把字切出來。上面那段話我們可以切成下面這個樣子：</p>
+<blockquote>
+<p>“我”     “想”     “在”     “這裡”   “表達”   “的”     “是”     “我”     “過去”   “學”     “了”     “很多”   “東西”   “但”     “我”     “現在”   “想”     “要”     “分享”   “欸”     “等等”   “我”     “想”     “要”     “分享”   “什麼”   “喔”     “對了”  “是”     “那個”   “嘛”     “就”     “是”     “文字探勘”     “真的”   “很”     “有意思” “哦”     “你”     “可以”   “去”     “學”     “一下”</p>
+</blockquote>
+<p>將這些字按照出現次數排列之後，就可以形成以下表格：</p>
+<table>
+<thead>
+<tr>
+<th>詞彙</th>
+<th>次數</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>想</td>
+<td>3</td>
+</tr>
+<tr>
+<td>分享</td>
+<td>2</td>
+</tr>
+<tr>
+<td>學</td>
+<td>2</td>
+</tr>
+<tr>
+<td>一下</td>
+<td>1</td>
+</tr>
+<tr>
+<td>什麼</td>
+<td>1</td>
+</tr>
+<tr>
+<td>文字</td>
+<td>1</td>
+</tr>
+<tr>
+<td>去</td>
+<td>1</td>
+</tr>
+<tr>
+<td>有意思</td>
+<td>1</td>
+</tr>
+<tr>
+<td>那個</td>
+<td>1</td>
+</tr>
+<tr>
+<td>東西</td>
+<td>1</td>
+</tr>
+<tr>
+<td>表達</td>
+<td>1</td>
+</tr>
+<tr>
+<td>很</td>
+<td>1</td>
+</tr>
+<tr>
+<td>很多</td>
+<td>1</td>
+</tr>
+<tr>
+<td>真的</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>文字探勘</strong></td>
+<td>1</td>
+</tr>
+<tr>
+<td>欸</td>
+<td>1</td>
+</tr>
+<tr>
+<td>現在</td>
+<td>1</td>
+</tr>
+<tr>
+<td>這裡</td>
+<td>1</td>
+</tr>
+<tr>
+<td>喔</td>
+<td>1</td>
+</tr>
+<tr>
+<td>過去</td>
+<td>1</td>
+</tr>
+<tr>
+<td>對了</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>依「想」跟「分享」出現的頻率，就可以知道這段話到底有多想分享東西給別人了。不過仔細看會發現，我們剛剛認為最重要的「文字探勘」卻被排在相當後面。這段話若單純用次數來挖掘意義，就只會知道他想分享東西而已。所以關鍵在於，次數雖可以挖掘出一定的代表性，卻不見得能表達出整句話真正的含意。因此，另一個用來取代次數的方法就出來了，它也是現在搜尋引擎相當常用的方法 - <strong>TF-IDF(Term Frequency - Inverse Document Frequency)</strong></p>
+<h2 id="tf-idf"><a class="markdownIt-Anchor" href="#tf-idf"></a> TF-IDF</h2>
+<p>在剛剛的例子中，我們知道「文字探勘」會是這句話的主軸，而不是「對了」、「欸」之類比較沒有意義的字。主要在於「文字探勘」在其他的文章或談話內容中，沒有「對了」或是「欸」這麼頻繁地出現。也因此一旦出現，就很容易成為那句話的焦點。所以我們要將「文字探勘」的重要性標記出來，單看這句話是不夠的。必須跟其他話語或文字做比較，才能知道「文字探勘」真的比較少出現。</p>
+<p>假設我們比對了許多文章，將出現次數整理出以下表格：</p>
+<table>
+<thead>
+<tr>
+<th>詞彙</th>
+<th>文章一</th>
+<th>文章二</th>
+<th>文章三</th>
+<th>…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>對了</td>
+<td>13</td>
+<td>17</td>
+<td>12</td>
+<td>…</td>
+</tr>
+<tr>
+<td>真的</td>
+<td>14</td>
+<td>17</td>
+<td>13</td>
+<td>…</td>
+</tr>
+<tr>
+<td>文字探勘</td>
+<td>7</td>
+<td>0</td>
+<td>0</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>不難發現雖然「文字探勘」在<u>文章一</u>中出現的次數不及其他詞彙，但它跟其他文章比卻具有它的代表性在。順帶一提，這個表格所呈現的形式也就是文字探勘中常會用到的表格型態<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Document-term_matrix">Term-Document Matrix</a>(TDM) 或是 它的轉置矩陣 Document-Term Matrix(DTM)。</p>
+<h3 id="原理"><a class="markdownIt-Anchor" href="#原理"></a> 原理</h3>
+<p>因此，在分析文件時，假設文件當成一向量<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span></span></span></span>，而其可能出現的詞彙共有N種，則向量就可以表示成 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mo>&lt;</mo><msub><mi>P</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>P</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>P</mi><mi>N</mi></msub><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">P = &lt; P_1, P_2 ,... , P_N &gt;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span></span></span></span>，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">P_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 就是個詞彙在這篇文章 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span></span></span></span> 的權重。不過這 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">P_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>應該要是什麼東西呢？有些人會用這個詞彙在文章中出現的<strong>次數</strong>作為權重，這種做法很直觀，但卻有一點不妥，如同剛剛所說，在這裡就不多做解釋。因此，TF-IDF考量詞彙在該文章中出現的頻率TF(Term Frequency)，以及詞彙在其他文章中出現的頻率IDF(Inverse Document Frequency)兩部分，TF代表 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">P_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span></span></span></span> 出現的頻率，可以表示成下列式子：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>t</mi><msub><mi>f</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo separator="true">,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msub><mo>=</mo><mfrac><msub><mi>n</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub><mrow><munder><mo>∑</mo><mi>k</mi></munder><msub><mi>n</mi><mrow><mi>k</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">tf_{(i,j)} = \frac{n_{i,j}}{\sum_kn_{k,j}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.04964em;vertical-align:-0.3551999999999999em;"></span><span class="mord mathnormal">t</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.34480000000000005em;"><span style="top:-2.5198em;margin-left:-0.10764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3551999999999999em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.09327em;vertical-align:-0.9857100000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1075599999999999em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1863979999999999em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9857100000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>如同我們之前所說，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">n_{i,j}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>代表詞<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">t_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76508em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>在文件<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">d_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>出現的次數，而上述公式則代表詞組<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">t_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76508em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>跟其他詞組相比後的佔比是多少。而這僅能顯示他在文章中出現的次數，無法顯示這個詞組僅在這篇出現的獨特性。因此，引入了IDF來做考量的因子：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>i</mi><mi>d</mi><msub><mi>f</mi><mi>i</mi></msub><mo>=</mo><mi>log</mi><mo>⁡</mo><mfrac><mrow><mi mathvariant="normal">∣</mi><mi>D</mi><mi mathvariant="normal">∣</mi></mrow><mrow><mi mathvariant="normal">∣</mi><mrow><mi>j</mi><mo>:</mo><msub><mi>t</mi><mi>i</mi></msub><mo>∈</mo><msub><mi>d</mi><mi>j</mi></msub></mrow><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">idf_i = \log \frac{|D|}{|{j:t_i\in d_j}|}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal">d</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.10764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.399108em;vertical-align:-0.972108em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span><span class="mord">∣</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord">∣</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.972108em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>這個因子是考量總文件數<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span>除以出現過詞<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">t_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76508em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的文件數所得的商，再取對數。將文件的獨特性考量進來。而同時考量TF-IDF的指標，就出來了：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>t</mi><mi>f</mi><mi>i</mi><mi>d</mi><msub><mi>f</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub><mo>=</mo><mi>t</mi><msub><mi>f</mi><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub><mo>×</mo><mi>i</mi><mi>d</mi><msub><mi>f</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">tfidf_{i,j} = tf_{i,j} \times idf_i
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">i</span><span class="mord mathnormal">d</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.10764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord mathnormal">t</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.10764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal">d</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.10764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>有了這個指標後，我們就可以利用文字雲的方式，將重要的詞彙呈現出來，也更能顯露出文章的特性。另一方面，在應用上的層面也較為廣泛。像現在的搜尋引擎很多都採用此種權重計算方式。</p>
+<h3 id="應用"><a class="markdownIt-Anchor" href="#應用"></a> 應用</h3>
+<h4 id="相似文件以及搜尋引擎"><a class="markdownIt-Anchor" href="#相似文件以及搜尋引擎"></a> 相似文件以及搜尋引擎</h4>
+<p>除了找出文章主要闡述的內容外，我們想找有相似主題的文章也可以利用此種方式。我們都學過線性代數，當中的內積很適合拿來作為相似與否的媒介。假設我們把目標文章的詞彙完整轉換成一個向量代表是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mo>&lt;</mo><msub><mi>p</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>p</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>p</mi><mi>n</mi></msub><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">p = &lt; p_1, p_2, ..., p_n &gt;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7335400000000001em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span></span></span></span>，比對的文章則是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><mo>&lt;</mo><msub><mi>q</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>q</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>q</mi><mi>n</mi></msub><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">q = &lt; q_1, q_2, ..., q_n &gt;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7335400000000001em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span></span></span></span>，則可以透過角度大小來判斷兩向量是否接近，因 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>cos</mi><mo>⁡</mo><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>p</mi><mo>⋅</mo><mi>q</mi></mrow><mrow><mi mathvariant="normal">∥</mi><mi>p</mi><mi mathvariant="normal">∥</mi><mi mathvariant="normal">∥</mi><mi>q</mi><mi mathvariant="normal">∥</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mop">cos</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.277223em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.757223em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∥</span><span class="mord mathnormal mtight">p</span><span class="mord mtight">∥</span><span class="mord mtight">∥</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span><span class="mord mtight">∥</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.446108em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">p</span><span class="mbin mtight">⋅</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>，當 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>cos</mi><mo>⁡</mo><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mop">cos</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span> 越接近1，則代表兩文章越相近。而這種評估方式也被稱作為<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cosine_similarity">Cosine Similarity</a>。</p>
+<p>此種方式也很適合應用在搜尋引擎上，當我們使用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95">倒排索引</a>來紀錄資料，可以輕鬆計算出每份文件中每個詞的TF-IDF指標，作為該文件的向量指標。便可進一步用<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>cos</mi><mo>⁡</mo><mi>θ</mi></mrow><annotation encoding="application/x-tex">\cos\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mop">cos</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>來評估文件，並將搜尋的關鍵字作為一向量指標來判定最高相關的文章。</p>
+<h4 id="關鍵字判別及文章摘要"><a class="markdownIt-Anchor" href="#關鍵字判別及文章摘要"></a> 關鍵字判別及文章摘要</h4>
+<p>除此之外，TF-IDF還可以應用在關鍵字的判定上，只要將該文章TF-IDF最高的前幾名挑出來，就可以自動生成文章的關鍵字詞組。不僅如此，還可應用在文章摘要，將文章內包含重要字詞的句子給挑出來。</p>
+<h4 id="其他應用"><a class="markdownIt-Anchor" href="#其他應用"></a> 其他應用</h4>
+<p>其實除了單純的意義提取外，這些結果都可以當作建立預測或解釋型模型很好的養分。譬如藉由爬蟲抓取PTT的資料，就可以關聯習慣逛那些文章類型的人會喜歡看什麼電影，藉此應用在電影推薦預測上。又或者是從文章找出企業跟時事的關聯，以作為投資股票的評估等等。在這個資訊爆炸的年代，已經不是只有人家準備好的結構化資料能夠拿來建模了，越孰悉將非結構化資料轉換成有用的資訊，就越能在這變動快速的時代抓緊先機。一起加油吧！</p>
+<h2 id="參考資料"><a class="markdownIt-Anchor" href="#參考資料"></a> 參考資料</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.ithome.com.tw/voice/90361">從搜尋引擎到文字探勘</a></li>
+<li><a target="_blank" rel="noopener" href="https://kangliping.wordpress.com/2016/06/30/text-mining_text-analytics_tf-idf/">文字探勘的快思慢想與遐想_Text Mining_Text Analytics_TF-IDF</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2018/02/01/%E6%B7%BA%E8%AB%87%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E8%BD%89%E6%8F%9B%E9%9D%9E%E7%B5%90%E6%A7%8B%E5%8C%96%E6%96%87%E5%AD%97/" data-id="cln9qfd10000cm1zt51r233ch" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TDM/" rel="tag">TDM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TF-IDF/" rel="tag">TF-IDF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Text-Mining/" rel="tag">Text Mining</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/16/%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E5%89%B5%E9%80%A0%E5%B0%88%E5%B1%AC%E5%AD%97%E5%85%B8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          文字探勘 - 創造專屬字典
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/25/%E5%9C%A8Hexo%E9%A1%AF%E7%A4%BA%E6%95%B8%E5%AD%B8%E5%85%AC%E5%BC%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">在Hexo顯示數學公式</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B8%E6%93%9A%E7%A7%91%E5%AD%B8/">數據科學</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BC%8F%E6%87%89%E7%94%A8/">程式應用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9B%9C%E8%A8%98/">雜記</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feature-Engineering/" rel="tag">Feature Engineering</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jupyter/" rel="tag">Jupyter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MathJax/" rel="tag">MathJax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Remote-Control/" rel="tag">Remote Control</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TDM/" rel="tag">TDM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TF-IDF/" rel="tag">TF-IDF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telegram/" rel="tag">Telegram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telegrambot/" rel="tag">Telegrambot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Text-Mining/" rel="tag">Text Mining</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/robot/" rel="tag">robot</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Feature-Engineering/" style="font-size: 10px;">Feature Engineering</a> <a href="/tags/Hexo/" style="font-size: 20px;">Hexo</a> <a href="/tags/Jupyter/" style="font-size: 10px;">Jupyter</a> <a href="/tags/MathJax/" style="font-size: 10px;">MathJax</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/R/" style="font-size: 10px;">R</a> <a href="/tags/Remote-Control/" style="font-size: 20px;">Remote Control</a> <a href="/tags/SSH/" style="font-size: 20px;">SSH</a> <a href="/tags/TDM/" style="font-size: 10px;">TDM</a> <a href="/tags/TF-IDF/" style="font-size: 10px;">TF-IDF</a> <a href="/tags/Telegram/" style="font-size: 10px;">Telegram</a> <a href="/tags/Telegrambot/" style="font-size: 10px;">Telegrambot</a> <a href="/tags/Text-Mining/" style="font-size: 20px;">Text Mining</a> <a href="/tags/robot/" style="font-size: 10px;">robot</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/27/%E7%94%A8%20Python%20%E5%BB%BA%E6%A7%8B%20Telegram%20%E8%82%A1%E7%A5%A8%E7%9B%A3%E6%B8%AC%E6%A9%9F%E5%99%A8%E4%BA%BA/">用 Python 建構 Telegram 股票監測機器人</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/07/30%E6%AD%B2%E5%B7%A5%E7%A8%8B%E5%B8%AB%E7%9A%84%E9%BB%83%E6%96%91%E5%89%8D%E8%86%9C%E9%80%86%E8%A5%B2/">30歲工程師的黃斑前膜逆襲</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/10/%E7%94%A8%20%E9%9B%BB%E8%85%A6%20%20iPad%20%E9%81%A0%E7%AB%AF%E9%80%A3%E6%8E%A5%E5%AE%B6%E7%94%A8%E9%9B%BB%E8%85%A6%E7%9A%84%20Jupyter%20Lab/">用 電腦  iPad 遠端連接家用電腦的 Jupyter Lab</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/">SSH 遠端連線回家中的 Windows 電腦</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/30/%E5%83%8FRStudio%E4%B8%80%E6%A8%A3%E6%9F%A5%E7%9C%8BPython%E7%9A%84Dataframe%E2%80%94%E2%80%94Qgrid/">像RStudio一樣查看Python的Dataframe —— Qgrid</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Jude Su<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>
