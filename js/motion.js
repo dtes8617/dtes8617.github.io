@@ -87,7 +87,6 @@ NexT.motion.middleWares = {
       sequence[sequence.length - 1].o.complete = function() {
         integrator.next();
       };
-      let Velocity = $.Velocity;
       Velocity.RunSequence(sequence);
     } else {
       integrator.next();
