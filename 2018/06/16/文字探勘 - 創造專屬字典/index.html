@@ -1,37 +1,308 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
 
+  
+  <title>文字探勘 - 創造專屬字典 | 隨談雜記</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一般來說，我們在處理文字斷詞時可以直接使用像是jieba這類型的套件，因他已收集足夠豐富的字詞，所以斷字基本上不會有太大誤差。儘管是一些比較特殊的情境，像假如你要分析哈利波特小說的文字內容，或是魔戒的影評分析，網路上大多都有相對應的字典供你載入。但若你想分析的文章你苦苦找尋就是沒有找著字典，又或者是你想分析公司資料但特有的專業術語太多，這時候就得嘗試自己創造一個專有的字典。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文字探勘 - 創造專屬字典">
+<meta property="og:url" content="https://dtes8617.github.io/2018/06/16/%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E5%89%B5%E9%80%A0%E5%B0%88%E5%B1%AC%E5%AD%97%E5%85%B8/index.html">
+<meta property="og:site_name" content="隨談雜記">
+<meta property="og:description" content="一般來說，我們在處理文字斷詞時可以直接使用像是jieba這類型的套件，因他已收集足夠豐富的字詞，所以斷字基本上不會有太大誤差。儘管是一些比較特殊的情境，像假如你要分析哈利波特小說的文字內容，或是魔戒的影評分析，網路上大多都有相對應的字典供你載入。但若你想分析的文章你苦苦找尋就是沒有找著字典，又或者是你想分析公司資料但特有的專業術語太多，這時候就得嘗試自己創造一個專有的字典。">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2018-06-16T08:25:39.000Z">
+<meta property="article:modified_time" content="2023-10-03T01:26:34.529Z">
+<meta property="article:author" content="Jude Su">
+<meta property="article:tag" content="Text Mining">
+<meta property="article:tag" content="R">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="隨談雜記" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
-{% block page_class %}page-post-detail{% endblock %}
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">隨談雜記</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://dtes8617.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-文字探勘 - 創造專屬字典" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/16/%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E5%89%B5%E9%80%A0%E5%B0%88%E5%B1%AC%E5%AD%97%E5%85%B8/" class="article-date">
+  <time datetime="2018-06-16T08:25:39.000Z" itemprop="datePublished">2018-06-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B8%E6%93%9A%E7%A7%91%E5%AD%B8/">數據科學</a>
+  </div>
 
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      文字探勘 - 創造專屬字典
+    </h1>
+  
 
-{% block content %}
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一般來說，我們在處理文字斷詞時可以直接使用像是<code>jieba</code>這類型的套件，因他已收集足夠豐富的字詞，所以斷字基本上不會有太大誤差。儘管是一些比較特殊的情境，像假如你要分析哈利波特小說的文字內容，或是魔戒的影評分析，網路上大多都有相對應的字典供你載入。但若你想分析的文章你苦苦找尋就是沒有找著字典，又或者是你想分析公司資料但特有的專業術語太多，這時候就得嘗試自己創造一個專有的字典。</p>
+<span id="more"></span>
+<p>你當然可以選擇將專有名詞一個一個填上去，但身為一個數據分析師，當然應該嘗試讓程式來幫我們完成囉！我參考了<a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1IP5vFmBlGPBp32bWDqSpGYLox5QVmenFAfPwcOseQhQ/edit#slide=id.g2704cd226_074">陳嘉葳寫的推廣PPT</a>提供的方法，依步驟來動手完成這一隻程式。</p>
+<h2 id="前置作業"><a class="markdownIt-Anchor" href="#前置作業"></a> 前置作業</h2>
+<h3 id="分析資料"><a class="markdownIt-Anchor" href="#分析資料"></a> 分析資料</h3>
+<p>我拿之前寫的一篇文章<a href="https://dtes8617.github.io/2018/02/01/%E6%B7%BA%E8%AB%87%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E8%BD%89%E6%8F%9B%E9%9D%9E%E7%B5%90%E6%A7%8B%E5%8C%96%E6%96%87%E5%AD%97/">淺談文字探勘 - 轉換非結構化文字</a>來做原始資料，當中包含文字探勘的一些專有名詞。同樣方法可應用在其他的文章或評論中，只是怕牽涉版權只好先拿自己的文章來玩玩。</p>
+<h3 id="環境及套件"><a class="markdownIt-Anchor" href="#環境及套件"></a> 環境及套件</h3>
+<p>操作的環境如下所示：</p>
+<blockquote>
+<ul>
+<li><strong>作業系統</strong>：macOS High Sierra</li>
+<li><strong>程式語言</strong>：R version 3.4.3</li>
+<li><strong>IDE</strong>：RStudio version 1.1.414</li>
+</ul>
+</blockquote>
+<p>過程中所需用到的套件如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">library<span class="punctuation">(</span>tidyverse<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>stringr<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>tm<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>RWeka<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>slam<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>snowfall<span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+<p>因為需要做文字上的處理，<code>stringr</code>可以幫助我們在文字上做任意的轉換。<code>tm</code>主要是用來做文字探勘的一個套件，但他對中文的支援度很差，一般來說建議使用<code>tidytext</code>。不過在清理資料中的標點符號或是英文數字等，它有不錯的函數可以用，因此這裡也把它載入。<code>RWeka</code>是用來個別斷詞用的，下方會說明它的用途。<code>slam</code>則是因為文字的運算量相當龐大，過程中我們會轉換成matrix來做運算，這是可以使用這個套件會比較方便。<code>snowfall</code>也是運算龐大的原因，因此用平行運算的方式來加速結果產出。</p>
+<h2 id="創建字典"><a class="markdownIt-Anchor" href="#創建字典"></a> 創建字典</h2>
+<h3 id="資料處理"><a class="markdownIt-Anchor" href="#資料處理"></a> 資料處理</h3>
+<p>這裡我直接將文章的內容儲存成.txt檔，以方便直接讀取。現在的目的是製作專屬字典，因此標點符號及數字不是我們需考量的東西（當然如果需要也可以將它們納進來），在資料處理時就將它們移除。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dat <span class="operator">&lt;-</span> read_lines<span class="punctuation">(</span><span class="string">&quot;./創建字典.txt&quot;</span><span class="punctuation">)</span></span><br><span class="line">dat <span class="operator">&lt;-</span> paste0<span class="punctuation">(</span>dat<span class="punctuation">,</span> collapse <span class="operator">=</span> <span class="string">&quot;&quot;</span><span class="punctuation">)</span></span><br><span class="line">dat <span class="operator">&lt;-</span> removePunctuation<span class="punctuation">(</span>dat<span class="punctuation">,</span> ucp <span class="operator">=</span> <span class="built_in">T</span><span class="punctuation">)</span> <span class="operator">%&gt;%</span> <span class="comment"># 去除全形標點符號</span></span><br><span class="line">  removePunctuation<span class="punctuation">(</span><span class="punctuation">)</span> <span class="operator">%&gt;%</span> <span class="comment"># 去除半形標點符號</span></span><br><span class="line">  removeNumbers<span class="punctuation">(</span><span class="punctuation">)</span> <span class="operator">%&gt;%</span> <span class="comment"># 去除數字</span></span><br><span class="line">  <span class="punctuation">&#123;</span>gsub<span class="punctuation">(</span><span class="string">&#x27;[A-Za-z \\\t]&#x27;</span><span class="punctuation">,</span> <span class="string">&#x27;&#x27;</span><span class="punctuation">,</span> .<span class="punctuation">)</span><span class="punctuation">&#125;</span> <span class="comment"># 去除英文及跳脫符號\t</span></span><br></pre></td></tr></table></figure>
+<p>在將它們處理成一整個文字塊後，我們要將它們分開斷詞，期望處理成以下的形式：</p>
+<blockquote>
+<p>“我們在分” “們在分析” “在分析時” “分析時都” “析時都習” “時都習慣” …</p>
+<p>“我們在” “們在分” “在分析” “分析時” “析時都” “時都習” “都習慣” …</p>
+<p>“我們” “們在” “在分” “分析” “析時” “時都” “都習” “習慣” …</p>
+</blockquote>
+<p>這樣就可以將有可能形成字詞的字斷開，再用一些方法將專有的字詞跳出來。這裡要注意的是，<code>NGramTokenizer</code>這個函式原來是為了拉丁語句做個別斷詞使用的，所以他對每一個字的斷詞判斷是以空格為主，因此我們用來處理中文時，就先將字與字之間加入空格，等斷完字再將空格移除。作法如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">full <span class="operator">&lt;-</span> dat <span class="operator">%&gt;%</span> str_split_fixed<span class="punctuation">(</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span> n <span class="operator">=</span> <span class="literal">Inf</span><span class="punctuation">)</span>  <span class="operator">%&gt;%</span> </span><br><span class="line">  str_c<span class="punctuation">(</span>collapse <span class="operator">=</span> <span class="string">&quot; &quot;</span><span class="punctuation">)</span> <span class="operator">%&gt;%</span>   <span class="comment"># 將字詞用空白分開</span></span><br><span class="line">  NGramTokenizer<span class="punctuation">(</span>Weka_control<span class="punctuation">(</span><span class="built_in">min</span> <span class="operator">=</span><span class="number">2</span><span class="punctuation">,</span> <span class="built_in">max</span> <span class="operator">=</span> <span class="number">5</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="operator">%&gt;%</span> <span class="comment"># 重複斷詞</span></span><br><span class="line">  <span class="punctuation">&#123;</span>gsub<span class="punctuation">(</span><span class="string">&quot; &quot;</span><span class="punctuation">,</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span>.<span class="punctuation">)</span><span class="punctuation">&#125;</span> <span class="operator">%&gt;%</span> <span class="comment"># 移除空格</span></span><br><span class="line">  data.frame<span class="punctuation">(</span>name <span class="operator">=</span> .<span class="punctuation">)</span> <span class="operator">%&gt;%</span> </span><br><span class="line">  count<span class="punctuation">(</span>name<span class="punctuation">)</span> <span class="operator">%&gt;%</span> <span class="comment"># 計算每個字詞出現次數</span></span><br><span class="line">  ungroup<span class="punctuation">(</span><span class="punctuation">)</span> <span class="operator">%&gt;%</span> </span><br><span class="line">  mutate<span class="punctuation">(</span>proportion <span class="operator">=</span> n <span class="operator">/</span> <span class="built_in">sum</span><span class="punctuation">(</span>n<span class="punctuation">)</span><span class="punctuation">,</span> name <span class="operator">=</span> parse_character<span class="punctuation">(</span>name<span class="punctuation">)</span><span class="punctuation">)</span> <span class="comment"># 計算比例</span></span><br></pre></td></tr></table></figure>
+<p>接下來我們將出現較少的字詞移除，一方面是字詞太少時我們很難判斷它是否為專有名詞，另一方面是我們需將無關緊要的雜訊給移除。至於移除的標準就見仁見智，也有人不是用次數而是用比例當門檻。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seg_base <span class="operator">&lt;-</span> full <span class="operator">%&gt;%</span> filter<span class="punctuation">(</span>n <span class="operator">&gt;=</span> <span class="number">2</span><span class="punctuation">)</span> <span class="comment"># 將出現次數較少的詞彙濾除</span></span><br></pre></td></tr></table></figure>
+<h3 id="獨立字詞"><a class="markdownIt-Anchor" href="#獨立字詞"></a> 獨立字詞</h3>
+<p>對於專有名詞來說，我們當然希望它能被完整的切出來，但跟專有名詞高關聯度的字詞很常會一起被切出來。像下面這樣：</p>
+<blockquote>
+<p>“做文字探勘” “在文字探勘”</p>
+<p>”文字探勘時“ “文字探勘的”</p>
+</blockquote>
+<p>我們要如何將「做」、「在」、「時」、「的」等字眼去除呢？這裡可以用一些機率論的原理，舉例來說，「文字探勘」跟「做」應該是要被切分開的詞，那麼<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mtext>文字探勘</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(文字探勘)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord cjk_fallback">文</span><span class="mord cjk_fallback">字</span><span class="mord cjk_fallback">探</span><span class="mord cjk_fallback">勘</span><span class="mclose">)</span></span></span></span>與<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mtext>做</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(做)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord cjk_fallback">做</span><span class="mclose">)</span></span></span></span>就應該彼此獨立，也就是說，</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mtext>做文字探勘</mtext><mo stretchy="false">)</mo><mo>=</mo><mi>P</mi><mo stretchy="false">(</mo><mtext>做</mtext><mo stretchy="false">)</mo><mo>×</mo><mi>P</mi><mo stretchy="false">(</mo><mtext>文字探勘</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(做文字探勘) = P(做)\times P(文字探勘)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord cjk_fallback">做</span><span class="mord cjk_fallback">文</span><span class="mord cjk_fallback">字</span><span class="mord cjk_fallback">探</span><span class="mord cjk_fallback">勘</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord cjk_fallback">做</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord cjk_fallback">文</span><span class="mord cjk_fallback">字</span><span class="mord cjk_fallback">探</span><span class="mord cjk_fallback">勘</span><span class="mclose">)</span></span></span></span></span></p>
+<p>我們做個簡單的換位，</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>k</mi><mo>=</mo><mfrac><mrow><mi>P</mi><mo stretchy="false">(</mo><mtext>做文字探勘</mtext><mo stretchy="false">)</mo></mrow><mrow><mi>P</mi><mo stretchy="false">(</mo><mtext>做</mtext><mo stretchy="false">)</mo><mo>×</mo><mi>P</mi><mo stretchy="false">(</mo><mtext>文字探勘</mtext><mo stretchy="false">)</mo></mrow></mfrac><mo>≈</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k= \frac{P(做文字探勘)}{P(做)\times P(文字探勘)} \approx 1
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord cjk_fallback">做</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord cjk_fallback">文</span><span class="mord cjk_fallback">字</span><span class="mord cjk_fallback">探</span><span class="mord cjk_fallback">勘</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord cjk_fallback">做</span><span class="mord cjk_fallback">文</span><span class="mord cjk_fallback">字</span><span class="mord cjk_fallback">探</span><span class="mord cjk_fallback">勘</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></span></p>
+<p>當近似於1時，代表「做文字探勘」不是一個獨立詞彙，那麼它就極有可能非專有名詞。仔細觀察可以發現，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span>越大作為一個字詞的可能性就越高，因此我們可以設置一個門檻，來濾除非我們想要的字詞。</p>
+<p>因為母體的詞彙總數是相同的，所以這裡可以用次數來取代比率，會比較好計算。另外我們這裡只擷取四個字內的專有名詞，但切割需切割前後各一個字詞，這也是上面<code>NGramTokenizer</code>取5個字的原因。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 計算字詞的獨立關係</span></span><br><span class="line">segmentWord <span class="operator">&lt;-</span> <span class="keyword">function</span><span class="punctuation">(</span>word<span class="punctuation">,</span> full<span class="punctuation">)</span><span class="punctuation">&#123;</span> </span><br><span class="line">  n <span class="operator">&lt;-</span> nchar<span class="punctuation">(</span>word<span class="punctuation">)</span><span class="operator">-</span><span class="number">1</span> <span class="comment"># 切割位置數</span></span><br><span class="line">  seg <span class="operator">&lt;-</span> sapply<span class="punctuation">(</span><span class="number">1</span><span class="operator">:</span> n<span class="punctuation">,</span> <span class="keyword">function</span><span class="punctuation">(</span>i<span class="punctuation">)</span><span class="punctuation">&#123;</span> </span><br><span class="line">    w1 <span class="operator">&lt;-</span> substr<span class="punctuation">(</span>word<span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> i<span class="punctuation">)</span></span><br><span class="line">    w2 <span class="operator">&lt;-</span> substr<span class="punctuation">(</span>word<span class="punctuation">,</span>i<span class="operator">+</span><span class="number">1</span><span class="punctuation">,</span> n<span class="operator">+</span><span class="number">1</span><span class="punctuation">)</span></span><br><span class="line">    str_count<span class="punctuation">(</span>full<span class="punctuation">,</span> word<span class="punctuation">)</span> <span class="operator">/</span> <span class="punctuation">(</span>str_count<span class="punctuation">(</span>full<span class="punctuation">,</span> w1<span class="punctuation">)</span><span class="operator">*</span>str_count<span class="punctuation">(</span>full<span class="punctuation">,</span>w2<span class="punctuation">)</span><span class="punctuation">)</span> <span class="comment"># 計算佔比</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">)</span></span><br><span class="line">  seg_pro <span class="operator">&lt;-</span> <span class="built_in">min</span><span class="punctuation">(</span>parse_number<span class="punctuation">(</span>seg<span class="punctuation">)</span><span class="punctuation">)</span> </span><br><span class="line">  <span class="built_in">return</span><span class="punctuation">(</span>seg_pro<span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 對獨立性判別較差的資料剔除</span></span><br><span class="line">commonword <span class="operator">&lt;-</span> sapply<span class="punctuation">(</span>seg_base<span class="operator">$</span>name<span class="punctuation">,</span> segmentWord<span class="punctuation">,</span> dat<span class="punctuation">)</span> <span class="operator">%&gt;%</span> data_frame<span class="punctuation">(</span>pro <span class="operator">=</span> .<span class="punctuation">)</span> <span class="operator">%&gt;%</span> </span><br><span class="line">  bind_cols<span class="punctuation">(</span>seg_base<span class="punctuation">)</span> <span class="operator">%&gt;%</span> </span><br><span class="line">  filter<span class="punctuation">(</span>pro <span class="operator">&gt;=</span> <span class="number">0.013</span><span class="punctuation">)</span> <span class="comment"># 濾除未達門檻的詞彙</span></span><br></pre></td></tr></table></figure>
+<h3 id="去除不完整的詞彙"><a class="markdownIt-Anchor" href="#去除不完整的詞彙"></a> 去除不完整的詞彙</h3>
+<p>除了多餘的字詞來添亂，因為我們是個別斷詞的關係，零碎的字也會被抓進來。舉例來說：「文字探勘」會被斷出來，但是「文字探」或「字探勘」這類型的字一樣也會被抓出。為了解決這樣的問題，就引入了訊息量—「熵」這個概念。一個專有名詞周遭通常伴隨較豐富的訊息量，但像「文字探」後面通常只會加「勘」，所以訊息量就很低。所以只要抓住這個概念，只取兩側有豐富訊息量的字詞，就很有可能為專屬名詞。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">freq_all <span class="operator">&lt;-</span> matrix<span class="punctuation">(</span>full<span class="operator">$</span>proportion<span class="punctuation">,</span> <span class="built_in">dimnames</span> <span class="operator">=</span> <span class="built_in">list</span><span class="punctuation">(</span>full<span class="operator">$</span>name<span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">freq <span class="operator">&lt;-</span> matrix<span class="punctuation">(</span>commonword<span class="operator">$</span>proportion<span class="punctuation">,</span> <span class="built_in">dimnames</span> <span class="operator">=</span> <span class="built_in">list</span><span class="punctuation">(</span>commonword<span class="operator">$</span>name<span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">sfInit<span class="punctuation">(</span>parallel<span class="operator">=</span><span class="literal">TRUE</span><span class="punctuation">,</span> cpus<span class="operator">=</span><span class="number">2</span><span class="punctuation">,</span> type<span class="operator">=</span><span class="string">&quot;SOCK&quot;</span><span class="punctuation">)</span></span><br><span class="line">shang <span class="operator">&lt;-</span> sfSapply<span class="punctuation">(</span><span class="number">1</span><span class="operator">:</span><span class="built_in">length</span><span class="punctuation">(</span>freq<span class="punctuation">)</span><span class="punctuation">,</span> <span class="keyword">function</span><span class="punctuation">(</span>x<span class="punctuation">,</span>y<span class="punctuation">,</span>z<span class="punctuation">,</span>zn<span class="punctuation">)</span><span class="punctuation">&#123;</span></span><br><span class="line">  restrict_name <span class="operator">&lt;-</span> zn<span class="punctuation">[</span>which<span class="punctuation">(</span>nchar<span class="punctuation">(</span>zn<span class="punctuation">)</span> <span class="operator">&lt;=</span> nchar<span class="punctuation">(</span>y<span class="punctuation">[</span>x<span class="punctuation">]</span><span class="punctuation">)</span><span class="operator">+</span><span class="number">1</span><span class="punctuation">)</span><span class="punctuation">]</span></span><br><span class="line">  restrict <span class="operator">&lt;-</span> z<span class="punctuation">[</span>which<span class="punctuation">(</span>nchar<span class="punctuation">(</span>zn<span class="punctuation">)</span> <span class="operator">&lt;=</span> nchar<span class="punctuation">(</span>y<span class="punctuation">[</span>x<span class="punctuation">]</span><span class="punctuation">)</span><span class="operator">+</span><span class="number">1</span><span class="punctuation">)</span><span class="punctuation">]</span></span><br><span class="line">  w1 <span class="operator">&lt;-</span> grep<span class="punctuation">(</span>paste<span class="punctuation">(</span><span class="string">&#x27;^&#x27;</span><span class="punctuation">,</span> y<span class="punctuation">[</span>x<span class="punctuation">]</span><span class="punctuation">,</span> sep<span class="operator">=</span><span class="string">&#x27;&#x27;</span><span class="punctuation">)</span><span class="punctuation">,</span> restrict_name<span class="punctuation">)</span> <span class="comment"># 計算詞性後的可能性</span></span><br><span class="line">  pre <span class="operator">&lt;-</span> mean<span class="punctuation">(</span> <span class="operator">-</span>log2<span class="punctuation">(</span>restrict<span class="punctuation">[</span>w1<span class="punctuation">]</span><span class="punctuation">)</span><span class="punctuation">)</span> <span class="comment"># 計算詞性後的訊息量</span></span><br><span class="line">  w2 <span class="operator">&lt;-</span> grep<span class="punctuation">(</span>paste<span class="punctuation">(</span>y<span class="punctuation">[</span>x<span class="punctuation">]</span><span class="punctuation">,</span> <span class="string">&#x27;$&#x27;</span><span class="punctuation">,</span> sep<span class="operator">=</span><span class="string">&#x27;&#x27;</span><span class="punctuation">)</span><span class="punctuation">,</span> restrict_name<span class="punctuation">)</span> <span class="comment"># 計算詞性前的可能性</span></span><br><span class="line">  post <span class="operator">&lt;-</span> mean<span class="punctuation">(</span> <span class="operator">-</span>log2<span class="punctuation">(</span>restrict<span class="punctuation">[</span>w2<span class="punctuation">]</span><span class="punctuation">)</span> <span class="punctuation">)</span> <span class="comment"># 計算詞性前的訊息量</span></span><br><span class="line">  <span class="built_in">return</span><span class="punctuation">(</span> <span class="built_in">min</span><span class="punctuation">(</span>pre <span class="punctuation">,</span>post<span class="punctuation">)</span> <span class="punctuation">)</span> <span class="comment"># 回傳最小的訊息量</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span> y <span class="operator">=</span> row.names<span class="punctuation">(</span>freq<span class="punctuation">)</span><span class="punctuation">,</span> z <span class="operator">=</span> freq_all<span class="punctuation">,</span> zn <span class="operator">=</span> row.names<span class="punctuation">(</span>freq_all<span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line">sfStop<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"><span class="built_in">names</span><span class="punctuation">(</span>shang<span class="punctuation">)</span> <span class="operator">&lt;-</span> row.names<span class="punctuation">(</span>freq<span class="punctuation">)</span></span><br><span class="line">shang <span class="operator">&lt;-</span> shang<span class="punctuation">[</span>which<span class="punctuation">(</span>shang <span class="operator">&gt;=</span> <span class="number">12</span><span class="punctuation">)</span><span class="punctuation">]</span> <span class="comment"># Entropy要大於門檻entropy</span></span><br></pre></td></tr></table></figure>
+<h2 id="結果產出"><a class="markdownIt-Anchor" href="#結果產出"></a> 結果產出</h2>
+<p>廢話不多說，先來看看這樣產出後的結果：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">一向量</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">下面</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">不過</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">主要</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">之類</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">也就是</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">人會</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">代表詞</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">以及</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">來判</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">個詞彙在</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">假設我們</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">內容</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">其他詞</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>可以看到雖然分出的字詞有些道理，但卻不那麼漂亮。這個原因在所準備的文字資料不夠大量所致，像「個詞彙在」這個詞，隨著「個」及「在」的比例增加，這個詞在<strong>獨立字詞</strong>階段就會被去除。所幸的是我們還是抓出了想要做成字典的字詞：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">向量指標</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">搜尋引擎</span><br><span class="line"><span class="number">12.31254</span></span><br><span class="line">文件數</span><br><span class="line"><span class="number">12.64359</span></span><br><span class="line">文字探勘</span><br><span class="line"><span class="number">12.19647</span></span><br><span class="line">文章</span><br><span class="line"><span class="number">12.26832</span></span><br><span class="line">文章摘要</span><br><span class="line"><span class="number">12.64359</span></span><br></pre></td></tr></table></figure>
+<h2 id="參考文章"><a class="markdownIt-Anchor" href="#參考文章"></a> 參考文章</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1IP5vFmBlGPBp32bWDqSpGYLox5QVmenFAfPwcOseQhQ/edit#slide=id.g2704cd226_074">R語言推廣講座Text Mining with R</a></li>
+</ol>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2018/06/16/%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E5%89%B5%E9%80%A0%E5%B0%88%E5%B1%AC%E5%AD%97%E5%85%B8/" data-id="cln9qfd0x000am1zt7k7x4sns" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Text-Mining/" rel="tag">Text Mining</a></li></ul>
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/09/30/%E5%83%8FRStudio%E4%B8%80%E6%A8%A3%E6%9F%A5%E7%9C%8BPython%E7%9A%84Dataframe%E2%80%94%E2%80%94Qgrid/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          像RStudio一樣查看Python的Dataframe —— Qgrid
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/02/01/%E6%B7%BA%E8%AB%87%E6%96%87%E5%AD%97%E6%8E%A2%E5%8B%98%20-%20%E8%BD%89%E6%8F%9B%E9%9D%9E%E7%B5%90%E6%A7%8B%E5%8C%96%E6%96%87%E5%AD%97/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">淺談文字探勘 - 轉換非結構化文字</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B8%E6%93%9A%E7%A7%91%E5%AD%B8/">數據科學</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BC%8F%E6%87%89%E7%94%A8/">程式應用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9B%9C%E8%A8%98/">雜記</a></li></ul>
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feature-Engineering/" rel="tag">Feature Engineering</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jupyter/" rel="tag">Jupyter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MathJax/" rel="tag">MathJax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Remote-Control/" rel="tag">Remote Control</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TDM/" rel="tag">TDM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TF-IDF/" rel="tag">TF-IDF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telegram/" rel="tag">Telegram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telegrambot/" rel="tag">Telegrambot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Text-Mining/" rel="tag">Text Mining</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/robot/" rel="tag">robot</a></li></ul>
+    </div>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Feature-Engineering/" style="font-size: 10px;">Feature Engineering</a> <a href="/tags/Hexo/" style="font-size: 20px;">Hexo</a> <a href="/tags/Jupyter/" style="font-size: 10px;">Jupyter</a> <a href="/tags/MathJax/" style="font-size: 10px;">MathJax</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/R/" style="font-size: 10px;">R</a> <a href="/tags/Remote-Control/" style="font-size: 20px;">Remote Control</a> <a href="/tags/SSH/" style="font-size: 20px;">SSH</a> <a href="/tags/TDM/" style="font-size: 10px;">TDM</a> <a href="/tags/TF-IDF/" style="font-size: 10px;">TF-IDF</a> <a href="/tags/Telegram/" style="font-size: 10px;">Telegram</a> <a href="/tags/Telegrambot/" style="font-size: 10px;">Telegrambot</a> <a href="/tags/Text-Mining/" style="font-size: 20px;">Text Mining</a> <a href="/tags/robot/" style="font-size: 10px;">robot</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/27/%E7%94%A8%20Python%20%E5%BB%BA%E6%A7%8B%20Telegram%20%E8%82%A1%E7%A5%A8%E7%9B%A3%E6%B8%AC%E6%A9%9F%E5%99%A8%E4%BA%BA/">用 Python 建構 Telegram 股票監測機器人</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/07/30%E6%AD%B2%E5%B7%A5%E7%A8%8B%E5%B8%AB%E7%9A%84%E9%BB%83%E6%96%91%E5%89%8D%E8%86%9C%E9%80%86%E8%A5%B2/">30歲工程師的黃斑前膜逆襲</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/10/%E7%94%A8%20%E9%9B%BB%E8%85%A6%20%20iPad%20%E9%81%A0%E7%AB%AF%E9%80%A3%E6%8E%A5%E5%AE%B6%E7%94%A8%E9%9B%BB%E8%85%A6%E7%9A%84%20Jupyter%20Lab/">用 電腦  iPad 遠端連接家用電腦的 Jupyter Lab</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/">SSH 遠端連線回家中的 Windows 電腦</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/30/%E5%83%8FRStudio%E4%B8%80%E6%A8%A3%E6%9F%A5%E7%9C%8BPython%E7%9A%84Dataframe%E2%80%94%E2%80%94Qgrid/">像RStudio一樣查看Python的Dataframe —— Qgrid</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Jude Su<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

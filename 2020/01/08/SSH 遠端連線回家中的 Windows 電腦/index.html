@@ -1,37 +1,294 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
 
+  
+  <title>SSH 遠端連線回家中的 Windows 電腦 | 隨談雜記</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前陣子為了想玩 Deep Learning ，買了一張近兩萬元的顯卡。結果沒用多久就收到泰國的工作，家裡的桌電就一直擺著生灰塵，實在太痛心了。為了能夠更有效利用桌電，就想到用 ssh 的方式連回家裡操作。 網路上其實有蠻多將 Windows 作為 ssh 伺服器的方式，但因為家裡電腦並不是直接連接網路，中間還隔了一層小米路由器，我就把部署的過程一步步放上來。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSH 遠端連線回家中的 Windows 電腦">
+<meta property="og:url" content="https://dtes8617.github.io/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/index.html">
+<meta property="og:site_name" content="隨談雜記">
+<meta property="og:description" content="前陣子為了想玩 Deep Learning ，買了一張近兩萬元的顯卡。結果沒用多久就收到泰國的工作，家裡的桌電就一直擺著生灰塵，實在太痛心了。為了能夠更有效利用桌電，就想到用 ssh 的方式連回家裡操作。 網路上其實有蠻多將 Windows 作為 ssh 伺服器的方式，但因為家裡電腦並不是直接連接網路，中間還隔了一層小米路由器，我就把部署的過程一步步放上來。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.dropbox.com/s/ecn1f4gbh0ttpxx/Screenshot%202020-01-07%2023.20.43.png?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/z3fddy5ebmebj23/Screenshot%202020-01-07%2023.40.58.png?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/wc60lekc97il8u7/Screenshot%202020-01-07%2023.42.15.png?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/pltume36udhpyed/Screenshot%202020-01-07%2023.43.14.png?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/96df0s5d25ngmjh/Screenshot%202020-01-07%2023.48.51.png?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/n08ast4owe3at3a/Screenshot%202020-01-07%2023.59.31.png?raw=1">
+<meta property="og:image" content="https://www.dropbox.com/s/xl01gz0z063zeyt/Screenshot%202020-01-08%2000.02.35.png?raw=1">
+<meta property="article:published_time" content="2020-01-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-03T01:26:21.082Z">
+<meta property="article:author" content="Jude Su">
+<meta property="article:tag" content="SSH">
+<meta property="article:tag" content="Remote Control">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.dropbox.com/s/ecn1f4gbh0ttpxx/Screenshot%202020-01-07%2023.20.43.png?raw=1">
+  
+    <link rel="alternate" href="/atom.xml" title="隨談雜記" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
-{% block page_class %}page-post-detail{% endblock %}
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">隨談雜記</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://dtes8617.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SSH 遠端連線回家中的 Windows 電腦" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/" class="article-date">
+  <time datetime="2020-01-07T16:00:00.000Z" itemprop="datePublished">2020-01-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%A8%8B%E5%BC%8F%E6%87%89%E7%94%A8/">程式應用</a>
+  </div>
 
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SSH 遠端連線回家中的 Windows 電腦
+    </h1>
+  
 
-{% block content %}
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前陣子為了想玩 Deep Learning ，買了一張近兩萬元的顯卡。結果沒用多久就收到泰國的工作，家裡的桌電就一直擺著生灰塵，實在太痛心了。為了能夠更有效利用桌電，就想到用 ssh 的方式連回家裡操作。<br />
+網路上其實有蠻多將 Windows 作為 ssh 伺服器的方式，但因為家裡電腦並不是直接連接網路，中間還隔了一層小米路由器，我就把部署的過程一步步放上來。</p>
+<span id="more"></span>
+<h2 id="windows-主機設置"><a class="markdownIt-Anchor" href="#windows-主機設置"></a> Windows 主機設置</h2>
+<p>由於桌電是 Windows 10 的作業系統，基本上已經支援 SSH 的伺服器部署。不過這不是一般人會使用到的功能，所以預設是關閉的。我們必須到設定&gt;應用程式與功能的地方把他打開。</p>
+<p>到應用程式畫面後，點選<strong>管理選用功能</strong><br />
+<img src="https://www.dropbox.com/s/ecn1f4gbh0ttpxx/Screenshot%202020-01-07%2023.20.43.png?raw=1" alt="圖片" /></p>
+<p>進到裡面之後，確認清單中有沒有 OpenSSH 伺服器 並且安裝，如果沒有的話在新增功能 的選項裡安裝。要特別注意是 OpenSSH 伺服器，不是 OpenSSH 用戶端。</p>
+<p>接下來用系統管理員身分打開 PowerShell，並輸入以下指令：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Start-Service</span> sshd</span><br><span class="line"><span class="built_in">Set-Service</span> <span class="literal">-Name</span> sshd <span class="literal">-StartupType</span> <span class="string">&#x27;Automatic&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>第一行是用來開啟 Server，第二行則是讓系統開機是自動啟用。</p>
+<p>接下來要確認防火牆是否有阻擋 SSH 伺服器的運行，我們可以在設定裡找到防火牆，並確認是否有在允許的清單中。如果不是採用 Windows 放火牆的人則要到防火牆的軟體中確認。</p>
+<p><img src="https://www.dropbox.com/s/z3fddy5ebmebj23/Screenshot%202020-01-07%2023.40.58.png?raw=1" alt="圖片" /><br />
+<img src="https://www.dropbox.com/s/wc60lekc97il8u7/Screenshot%202020-01-07%2023.42.15.png?raw=1" alt="圖片" /><br />
+<img src="https://www.dropbox.com/s/pltume36udhpyed/Screenshot%202020-01-07%2023.43.14.png?raw=1" alt="圖片" /></p>
+<p>基本上到這一步 Windows 的 SSH 伺服器就設定完畢了。</p>
+<h2 id="路由器設置"><a class="markdownIt-Anchor" href="#路由器設置"></a> 路由器設置</h2>
+<p>為了讓其他電腦可以辨識這台主機，我們通常都會採用 IP 來定位。但如果今天有在家中安裝 wifi 分享器等東西，電腦接收的 IP 是由路由器配給的。即便我們在 CMD 輸入 <code>ipconfig</code> 得到的 IP 位置也不是真正的 IP 位置，就如同下面的地址一樣。<br />
+<img src="https://www.dropbox.com/s/96df0s5d25ngmjh/Screenshot%202020-01-07%2023.48.51.png?raw=1" alt="圖片" /></p>
+<p>這有點像你要寄信給公家機關的某個人，填寫的地址一定公家機關地址，而後再由總機轉交給你要寄信的人。遠端連線進來也是要找到路由器所在的位置，再有路由器轉到要連接的電腦主機。</p>
+<p>因為我是採用小米路由器，這裡就以小米來介紹。首先用瀏覽器輸入 192.168.31.1 進到小米的操作頁面，並點選「常用設置」的「上網設定」，在上網信息所顯示的就是路由器所在的位置。<br />
+<img src="https://www.dropbox.com/s/n08ast4owe3at3a/Screenshot%202020-01-07%2023.59.31.png?raw=1" alt="圖片" /></p>
+<p>這裡可以看到 IP 位置與剛剛電腦顯示的不同，這是別人從外連進來可以辨識的真正 IP 位置。但我們從外面連進來會先進到路由器，我們必須告訴路由器要連線的桌機在哪，所以我們還必須多一層設置。</p>
+<p>這裡點選「進階設定」的「通訊埠轉發」，並點選「新增規則」。因為 ssh 預設閘道為 22， 這裡為了方便我們就設定「外部埠」及「內部埠」為22，名稱隨意填，協議選擇 TCP，內部 IP 位置則填入剛剛用 <code>ipconfig</code> 查到的 IP。<br />
+<img src="https://www.dropbox.com/s/xl01gz0z063zeyt/Screenshot%202020-01-08%2000.02.35.png?raw=1" alt="圖片" /></p>
+<p>新增完成後，別忘了把網頁拉到最底下點選「儲存並生效」。我在這裡就是忘記點選這個，結果搞了幾個小時一直連不進來。</p>
+<h2 id="ssh-連線登入"><a class="markdownIt-Anchor" href="#ssh-連線登入"></a> SSH 連線登入</h2>
+<p>到這一步總算是完成啦！基本上最後是最簡單的部分，也就是用其他電腦連線到你的桌機。要注意的是如果其他電腦是 Windows 10，也是要到設定去安裝 OpenSSH 用戶端。<br />
+接下來輸入以下指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh 使用者名稱@實體IP位置</span><br></pre></td></tr></table></figure>
+<p>使用者名稱為主機的使用者，實體IP位置則是剛剛小米路由器顯示的IP位置，輸入完主機的密碼就大功告成啦！</p>
+<p>如果有想要進一步了解如何用手上電腦連接遠端的 Jupyter 伺服器，可以參考我的下面<a href="https://dtes8617.github.io/2020/02/10/%E7%94%A8%20%E9%9B%BB%E8%85%A6%20%20iPad%20%E9%81%A0%E7%AB%AF%E9%80%A3%E6%8E%A5%E5%AE%B6%E7%94%A8%E9%9B%BB%E8%85%A6%E7%9A%84%20Jupyter%20Lab/">這篇文章</a>。</p>
+<p>祝大家連線愉快～</p>
+<h2 id="參考資料"><a class="markdownIt-Anchor" href="#參考資料"></a> 參考資料</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1420930">如何使用 SSH 远程控制一台 Windows 服务器</a></li>
+</ol>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://dtes8617.github.io/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/" data-id="cln9qfd0v0003m1zt5iuwetgk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Remote-Control/" rel="tag">Remote Control</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li></ul>
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/10/%E7%94%A8%20%E9%9B%BB%E8%85%A6%20%20iPad%20%E9%81%A0%E7%AB%AF%E9%80%A3%E6%8E%A5%E5%AE%B6%E7%94%A8%E9%9B%BB%E8%85%A6%E7%9A%84%20Jupyter%20Lab/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          用 電腦  iPad 遠端連接家用電腦的 Jupyter Lab
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/09/30/%E5%83%8FRStudio%E4%B8%80%E6%A8%A3%E6%9F%A5%E7%9C%8BPython%E7%9A%84Dataframe%E2%80%94%E2%80%94Qgrid/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">像RStudio一樣查看Python的Dataframe —— Qgrid</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B8%E6%93%9A%E7%A7%91%E5%AD%B8/">數據科學</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A8%8B%E5%BC%8F%E6%87%89%E7%94%A8/">程式應用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9B%9C%E8%A8%98/">雜記</a></li></ul>
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Feature-Engineering/" rel="tag">Feature Engineering</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jupyter/" rel="tag">Jupyter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MathJax/" rel="tag">MathJax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/" rel="tag">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Remote-Control/" rel="tag">Remote Control</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSH/" rel="tag">SSH</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TDM/" rel="tag">TDM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TF-IDF/" rel="tag">TF-IDF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telegram/" rel="tag">Telegram</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Telegrambot/" rel="tag">Telegrambot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Text-Mining/" rel="tag">Text Mining</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/robot/" rel="tag">robot</a></li></ul>
+    </div>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Feature-Engineering/" style="font-size: 10px;">Feature Engineering</a> <a href="/tags/Hexo/" style="font-size: 20px;">Hexo</a> <a href="/tags/Jupyter/" style="font-size: 10px;">Jupyter</a> <a href="/tags/MathJax/" style="font-size: 10px;">MathJax</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/R/" style="font-size: 10px;">R</a> <a href="/tags/Remote-Control/" style="font-size: 20px;">Remote Control</a> <a href="/tags/SSH/" style="font-size: 20px;">SSH</a> <a href="/tags/TDM/" style="font-size: 10px;">TDM</a> <a href="/tags/TF-IDF/" style="font-size: 10px;">TF-IDF</a> <a href="/tags/Telegram/" style="font-size: 10px;">Telegram</a> <a href="/tags/Telegrambot/" style="font-size: 10px;">Telegrambot</a> <a href="/tags/Text-Mining/" style="font-size: 20px;">Text Mining</a> <a href="/tags/robot/" style="font-size: 10px;">robot</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/27/%E7%94%A8%20Python%20%E5%BB%BA%E6%A7%8B%20Telegram%20%E8%82%A1%E7%A5%A8%E7%9B%A3%E6%B8%AC%E6%A9%9F%E5%99%A8%E4%BA%BA/">用 Python 建構 Telegram 股票監測機器人</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/07/30%E6%AD%B2%E5%B7%A5%E7%A8%8B%E5%B8%AB%E7%9A%84%E9%BB%83%E6%96%91%E5%89%8D%E8%86%9C%E9%80%86%E8%A5%B2/">30歲工程師的黃斑前膜逆襲</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/10/%E7%94%A8%20%E9%9B%BB%E8%85%A6%20%20iPad%20%E9%81%A0%E7%AB%AF%E9%80%A3%E6%8E%A5%E5%AE%B6%E7%94%A8%E9%9B%BB%E8%85%A6%E7%9A%84%20Jupyter%20Lab/">用 電腦  iPad 遠端連接家用電腦的 Jupyter Lab</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/SSH%20%E9%81%A0%E7%AB%AF%E9%80%A3%E7%B7%9A%E5%9B%9E%E5%AE%B6%E4%B8%AD%E7%9A%84%20Windows%20%E9%9B%BB%E8%85%A6/">SSH 遠端連線回家中的 Windows 電腦</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/30/%E5%83%8FRStudio%E4%B8%80%E6%A8%A3%E6%9F%A5%E7%9C%8BPython%E7%9A%84Dataframe%E2%80%94%E2%80%94Qgrid/">像RStudio一樣查看Python的Dataframe —— Qgrid</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2023 Jude Su<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>
