@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.20/fancybox/fancybox.css" integrity="sha256-RvRHGSuWAxZpXKV9lLDt2e+rZ+btzn48Wp4ueS3NZKs=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"dtes8617.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.18.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"style":null,"show_result":false},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="隨著 Meta 的 Llama 2 開放商用， 很多公司也摩拳擦掌想把 Llama 2 應用在自己的產品上。 然而 Pre-train 的模型不見的符合公司或使用者的需求， 為了求更好的表現，fine-tune LLM 就成了其中一個不錯的方法。本篇文章會介紹 Fine tune LLM 的基本概念，以及訓練的程式碼還有一些注意的事項。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="超越預訓練：如何為特定業務需求微調 (Fine-Tune) LLM">
+<meta property="og:url" content="https://dtes8617.github.io/2023/12/18/Fine-tune%20LLM%20%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="隨談雜記">
+<meta property="og:description" content="隨著 Meta 的 Llama 2 開放商用， 很多公司也摩拳擦掌想把 Llama 2 應用在自己的產品上。 然而 Pre-train 的模型不見的符合公司或使用者的需求， 為了求更好的表現，fine-tune LLM 就成了其中一個不錯的方法。本篇文章會介紹 Fine tune LLM 的基本概念，以及訓練的程式碼還有一些注意的事項。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://www.dropbox.com/scl/fi/6cfikpc4u2rgdf7zkmspv/ChatGPT.webp?rlkey=fglu3qpwd7nba4v2nkjhjlr18&raw=1">
+<meta property="og:image" content="https://www.dropbox.com/scl/fi/si0qygrm8p6p8tw1uz54j/Untitled.png?rlkey=jbxnfe6lz1azbf8j8tu3vm439&raw=1">
+<meta property="og:image" content="https://www.dropbox.com/scl/fi/nxopp1mrdeb0tf504z9kz/Untitled-1.png?rlkey=ch2z3h2ear91patqhvmys5fjn&raw=1">
+<meta property="og:image" content="https://www.dropbox.com/scl/fi/wa76xgkgo9ebwakg16id5/image3.gif?rlkey=mvcrqtu4dz7e5hp062qdy4lgx&raw=1">
+<meta property="article:published_time" content="2023-12-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-18T13:16:49.581Z">
+<meta property="article:author" content="Jude Su">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="Llama 2">
+<meta property="article:tag" content="Mistral">
+<meta property="article:tag" content="Fine Tune">
+<meta property="article:tag" content="Hugging Face">
+<meta property="article:tag" content="QLoRA">
+<meta property="article:tag" content="Instruction Tuning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.dropbox.com/scl/fi/6cfikpc4u2rgdf7zkmspv/ChatGPT.webp?rlkey=fglu3qpwd7nba4v2nkjhjlr18&raw=1">
+
+
+<link rel="canonical" href="https://dtes8617.github.io/2023/12/18/Fine-tune%20LLM%20%E6%A8%A1%E5%9E%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-tw","comments":true,"permalink":"https://dtes8617.github.io/2023/12/18/Fine-tune%20LLM%20%E6%A8%A1%E5%9E%8B/","path":"2023/12/18/Fine-tune LLM 模型/","title":"超越預訓練：如何為特定業務需求微調 (Fine-Tune) LLM"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>超越預訓練：如何為特定業務需求微調 (Fine-Tune) LLM | 隨談雜記</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="隨談雜記" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">隨談雜記</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">數據。程式。讀書筆記</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QLoRA"><span class="nav-number">2.</span> <span class="nav-text">QLoRA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LoRA-Low-Rank-Adaptation"><span class="nav-number">2.1.</span> <span class="nav-text">LoRA (Low-Rank Adaptation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QLoRA-1"><span class="nav-number">2.2.</span> <span class="nav-text">QLoRA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instruction-Tuning"><span class="nav-number">3.</span> <span class="nav-text">Instruction Tuning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Instruction-dataset"><span class="nav-number">3.1.</span> <span class="nav-text">Instruction dataset</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E5%AF%A6%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">程式實作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E6%A7%8B%E8%B3%87%E6%96%99"><span class="nav-number">4.1.</span> <span class="nav-text">建構資料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%80%E5%8F%96%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.2.</span> <span class="nav-text">讀取模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A-LoRA-Configuration"><span class="nav-number">4.3.</span> <span class="nav-text">設定 LoRA Configuration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E6%95%B8%E6%93%9A%E8%BD%89%E6%8F%9B%E5%87%BD%E6%95%B8"><span class="nav-number">4.4.</span> <span class="nav-text">建立數據轉換函數</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%93%E7%B7%B4%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.5.</span> <span class="nav-text">訓練模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E4%BD%B5-Adapter"><span class="nav-number">4.6.</span> <span class="nav-text">合併 Adapter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">5.</span> <span class="nav-text">結論</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%B6%E4%BC%B8%E9%96%B1%E8%AE%80"><span class="nav-number">6.</span> <span class="nav-text">延伸閱讀</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jude Su"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jude Su</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dtes8617" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dtes8617" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fortunatemaker2603@gmail.com" title="E-Mail → mailto:fortunatemaker2603@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://dtes8617.github.io/2023/12/18/Fine-tune%20LLM%20%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="Jude Su">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隨談雜記">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="超越預訓練：如何為特定業務需求微調 (Fine-Tune) LLM | 隨談雜記">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          超越預訓練：如何為特定業務需求微調 (Fine-Tune) LLM
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-12-18 00:00:00 / Modified: 21:16:49" itemprop="dateCreated datePublished" datetime="2023-12-18T00:00:00+08:00">2023-12-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B8%E6%93%9A%E7%A7%91%E5%AD%B8/" itemprop="url" rel="index"><span itemprop="name">數據科學</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2023/12/18/Fine-tune%20LLM%20%E6%A8%A1%E5%9E%8B/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/12/18/Fine-tune LLM 模型/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img src="https://www.dropbox.com/scl/fi/6cfikpc4u2rgdf7zkmspv/ChatGPT.webp?rlkey=fglu3qpwd7nba4v2nkjhjlr18&raw=1"></p>
+<p>隨著 Meta 的 Llama 2 開放商用， 很多公司也摩拳擦掌想把 Llama 2 應用在自己的產品上。 然而 Pre-train 的模型不見的符合公司或使用者的需求， 為了求更好的表現，fine-tune LLM 就成了其中一個不錯的方法。本篇文章會介紹 Fine tune LLM 的基本概念，以及訓練的程式碼還有一些注意的事項。</p>
+<span id="more"></span>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>現在越來越多開源的大型語言模型釋出，除了早前僅供學術使用的模型，現在還多了像是 Llama 2, Mistral 7B 的模型可以應用在商業上。雖然有些模型透過 RLHF 的訓練方式讓模型在一開始就能流暢的對話，且表現也相當亮眼。但對於特定的需求，像是回答公司內部的資訊，或是解決不常見的任務需求，可能就不盡理想。</p>
+<p>舉例來說，我們公司在內容審查上面，常會需要審核客戶上傳的內容。由於 Llama 2 特地加強在安全性上的表現，在我們的政策上它都會以非常嚴格的標準審視。譬如我們有個政策是不能誇大，模型在看到「最佳」、「最好」等字詞就會拒絕這個客戶的內容；甚至在遇到非常母湯的內容時，模型會直接說這個內容不安全而拒絕執行接下來的任務。我們也試過 prompt engineering 或是 in-context learning，但是結果就是不如預期。 </p>
+<p>Fine-tune 確實能讓模型更好的學習我們的問題，但是想要 Fine-tune LLM 就會有幾個痛點需要克服：</p>
+<ol>
+<li><p>硬體資源</p>
+<p> Llama 2 在 Hugging Face 的<a target="_blank" rel="noopener" href="https://huggingface.co/blog/llama2">文件</a>上說明要 deploy 70B 的資源至少也要兩個 A100, 儘管是 7B 也需要一個 A10G. 這還只是推論所需要的資源，更不要說訓練可能需要兩倍以上的顯卡記憶體需求。</p>
+</li>
+<li><p>過度訓練導致破壞模型原有的能力</p>
+<p> 一般我們想要 Fine-tune 模型都會採用監督式的訓練方式，由於模型會根據我們提供的 label 計算 loss 並更新權重，我們很難確保在訓練過程中，模型不會為了在我們的任務上獲得更準確的結果，而喪失了模型原有的能力，像是溝通能力等。</p>
+</li>
+</ol>
+<p>我們會用 QLoRA 跟 Instruction tuning 來解決上述的兩個問題， 並附上程式說明如何實現。</p>
+<h2 id="QLoRA"><a href="#QLoRA" class="headerlink" title="QLoRA"></a>QLoRA</h2><p>QLoRA 其實就是將 LoRA adapter 應用在 Quantized 的 Pre-trained model 上。當中不管是 LoRA 或是 Quantization, 目的都是在降低訓練對記憶體的依賴，讓我們可以在更少的資源下訓練模型，且很多實驗證明這樣的效果不見得輸給直接 fine-tune 整個模型，甚至有可能更好。</p>
+<h3 id="LoRA-Low-Rank-Adaptation"><a href="#LoRA-Low-Rank-Adaptation" class="headerlink" title="LoRA (Low-Rank Adaptation)"></a>LoRA (Low-Rank Adaptation)</h3><p>這裡舉個簡單的例子, 假設我們有兩層神經網路, 第一層有 3 個節點, 第二層有 5 個節點, 在不計算 bias 的情況下, 要訓練的參數共有 3x5&#x3D;15 個. </p>
+<p>LoRA 是透過在輸入及輸出層中多加一層節點數量較少的層 (秩), 來降低訓練參數. 譬如我們這裡加了一層 1 個節點的 layer, 這樣輸入&#x2F;輸出的緯度維持不變, 總訓練參數在不計算 bias 的情況下, 降低至 3x1 + 1x5 &#x3D; 8 個. </p>
+<p>在舉一個實際一點的案例, 假設我們有個神經網路, 第一層有 100 個 nodes, 第二層有 100 個 nodes. 則總參數量為 100 x 100 (weights) + 100 (biases) &#x3D; 10,100  個. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SimpleNetwork</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(SimpleNetwork, self).__init__()</span><br><span class="line">        self.fc1 = nn.Linear(<span class="number">100</span>, <span class="number">100</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = torch.relu(self.fc1(x))</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">model = SimpleNetwork()</span><br><span class="line"></span><br><span class="line">total_params = <span class="number">0</span></span><br><span class="line">trainable_params = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> param <span class="keyword">in</span> model.parameters():</span><br><span class="line">    <span class="keyword">if</span> param.requires_grad:</span><br><span class="line">        trainable_params += param.numel()</span><br><span class="line">    total_params += param.numel()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Total parameters: <span class="subst">&#123;total_params&#125;</span>; Trainable parameters: <span class="subst">&#123;trainable_params&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment"># Total parameters: 10100; Trainable parameters: 10100</span></span><br></pre></td></tr></table></figure>
+
+<p>如果我們改用 LoRA 進行訓練, 中間的秩 r 選擇 10, 則訓練參數變為 100 x 10 + 10 x 100 (weights) + 100 (biases) &#x3D; 2,100 個. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> loralib <span class="keyword">as</span> lora</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LoraNetwork</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(LoraNetwork, self).__init__()</span><br><span class="line">        self.fc1 = lora.Linear(<span class="number">100</span>, <span class="number">100</span>, r=<span class="number">10</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = torch.relu(self.fc1(x))</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">lora_model = LoraNetwork()</span><br><span class="line"></span><br><span class="line">total_params = <span class="number">0</span></span><br><span class="line">trainable_params = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> param <span class="keyword">in</span> lora_model.parameters():</span><br><span class="line">    <span class="keyword">if</span> param.requires_grad:</span><br><span class="line">        trainable_params += param.numel()</span><br><span class="line">    total_params += param.numel()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Total parameters: <span class="subst">&#123;total_params&#125;</span>; Trainable parameters: <span class="subst">&#123;trainable_params&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment"># Total parameters: 12100; Trainable parameters: 2100</span></span><br></pre></td></tr></table></figure>
+
+<p>降低的訓練參數幅度高達 79.2%! </p>
+<p>事實上在訓練時並不是用 LoRA 的層直接取代舊有的層, 而是將 LoRA 掛載在特定的層上. 基本上會凍結 Pretrained model 的 weights, 在訓練時僅對 LoRA 的權重做梯度更新, forward 時再把 LoRA 的參數加回去原本的 weights 中. </p>
+<p><img src="https://www.dropbox.com/scl/fi/si0qygrm8p6p8tw1uz54j/Untitled.png?rlkey=jbxnfe6lz1azbf8j8tu3vm439&raw=1" alt="Untitled"></p>
+<h3 id="QLoRA-1"><a href="#QLoRA-1" class="headerlink" title="QLoRA"></a>QLoRA</h3><p>透過 LoRA adapter, 我們在訓練時可以很大程度的降低訓練的成本. 但現在大型語言模型動輒數十甚至數百 gigabytes, 以 Llama 2 70B chatt 的模型, 光是載下來就要 129G, 更不要說讀進顯卡記憶體需要 200G 以上. 由於 Llama 2 保存及訓練權重的 weights 精度採用 FP16, 當參數量越大 (7B, 13B, 70B), 所需要的內存就會劇烈上升. 也因此便有了降低一點精度 (FP16 → NF4) 的 Quantization 方法. 訓練時再將它轉成 16 bits 進行計算. </p>
+<p>這樣的好處是大幅減少了讀進模型所需要的記憶體. 以 Llama 2 70B chat 來說, 顯卡記憶體只要 30 G 左右就可以把模型讀進來, 並進行預測. QLoRA 的 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2305.14314">paper</a> 證明了透過這樣去訓練模型, 模型的預測表現跟直接 fine-tuned model 的表現比不會比較差. </p>
+<p>QLoRA 主要有幾個創新:</p>
+<ul>
+<li>4-bit NormalFloat: 新的 4 bits 量化數據類型, 實驗結果優於4-bit Integers 及 4-bit Floats.</li>
+<li>Double Quantization: 對 quantized 的數據再做一次 quantization. 65B 的模型可以節省約 3GB</li>
+<li>Paged Optimizers: 使用 NVIDIA 統一內存來避免在處理長序列長度的小批量資料時, 突發性的大量內存需求。</li>
+</ul>
+<p><img src="https://www.dropbox.com/scl/fi/nxopp1mrdeb0tf504z9kz/Untitled-1.png?rlkey=ch2z3h2ear91patqhvmys5fjn&raw=1" alt="Untitled"></p>
+<h2 id="Instruction-Tuning"><a href="#Instruction-Tuning" class="headerlink" title="Instruction Tuning"></a>Instruction Tuning</h2><p>Meta 在訓練 Llama 2 chat 模型時, 採用的 Reinforcement Learning from Human Feedback (RLHF). 這樣的訓練方式讓模型可以學到大量知識外, 還能保有自然語言的溝通能力. 然而要採用這個方法訓練, 必須先建出一個 Reward model. 這個模型關係到 LLM 的品質, 他的參數甚至比 LLM 還要大非常多. 像我們這種市井小民實在是很難透過這種方式來 fine-tune 模型.</p>
+<p>好在 Google 在 2021 年提出了 <a target="_blank" rel="noopener" href="https://blog.research.google/2021/10/introducing-flan-more-generalizable.html">Instruction fine-tuning</a> 的方法. 透過訓練模型在不同類型的問題上, 模型在沒見過任務的表現也可以顯著提升. 這樣當我們將自己想要訓練的資料合併在其他任務上一起訓練時, 模型不僅可以在特定任務上表現很好, 同時也還是能在其他任務上保有一定的表現, 不會因為訓練我們的任務而把模型原本的能力給破壞掉. </p>
+<p><img src="https://www.dropbox.com/scl/fi/wa76xgkgo9ebwakg16id5/image3.gif?rlkey=mvcrqtu4dz7e5hp062qdy4lgx&raw=1" alt="image3.gif"></p>
+<h3 id="Instruction-dataset"><a href="#Instruction-dataset" class="headerlink" title="Instruction dataset"></a>Instruction dataset</h3><p>具體來說要訓練的資料集應該長什麼樣子, 其實並不限定於特定格式, 在 HuggingFace 的 <a target="_blank" rel="noopener" href="https://huggingface.co/docs/trl/sft_trainer">SFTTrainer</a> 也有一些示例. 這裡以 <a target="_blank" rel="noopener" href="https://github.com/tatsu-lab/stanford_alpaca#stanford-alpaca-an-instruction-following-llama-model">Stanford Alpaca</a> 做說明. </p>
+<p>這裡先展示資料應該長什麼樣子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.</span><br><span class="line"></span><br><span class="line">### Instruction:</span><br><span class="line">&#123;instruction&#125;</span><br><span class="line"></span><br><span class="line">### Input:</span><br><span class="line">&#123;input&#125;</span><br><span class="line"></span><br><span class="line">### Response:</span><br><span class="line">&#123;response&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主要我們需要填入的地方是大括號的部分:</p>
+<ul>
+<li>instruction: 我們要 LLM 為我們解決的問題</li>
+<li>input: LLM 要解決這個問題需要知道的事情, 這個部分可以留白</li>
+<li>response: 我們期望 LLM 給出的回答</li>
+</ul>
+<p>這裡要注意的是資料的品質要求越高越好, 就像 QLoRA 的 paper 說的:</p>
+<blockquote>
+<p>Data quality is far more important than dataset size, e.g., a 9k sample dataset (OASST1) outperformed a 450k sample dataset (FLAN v2, subsampled) on chatbot performance, even when both are meant to support instruction following generalization.</p>
+</blockquote>
+<p>我們看下面幾個範例會更好理解, 這些都是從 Databricks 提供的高品質開源 <a target="_blank" rel="noopener" href="https://www.databricks.com/blog/2023/04/12/dolly-first-open-commercially-viable-instruction-tuned-llm">instruction dataset</a> 抽出來的</p>
+<p><strong><strong><strong><strong><strong><strong><strong>Open QA</strong></strong></strong></strong></strong></strong></strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Below <span class="keyword">is</span> an instruction that describes a task. Write a response that appropriately completes the request.</span><br><span class="line"></span><br><span class="line"><span class="comment">### Instruction:</span></span><br><span class="line">How do I build a campfire?</span><br><span class="line"></span><br><span class="line"><span class="comment">### Response:</span></span><br><span class="line">Safety should always come first when starting a campfire. Ensure you have water <span class="keyword">or</span> another way to extinguish your fire readily available. Use a campfire ring, pit, <span class="keyword">or</span> clear a large area around your campfire location. Also, make sure campfires are permitted <span class="keyword">in</span> your area.</span><br><span class="line"></span><br><span class="line">With safety out of the way, <span class="built_in">all</span> a fire needs are heat, fuel, <span class="keyword">and</span> oxygen. <span class="type">Any</span> combustible material will start a fire, but good campfire fuel sources include tinder, kindling, <span class="keyword">and</span> dry logs.</span><br><span class="line"></span><br><span class="line">Use stuff like dry pine needles, dry leaves, grasses, <span class="keyword">and</span> wood shavings <span class="keyword">for</span> tinder. You could also use newspaper (<span class="keyword">or</span> <span class="built_in">any</span> paper), dryer lint, <span class="keyword">or</span> cardboard. For kindling, use smaller pieces of wood, such <span class="keyword">as</span> twigs <span class="keyword">and</span> sticks no thicker than <span class="number">1</span> inch <span class="keyword">in</span> diameter (about the thickness of your thumb).</span><br><span class="line"></span><br><span class="line">Dry <span class="keyword">or</span> well-seasoned logs will ensure a good burn. Stack the wood <span class="keyword">in</span> a way that guarantees oxygen can easily reach your flame. Many prefer a teepee <span class="keyword">or</span> log cabin stacking design. Now, use a heat source to create a flame <span class="keyword">or</span> spark <span class="keyword">and</span> apply this to your tinder. Once the tinder combusts, it should light the kindling, <span class="keyword">and</span> the kindling should eventually ignite your logs. If <span class="built_in">all</span> goes well, you should now be enjoying your campfire.</span><br></pre></td></tr></table></figure>
+
+<p><strong>Brainstorming</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Below <span class="keyword">is</span> an instruction that describes a task. Write a response that appropriately completes the request.</span><br><span class="line"></span><br><span class="line"><span class="comment">### Instruction:</span></span><br><span class="line">Instead of making a peanut butter <span class="keyword">and</span> jelly sandwich, what <span class="keyword">else</span> could I combine peanut butter <span class="keyword">with</span> <span class="keyword">in</span> a sandwich? Give five ideas.</span><br><span class="line"></span><br><span class="line"><span class="comment">### Response:</span></span><br><span class="line">Instead of jelly, <span class="keyword">try</span> one of the following <span class="keyword">with</span> peanut butter <span class="keyword">in</span> a sandwich:</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> Honey</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span> Raisins</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span> Fruit preserves</span><br><span class="line"></span><br><span class="line"><span class="number">4.</span> Bananas</span><br><span class="line"></span><br><span class="line"><span class="number">5.</span> Sliced apples</span><br></pre></td></tr></table></figure>
+
+<p><strong><strong><strong><strong><strong>Closed QA</strong></strong></strong></strong></strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Below <span class="keyword">is</span> an instruction that describes a task, paired <span class="keyword">with</span> an <span class="built_in">input</span> that provides further context. Write a response that appropriately completes the request.</span><br><span class="line"></span><br><span class="line"><span class="comment">### Instruction:</span></span><br><span class="line">According to this paragraph about bull sharks, how long are male adult sharks <span class="keyword">in</span> meters?</span><br><span class="line"></span><br><span class="line"><span class="comment">### Input:</span></span><br><span class="line">Bull sharks are large <span class="keyword">and</span> stout, <span class="keyword">with</span> females being larger than males. The bull shark can be up to <span class="number">81</span> cm (<span class="number">2</span> ft <span class="number">8</span> <span class="keyword">in</span>) <span class="keyword">in</span> length at birth. Adult female bull sharks average <span class="number">2.4</span> m (<span class="number">8</span> ft) long <span class="keyword">and</span> typically weigh <span class="number">130</span> kg (<span class="number">290</span> lb), whereas the slightly smaller adult male averages <span class="number">2.25</span> m (<span class="number">7</span> ft) <span class="keyword">and</span> <span class="number">95</span> kg (<span class="number">209</span> lb). While a maximum size of <span class="number">3.5</span> m (<span class="number">11</span> ft) <span class="keyword">is</span> commonly reported, a single record exists of a female specimen of exactly <span class="number">4.0</span> m (<span class="number">13</span> ft). A <span class="number">3.25</span> m (<span class="number">10.7</span> ft) long pregnant individual reached <span class="number">450</span> kg (<span class="number">990</span> lb). Bull sharks are wider <span class="keyword">and</span> heavier than other requiem sharks of comparable length, <span class="keyword">and</span> are grey on top <span class="keyword">and</span> white below. The second dorsal fin <span class="keyword">is</span> smaller than the first. The bull shark<span class="string">&#x27;s caudal fin is longer and lower than that of the larger sharks, and it has a small snout, and lacks an interdorsal ridge.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">### Response:</span></span><br><span class="line"><span class="string">Male adult bull sharks average 2.25 meters in length.</span></span><br></pre></td></tr></table></figure>
+
+<p>這些任務會全部整理成上述的形式, 放在同一個資料集一起訓練. 由於我們自己準備的資料任務可能相對單一, 我們可以透過合併開源的資料集來增加高品質的資料. 像上述 Databricks 提供的這個資料集 <strong><strong>databricks-dolly-15k</strong></strong> 就是很好的資源.</p>
+<h2 id="程式實作"><a href="#程式實作" class="headerlink" title="程式實作"></a>程式實作</h2><p>實作的部分主要有幾個重點, 將依序說明.</p>
+<h3 id="建構資料"><a href="#建構資料" class="headerlink" title="建構資料"></a>建構資料</h3><p>這裡以開源的資料 <strong><strong>databricks-dolly-15k</strong></strong> 做示範, 自己的資料也可以整理成同樣的格式加進來.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datasets <span class="keyword">import</span> load_dataset</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> randrange</span><br><span class="line"></span><br><span class="line">instruction_dataset_name = <span class="string">&quot;databricks/databricks-dolly-15k&quot;</span></span><br><span class="line">dataset = load_dataset(instruction_dataset_name, split = <span class="string">&quot;train&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(dataset[randrange(<span class="built_in">len</span>(dataset))])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;instruction&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Why are most plants green?&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;context&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;response&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Plants and algae are green due to a vital energy producing pigment in their leaves called chlorophyll. Chlorophyll molecules absorb light energy across the electromagnetic spectrum of sunshine but reflect light in the green part of the spectrum. As a result, plants appear to be green to human eyes. As an interesting side note, many animals and insects can see beyond the visible light spectrum that human&#x27;s can see so that they may not view plants as being what we call &#x27;green&#x27;.&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;category&quot;</span><span class="punctuation">:</span> <span class="string">&quot;general_qa&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>將資料轉成 pandas 的 df, 並濾除 tokens 超過模型 context length 的資料. 而後轉換成 csv 保存起來</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">instruct_df = pd.DataFrame(dataset)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 讀取 LLM 的 tokenizer</span></span><br><span class="line">model_name = <span class="string">&quot;meta-llama/Llama-2-70b-chat-hf&quot;</span></span><br><span class="line">token = <span class="string">&quot;HuggingFace 的 auth token&quot;</span></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(model_name, use_auth_token = token)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 計算每個資料多少個 tokens, 並濾除超過模型上限的資料 (Llama 2 的 context length 是 4096)</span></span><br><span class="line">instruct_df[<span class="string">&quot;token_length&quot;</span>] = instruct_df.apply(<span class="keyword">lambda</span> x: <span class="built_in">len</span>(tokenizer.encode(x[<span class="string">&#x27;instruction&#x27;</span>] + x[<span class="string">&#x27;context&#x27;</span>] + x[<span class="string">&#x27;response&#x27;</span>])), axis=<span class="number">1</span>)</span><br><span class="line">instruct_df = instruct_df.loc[instruct_df[<span class="string">&#x27;token_length&#x27;</span>] &lt;= <span class="number">4096</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存資料</span></span><br><span class="line">instruct_df.to_csv(<span class="string">&quot;instruct_df.csv&quot;</span>, index = <span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>之後也可以透過 <code>datasets</code> 套件把資料讀進來</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datasets <span class="keyword">import</span> load_dataset</span><br><span class="line"></span><br><span class="line">dataset = load_dataset(<span class="string">&quot;csv&quot;</span>, data_files = <span class="string">&quot;instruct_df.csv&quot;</span>, split = <span class="string">&quot;train&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="讀取模型"><a href="#讀取模型" class="headerlink" title="讀取模型"></a>讀取模型</h3><p>要將模型透過 quantization 的方式讀進來, 我們可以靠 <code>bitsandbytes</code> 這個套件來做到這一點. 首先做參數設定</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> bitsandbytes <span class="keyword">as</span> bnb</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> BitsAndBytesConfig</span><br><span class="line"></span><br><span class="line"><span class="comment"># bitsandbytes 支援 QLoRA 的 nf4 及 double quantization</span></span><br><span class="line"><span class="comment"># 採用 google 的 bfloat (brain floating point) 效果更好</span></span><br><span class="line">bnb_config = BitsAndBytesConfig(</span><br><span class="line">	load_in_4bit = <span class="literal">True</span>,</span><br><span class="line">	bnb_4bit_use_double_quant = <span class="literal">True</span>,</span><br><span class="line">	bnb_4bit_quant_type = <span class="string">&quot;nf4&quot;</span>,</span><br><span class="line">	bnb_4bit_compute_dtype = torch.bfloat16,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>接下來就可以將模型讀進來了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModelForCausalLM, AutoTokenizer</span><br><span class="line"></span><br><span class="line">model = AutoModelForCausalLM.from_pretrained(</span><br><span class="line">	model_name,</span><br><span class="line">	quantization_config = bnb_config,</span><br><span class="line">	device_map = <span class="string">&quot;auto&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(model_name, use_auth_token = <span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 用 end of sentence token 作為 pad token</span></span><br><span class="line">tokenizer.pad_token = tokenizer.eos_token</span><br></pre></td></tr></table></figure>
+
+<h3 id="設定-LoRA-Configuration"><a href="#設定-LoRA-Configuration" class="headerlink" title="設定 LoRA Configuration"></a>設定 LoRA Configuration</h3><p>首先我們必須找出要替換掉的神經網路, 根據 QLoRA 的那篇 paper 說, 選擇全部的 linear layers 效果比只選擇 adaptation 的效果來的好 (ref. <a target="_blank" rel="noopener" href="https://arc.net/l/quote/ediwtoyl">https://arc.net/l/quote/ediwtoyl</a>). 因此我們這裡就選擇所有的 linear layers.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> peft <span class="keyword">import</span> LoraConfig</span><br><span class="line"></span><br><span class="line">target_module_type = bnb.nn.Linear4bit</span><br><span class="line">target_modules = <span class="built_in">set</span>()</span><br><span class="line"><span class="keyword">for</span> name, module <span class="keyword">in</span> model.named_modules():</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(module, target_module_type):</span><br><span class="line">        names = name.split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">        target_modules.add(names[<span class="number">0</span>] <span class="keyword">if</span> <span class="built_in">len</span>(names) == <span class="number">1</span> <span class="keyword">else</span> names[-<span class="number">1</span>])</span><br><span class="line">target_modules = <span class="built_in">list</span>(target_modules)</span><br><span class="line"></span><br><span class="line"><span class="comment"># config the LoRA adapater</span></span><br><span class="line">lora_config = LoraConfig(</span><br><span class="line">        r = <span class="number">32</span>,</span><br><span class="line">        lora_alpha = <span class="number">64</span>,</span><br><span class="line">        target_modules = target_modules,</span><br><span class="line">        lora_dropout = <span class="number">0.2</span>,</span><br><span class="line">        bias = <span class="string">&quot;none&quot;</span>,</span><br><span class="line">        task_type = <span class="string">&quot;CAUSAL_LM&quot;</span>,</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<h3 id="建立數據轉換函數"><a href="#建立數據轉換函數" class="headerlink" title="建立數據轉換函數"></a>建立數據轉換函數</h3><p>為了將 dataset 轉成 instruction 的形式, 我們可以在訓練時添加轉換的函數讓模型在訓練前自動轉換資料, 以下是轉換的函數.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Stanford Alpaca 的形式</span></span><br><span class="line">INTRO_BLURB = <span class="string">&quot;Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.&quot;</span></span><br><span class="line">INTRO_BLURB_WITHOUT_INPUT = <span class="string">&quot;Below is an instruction that describes a task. Write a response that appropriately completes the request.&quot;</span></span><br><span class="line">INSTRUCTION_KEY = <span class="string">&quot;### Instruction:&quot;</span></span><br><span class="line">INPUT_KEY = <span class="string">&quot;### Input:&quot;</span></span><br><span class="line">RESPONSE_KEY = <span class="string">&quot;### Response:&quot;</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">formatting_prompts_func</span>(<span class="params">example</span>):</span><br><span class="line">    output_texts = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(example[<span class="string">&#x27;instruction&#x27;</span>])):</span><br><span class="line">        blurb = <span class="string">f&quot;<span class="subst">&#123;INTRO_BLURB&#125;</span>&quot;</span> <span class="keyword">if</span> example[<span class="string">&quot;input&quot;</span>][i] <span class="keyword">else</span> <span class="string">f&quot;<span class="subst">&#123;INTRO_BLURB_WITHOUT_INPUT&#125;</span>&quot;</span></span><br><span class="line">        instruction = <span class="string">f&quot;<span class="subst">&#123;INSTRUCTION_KEY&#125;</span>\n<span class="subst">&#123;example[<span class="string">&#x27;instruction&#x27;</span>][i]&#125;</span>&quot;</span></span><br><span class="line">        input_context = <span class="string">f&quot;<span class="subst">&#123;INPUT_KEY&#125;</span>\n<span class="subst">&#123;example[<span class="string">&#x27;input&#x27;</span>][i]&#125;</span>&quot;</span> <span class="keyword">if</span> example[<span class="string">&quot;input&quot;</span>][i] <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">        response = <span class="string">f&quot;<span class="subst">&#123;RESPONSE_KEY&#125;</span>\n<span class="subst">&#123;example[<span class="string">&#x27;output&#x27;</span>][i]&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">        parts = [part <span class="keyword">for</span> part <span class="keyword">in</span> [blurb, instruction, input_context, response] <span class="keyword">if</span> part]</span><br><span class="line">        formatted_prompt = <span class="string">&quot;\n\n&quot;</span>.join(parts)</span><br><span class="line">        output_texts.append(formatted_prompt)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> output_texts</span><br></pre></td></tr></table></figure>
+
+<h3 id="訓練模型"><a href="#訓練模型" class="headerlink" title="訓練模型"></a>訓練模型</h3><p>所有程序準備就緒後, 我們就可以開始來訓練模型了.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> EarlyStoppingCallback</span><br><span class="line"><span class="keyword">from</span> peft <span class="keyword">import</span> get_peft_model, prepare_model_for_kbit_training, PeftModel, AutoPeftModelForCausalLM</span><br><span class="line"><span class="keyword">from</span> trl <span class="keyword">import</span> SFTTrainer, DataCollatorForCompletionOnlyLM</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切割 train/validation datasets</span></span><br><span class="line">train_dataset = dataset.train_test_split(test_size=<span class="number">0.2</span>, seed=<span class="number">42</span>)[<span class="string">&#x27;train&#x27;</span>]</span><br><span class="line">val_dataset = dataset.train_test_split(test_size=<span class="number">0.2</span>, seed=<span class="number">42</span>)[<span class="string">&#x27;test&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 設定 DataCollatorForCompletionOnlyLM 讓模型只拿 Response 後面的文字來計算 loss</span></span><br><span class="line"><span class="comment"># 如果沒有設定的話, 模型會將 prompt 也計入 loss function 的計算中, 請依照任務需求去做選擇</span></span><br><span class="line">response_template = <span class="string">&quot;\n### Response:&quot;</span></span><br><span class="line">response_template_ids = tokenizer.encode(response_template, add_special_tokens=<span class="literal">False</span>)[<span class="number">2</span>:]</span><br><span class="line">collator = DataCollatorForCompletionOnlyLM(response_template_ids, tokenizer=tokenizer, mlm = <span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 轉換模型成 PEFT 支援的模型</span></span><br><span class="line">model.gradient_checkpointing_enable()</span><br><span class="line">model.config.pretraining_tp = <span class="number">1</span> </span><br><span class="line">model.config.use_cache = <span class="literal">False</span></span><br><span class="line">model = prepare_model_for_kbit_training(model)</span><br><span class="line">model = get_peft_model(model, lora_config)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 設定 training args</span></span><br><span class="line">training_args = TrainingArguments(</span><br><span class="line">        per_device_train_batch_size = <span class="number">2</span>,</span><br><span class="line">        gradient_accumulation_steps = <span class="number">8</span>,</span><br><span class="line">        warmup_steps = <span class="number">2</span>,</span><br><span class="line">        max_steps = <span class="number">1056</span>,</span><br><span class="line">        learning_rate = <span class="number">2e-4</span>,</span><br><span class="line">        fp16 = <span class="literal">True</span>,</span><br><span class="line">        logging_steps = <span class="number">1</span>,</span><br><span class="line">        output_dir = <span class="string">&quot;./results&quot;</span>,</span><br><span class="line">        optim = <span class="string">&quot;paged_adamw_32bit&quot;</span>,</span><br><span class="line">        load_best_model_at_end = <span class="literal">True</span>,</span><br><span class="line">        evaluation_strategy = IntervalStrategy.STEPS,</span><br><span class="line">        eval_steps = <span class="number">10</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 設定 trainer</span></span><br><span class="line">trainer = SFTTrainer(</span><br><span class="line">    model = model,</span><br><span class="line">    train_dataset = train_dataset,</span><br><span class="line">    eval_dataset=val_dataset,</span><br><span class="line">    args = training_args,</span><br><span class="line">    data_collator = collator,</span><br><span class="line">    callbacks = [EarlyStoppingCallback(early_stopping_patience=<span class="number">3</span>)],</span><br><span class="line">    max_seq_length = <span class="number">4096</span>,</span><br><span class="line">    formatting_func=formatting_prompts_func,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">train_result = trainer.train()</span><br><span class="line">metrics = train_result.metrics</span><br><span class="line">trainer.log_metrics(<span class="string">&quot;train&quot;</span>, metrics)</span><br><span class="line">trainer.save_metrics(<span class="string">&quot;train&quot;</span>, metrics)</span><br><span class="line">trainer.save_state()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 儲存模型</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Saving last checkpoint of the model...&quot;</span>)</span><br><span class="line">os.makedirs(<span class="string">&quot;./results&quot;</span>, exist_ok = <span class="literal">True</span>)</span><br><span class="line">trainer.model.save_pretrained(output_dir)</span><br></pre></td></tr></table></figure>
+
+<h3 id="合併-Adapter"><a href="#合併-Adapter" class="headerlink" title="合併 Adapter"></a>合併 Adapter</h3><p>建議在合併之前將 kernel 清空, 因為合併需要將原始模型讀進來, 並將 adapter 的權重合上去, 所需要的記憶體會相當大. 可能有人會問我直接用掛載的就好, 為什麼一定要合併回去原始的模型, 主要是因為現在如果採用掛載的, LLM 推論的時間會非常長 (ref. <a target="_blank" rel="noopener" href="https://arc.net/l/quote/jyetbfcv">https://arc.net/l/quote/jyetbfcv</a>), 基本上根本沒辦法當作服務使用, 目前不確定是 bugs 還是什麼, 建議合併比較保險. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 將模型讀入, max_memory 可以選擇 gpu 或是 cpu 可以使用多少 memory, 確保不會因為 memory 不足爆掉</span></span><br><span class="line">model = AutoPeftModelForCausalLM.from_pretrained(output_dir, </span><br><span class="line">                                                 device_map = <span class="string">&quot;auto&quot;</span>, </span><br><span class="line">                                                 torch_dtype = torch.bfloat16,</span><br><span class="line">                                                 max_memory=&#123;<span class="number">0</span>: <span class="string">&quot;80GIB&quot;</span>, <span class="number">1</span>: <span class="string">&quot;80GIB&quot;</span>,<span class="string">&quot;cpu&quot;</span>: <span class="string">&quot;75GIB&quot;</span>&#125;,</span><br><span class="line">                                                 cache_dir=<span class="string">&quot;/cache/&quot;</span>)</span><br><span class="line"><span class="comment"># 合併 LoRA adapter</span></span><br><span class="line">model = model.merge_and_unload()</span><br><span class="line">model.save_pretrained(<span class="string">&quot;./results_merged&quot;</span>, safe_serialization = <span class="literal">True</span>)</span><br><span class="line">tokenizer.save_pretrained(<span class="string">&quot;./results_merged&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>我們公司確實在 fine-tuned LLM 上取得很亮眼的成績, 而且 LLM 與以往的語言模型不同, 透過 instruction-tuning 的訓練方式, 也可以把多種不同的任務需求都放在同一個資料集讓 LLM 學習, 也就是不同任務只要一個模型就可以處理. 唯一需要注意的是訓練的資料集品質, 只要能確保是高品質的資料集, 相信訓練出來的 LLM 也可以讓你眼睛為之一亮的.</p>
+<h2 id="延伸閱讀"><a href="#延伸閱讀" class="headerlink" title="延伸閱讀"></a>延伸閱讀</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www.databricks.com/blog/efficient-fine-tuning-lora-guide-llms#:~:text=QLoRA%20is%20an%20even%20more,preserving%20similar%20effectiveness%20to%20LoRA">https://www.databricks.com/blog/efficient-fine-tuning-lora-guide-llms#:~:text&#x3D;QLoRA is an even more,preserving similar effectiveness to LoRA</a>.</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/microsoft/LoRA#lora-low-rank-adaptation-of-large-language-models">https://github.com/microsoft/LoRA#lora-low-rank-adaptation-of-large-language-models</a></li>
+<li><a target="_blank" rel="noopener" href="https://yashugupta-gupta11.medium.com/qlora-efficient-finetuning-of-large-language-model-falcon-7b-using-quantized-low-rank-adapters-2df59a7982d5">https://yashugupta-gupta11.medium.com/qlora-efficient-finetuning-of-large-language-model-falcon-7b-using-quantized-low-rank-adapters-2df59a7982d5</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@ud.chandra/instruction-fine-tuning-llama-2-with-pefts-qlora-method-d6a801ebb19">https:&#x2F;&#x2F;medium.com&#x2F;@ud.chandra&#x2F;instruction-fine-tuning-llama-2-with-pefts-qlora-method-d6a801ebb19</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@kshitiz.sahay26/fine-tuning-llama-2-for-news-category-prediction-a-step-by-step-comprehensive-guide-to-fine-tuning-48c06dee28a9">https:&#x2F;&#x2F;medium.com&#x2F;@kshitiz.sahay26&#x2F;fine-tuning-llama-2-for-news-category-prediction-a-step-by-step-comprehensive-guide-to-fine-tuning-48c06dee28a9</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/LLM/" rel="tag"># LLM</a>
+              <a href="/tags/Llama-2/" rel="tag"># Llama 2</a>
+              <a href="/tags/Mistral/" rel="tag"># Mistral</a>
+              <a href="/tags/Fine-Tune/" rel="tag"># Fine Tune</a>
+              <a href="/tags/Hugging-Face/" rel="tag"># Hugging Face</a>
+              <a href="/tags/QLoRA/" rel="tag"># QLoRA</a>
+              <a href="/tags/Instruction-Tuning/" rel="tag"># Instruction Tuning</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/01/27/%E7%94%A8%20Python%20%E5%BB%BA%E6%A7%8B%20Telegram%20%E8%82%A1%E7%A5%A8%E7%9B%A3%E6%B8%AC%E6%A9%9F%E5%99%A8%E4%BA%BA/" rel="prev" title="用 Python 建構 Telegram 股票監測機器人">
+                  <i class="fa fa-angle-left"></i> 用 Python 建構 Telegram 股票監測機器人
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Jude Su</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.20/fancybox/fancybox.umd.js" integrity="sha256-q8XkJ6dj5VwSvzI8+nATCHHQG+Xv/dAZBCgqmu93zOY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"cookiekang","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
