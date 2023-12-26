@@ -50,7 +50,7 @@
   </noscript>
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --><link rel="alternate" href="/atom.xml" title="隨談雜記" type="application/atom+xml">
+<!-- hexo injector head_end end --><link rel="alternate" href="/atom.xml" title="隨談雜記" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -170,7 +170,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://dtes8617.github.io/2023/12/18/Fine-tune%20LLM%20%E6%A8%A1%E5%9E%8B/">
+    <link itemprop="mainEntityOfPage" href="https://dtes8617.github.io/2023/12/18/%E8%B6%85%E8%B6%8A%E9%A0%90%E8%A8%93%E7%B7%B4%EF%BC%9A%E5%A6%82%E4%BD%95%E7%82%BA%E7%89%B9%E5%AE%9A%E6%A5%AD%E5%8B%99%E9%9C%80%E6%B1%82%E5%BE%AE%E8%AA%BF%20(Fine-Tune)%20LLM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.jpg">
@@ -188,7 +188,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/12/18/Fine-tune%20LLM%20%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">超越預訓練：如何為特定業務需求微調 (Fine-Tune) LLM</a>
+          <a href="/2023/12/18/%E8%B6%85%E8%B6%8A%E9%A0%90%E8%A8%93%E7%B7%B4%EF%BC%9A%E5%A6%82%E4%BD%95%E7%82%BA%E7%89%B9%E5%AE%9A%E6%A5%AD%E5%8B%99%E9%9C%80%E6%B1%82%E5%BE%AE%E8%AA%BF%20(Fine-Tune)%20LLM/" class="post-title-link" itemprop="url">超越預訓練：如何為特定業務需求微調 (Fine-Tune) LLM</a>
         </h2>
 
         <div class="post-meta-container">
@@ -198,9 +198,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2023-12-18 00:00:00 / Modified: 21:16:49" itemprop="dateCreated datePublished" datetime="2023-12-18T00:00:00+08:00">2023-12-18</time>
+      <time title="Created: 2023-12-18 00:00:00" itemprop="dateCreated datePublished" datetime="2023-12-18T00:00:00+08:00">2023-12-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-12-26 17:47:57" itemprop="dateModified" datetime="2023-12-26T17:47:57+08:00">2023-12-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -221,8 +227,8 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2023/12/18/Fine-tune%20LLM%20%E6%A8%A1%E5%9E%8B/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/12/18/Fine-tune LLM 模型/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2023/12/18/%E8%B6%85%E8%B6%8A%E9%A0%90%E8%A8%93%E7%B7%B4%EF%BC%9A%E5%A6%82%E4%BD%95%E7%82%BA%E7%89%B9%E5%AE%9A%E6%A5%AD%E5%8B%99%E9%9C%80%E6%B1%82%E5%BE%AE%E8%AA%BF%20(Fine-Tune)%20LLM/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/12/18/超越預訓練：如何為特定業務需求微調 (Fine-Tune) LLM/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -236,11 +242,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><img src="https://www.dropbox.com/scl/fi/6cfikpc4u2rgdf7zkmspv/ChatGPT.webp?rlkey=fglu3qpwd7nba4v2nkjhjlr18&raw=1"></p>
+          <p><img src="https://www.dropbox.com/scl/fi/6cfikpc4u2rgdf7zkmspv/ChatGPT.webp?rlkey=fglu3qpwd7nba4v2nkjhjlr18&amp;raw=1" alt="" /></p>
 <p>隨著 Meta 的 Llama 2 開放商用， 很多公司也摩拳擦掌想把 Llama 2 應用在自己的產品上。 然而 Pre-train 的模型不見的符合公司或使用者的需求， 為了求更好的表現，fine-tune LLM 就成了其中一個不錯的方法。本篇文章會介紹 Fine tune LLM 的基本概念，以及訓練的程式碼還有一些注意的事項。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/12/18/Fine-tune%20LLM%20%E6%A8%A1%E5%9E%8B/#more" rel="contents">
+              <a class="btn" href="/2023/12/18/%E8%B6%85%E8%B6%8A%E9%A0%90%E8%A8%93%E7%B7%B4%EF%BC%9A%E5%A6%82%E4%BD%95%E7%82%BA%E7%89%B9%E5%AE%9A%E6%A5%AD%E5%8B%99%E9%9C%80%E6%B1%82%E5%BE%AE%E8%AA%BF%20(Fine-Tune)%20LLM/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -833,14 +839,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2018-06-16 16:25:39" itemprop="dateCreated datePublished" datetime="2018-06-16T16:25:39+08:00">2018-06-16</time>
+      <time title="Created: 2018-06-16 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-16T00:00:00+08:00">2018-06-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-03 09:26:34" itemprop="dateModified" datetime="2023-10-03T09:26:34+08:00">2023-10-03</time>
+      <time title="Modified: 2023-12-26 17:48:01" itemprop="dateModified" datetime="2023-12-26T17:48:01+08:00">2023-12-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -939,14 +945,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2018-02-01 01:14:28" itemprop="dateCreated datePublished" datetime="2018-02-01T01:14:28+08:00">2018-02-01</time>
+      <time title="Created: 2018-02-01 00:00:00" itemprop="dateCreated datePublished" datetime="2018-02-01T00:00:00+08:00">2018-02-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-03 15:24:03" itemprop="dateModified" datetime="2023-10-03T15:24:03+08:00">2023-10-03</time>
+      <time title="Modified: 2023-12-26 17:48:01" itemprop="dateModified" datetime="2023-12-26T17:48:01+08:00">2023-12-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -982,7 +988,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><img src="https://www.dropbox.com/s/tlmpaocd6ykv054/UNADJUSTEDNONRAW_thumb_e06.jpg?raw=1"></p>
+          <p><img src="https://www.dropbox.com/s/tlmpaocd6ykv054/UNADJUSTEDNONRAW_thumb_e06.jpg?raw=1" alt="" /></p>
 <p>我們在分析時，都習慣將資料整理成Tidy Data，以便我們建模來解釋或是預測所關注的事情。但在整理成Tidy Data之前，這些資料基本上都已經是結構化的。所以當我們試圖去分析文字、影像這種非結構化資料時，第一個會碰到的困難點就是如何將這些資料變成我們熟悉的結構化數據。凡通則必有例外，尤其是牽涉到人的時候，那大概只有例外這件事是通則了。與人貼身相關的語言就更不用說了，要能從千變萬化的語言中提煉出「結構化」的型態本身就不是一件容易的事。尤其《Ethnologue: Languages of the World》指稱語言在這世界上起碼有7,102種，即便是同一種語言隨時間、地點的不同也都可能各自發展，就像「擦子」跟「擦布」之類的。</p>
           <!--noindex-->
             <div class="post-button">
@@ -1046,14 +1052,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2018-01-25 01:15:04" itemprop="dateCreated datePublished" datetime="2018-01-25T01:15:04+08:00">2018-01-25</time>
+      <time title="Created: 2018-01-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-25T00:00:00+08:00">2018-01-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-03 15:24:04" itemprop="dateModified" datetime="2023-10-03T15:24:04+08:00">2023-10-03</time>
+      <time title="Modified: 2023-12-26 17:48:04" itemprop="dateModified" datetime="2023-12-26T17:48:04+08:00">2023-12-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1089,8 +1095,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><img src="https://www.dropbox.com/s/4nbvxmorzx8ifvj/mathjax.svg?raw=1"></p>
-<p>由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成<code>$\cos\theta = \frac&#123;p\cdot q&#125;&#123;\|p\|\|q\|&#125;$</code>這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串$\cos\theta &#x3D; \frac{p\cdot q}{|p||q|}$，我們需加入<code>mathJax</code>的插件。</p>
+          <p><img src="https://www.dropbox.com/s/4nbvxmorzx8ifvj/mathjax.svg?raw=1" alt="" /></p>
+<p>由於Hexo本身沒有支援數學公式的顯示，因此即便在Markdown文件輸入數學公式，他也僅會顯示成<code>$\cos\theta = \frac&#123;p\cdot q&#125;&#123;\|p\|\|q\|&#125;$</code>這樣的形式，為了讓Hexo能正確顯示我們想呈現的數學字串<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>cos</mi><mo>⁡</mo><mi>θ</mi><mo>=</mo><mfrac><mrow><mi>p</mi><mo>⋅</mo><mi>q</mi></mrow><mrow><mi mathvariant="normal">∥</mi><mi>p</mi><mi mathvariant="normal">∥</mi><mi mathvariant="normal">∥</mi><mi>q</mi><mi mathvariant="normal">∥</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\cos\theta = \frac{p\cdot q}{\|p\|\|q\|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mop">cos</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.277223em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.757223em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∥</span><span class="mord mathnormal mtight">p</span><span class="mord mtight">∥</span><span class="mord mtight">∥</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span><span class="mord mtight">∥</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.446108em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">p</span><span class="mbin mtight">⋅</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">q</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>，我們需加入<code>mathJax</code>的插件。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/01/25/%E5%9C%A8Hexo%E9%A1%AF%E7%A4%BA%E6%95%B8%E5%AD%B8%E5%85%AC%E5%BC%8F/#more" rel="contents">
@@ -1153,14 +1159,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2018-01-16 03:16:30" itemprop="dateCreated datePublished" datetime="2018-01-16T03:16:30+08:00">2018-01-16</time>
+      <time title="Created: 2018-01-16 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-16T00:00:00+08:00">2018-01-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-10-03 15:10:59" itemprop="dateModified" datetime="2023-10-03T15:10:59+08:00">2023-10-03</time>
+      <time title="Modified: 2023-12-26 17:47:58" itemprop="dateModified" datetime="2023-12-26T17:47:58+08:00">2023-12-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1196,7 +1202,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><img src="https://www.dropbox.com/s/1n3neygfv1epo89/Hexo.png?raw=1" alt="Hexo"></p>
+          <p><img src="https://www.dropbox.com/s/1n3neygfv1epo89/Hexo.png?raw=1" alt="Hexo" /></p>
 <p>還記得最後寫網誌已經是大學的事了，那時候還是無名小站稱霸的年代。對於這麼久沒接觸Blog的我來說，需求也已經跟以往相差甚遠了。因為主要是記錄我的學習心得，所以一定要包含：</p>
 <ul>
 <li>漂亮的呈現程式碼及數學公式</li>
@@ -1204,7 +1210,7 @@
 <li>不用網路也可以撰寫或排版</li>
 <li>簡單俐落的風格</li>
 </ul>
-<p>在尋尋覓覓後，我總算找到了<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>這個平台。在很多的Blog中都可以發現它的身影，厲害的是它的作者<a target="_blank" rel="noopener" href="https://zespia.tw/blog/2012/10/11/hexo-debut/">Tommy Chen</a>竟然是台灣人，大家可以去看看他一手打造的心路歷程。</p>
+<p>在尋尋覓覓後，我總算找到了<a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>這個平台。在很多的Blog中都可以發現它的身影，厲害的是它的作者<a target="_blank" rel="noopener" href="https://zespia.tw/blog/2012/10/11/hexo-debut/">Tommy Chen</a>竟然是台灣人，大家可以去看看他一手打造的心路歷程。</p>
 <p>由於我僅對R及Matlab的語法較熟悉，大學雖然有修過一點系統程式，但也年代久遠，所以在打造這個Blog花了我不少時間。我會將我架設的過程盡可能完整的寫出來，方便讓跟我一樣沒什麼基礎的人可以直接上手！</p>
           <!--noindex-->
             <div class="post-button">
